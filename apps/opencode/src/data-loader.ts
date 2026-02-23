@@ -125,7 +125,10 @@ export type LoadedSessionMetadata = {
 export type OpenCodeMessageLoadOptions = {
 	since?: string; // YYYY-MM-DD or YYYYMMDD
 	until?: string; // YYYY-MM-DD or YYYYMMDD
+	timezone?: string;
 };
+
+const DATE_KEY_FORMATTER_CACHE = new Map<string, Intl.DateTimeFormat>();
 
 function normalizeDateInput(value?: string): string | undefined {
 	if (value == null) {
@@ -144,8 +147,38 @@ function normalizeDateInput(value?: string): string | undefined {
 	return compact;
 }
 
-function getDateKeyFromTimestamp(timestampMs: number): string {
-	return new Date(timestampMs).toISOString().slice(0, 10).replace(/-/g, '');
+function resolveTimeZone(timezone?: string): string {
+	if (timezone == null || timezone.trim() === '') {
+		return Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'UTC';
+	}
+
+	try {
+		Intl.DateTimeFormat('en-US', { timeZone: timezone });
+		return timezone;
+	} catch {
+		return 'UTC';
+	}
+}
+
+function getDateKeyFormatter(timezone?: string): Intl.DateTimeFormat {
+	const resolvedTimeZone = resolveTimeZone(timezone);
+	const cached = DATE_KEY_FORMATTER_CACHE.get(resolvedTimeZone);
+	if (cached != null) {
+		return cached;
+	}
+
+	const formatter = new Intl.DateTimeFormat('en-CA', {
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+		timeZone: resolvedTimeZone,
+	});
+	DATE_KEY_FORMATTER_CACHE.set(resolvedTimeZone, formatter);
+	return formatter;
+}
+
+function getDateKeyFromTimestamp(timestampMs: number, timezone?: string): string {
+	return getDateKeyFormatter(timezone).format(new Date(timestampMs)).replace(/-/g, '');
 }
 
 function isWithinRange(dateKey: string, since?: string, until?: string): boolean {
@@ -323,7 +356,7 @@ export async function loadOpenCodeMessages(
 			if (since != null) {
 				try {
 					const dirStat = await stat(sessionDir);
-					const dirDateKey = getDateKeyFromTimestamp(dirStat.mtimeMs);
+					const dirDateKey = getDateKeyFromTimestamp(dirStat.mtimeMs, options.timezone);
 					if (dirDateKey < since) {
 						continue;
 					}
@@ -352,7 +385,7 @@ export async function loadOpenCodeMessages(
 			try {
 				const fileStat = await stat(filePath);
 				fileModifiedMs = fileStat.mtimeMs;
-				const fileDateKey = getDateKeyFromTimestamp(fileModifiedMs);
+				const fileDateKey = getDateKeyFromTimestamp(fileModifiedMs, options.timezone);
 				if (!isWithinRange(fileDateKey, since, until)) {
 					continue;
 				}
@@ -372,7 +405,7 @@ export async function loadOpenCodeMessages(
 			if (createdMs == null) {
 				continue;
 			}
-			const dateKey = getDateKeyFromTimestamp(createdMs);
+			const dateKey = getDateKeyFromTimestamp(createdMs, options.timezone);
 			if (!isWithinRange(dateKey, since, until)) {
 				continue;
 			}

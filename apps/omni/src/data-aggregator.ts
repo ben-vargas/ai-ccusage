@@ -194,6 +194,7 @@ export async function loadCombinedDailyData(
 					const entries = await loadOpenCodeMessages({
 						since: options.since,
 						until: options.until,
+						timezone: options.timezone,
 					});
 					if (entries.length > 0) {
 						using fetcher = new LiteLLMPricingFetcher({
@@ -201,7 +202,10 @@ export async function loadCombinedDailyData(
 							offlineLoader: options.offline === true ? async () => ({}) : undefined,
 							logger,
 						});
-						const rows = await buildOpenCodeDailyReport(entries, { pricingFetcher: fetcher });
+						const rows = await buildOpenCodeDailyReport(entries, {
+							pricingFetcher: fetcher,
+							timezone: options.timezone,
+						});
 						for (const row of rows) {
 							results.push(normalizeOpenCodeDaily(row));
 						}
@@ -328,6 +332,7 @@ export async function loadCombinedMonthlyData(
 					const entries = await loadOpenCodeMessages({
 						since: options.since,
 						until: options.until,
+						timezone: options.timezone,
 					});
 					if (entries.length > 0) {
 						using fetcher = new LiteLLMPricingFetcher({
@@ -335,7 +340,10 @@ export async function loadCombinedMonthlyData(
 							offlineLoader: options.offline === true ? async () => ({}) : undefined,
 							logger,
 						});
-						const rows = await buildOpenCodeMonthlyReport(entries, { pricingFetcher: fetcher });
+						const rows = await buildOpenCodeMonthlyReport(entries, {
+							pricingFetcher: fetcher,
+							timezone: options.timezone,
+						});
 						for (const row of rows) {
 							results.push(normalizeOpenCodeMonthly(row));
 						}
@@ -462,6 +470,7 @@ export async function loadCombinedSessionData(
 						loadOpenCodeMessages({
 							since: options.since,
 							until: options.until,
+							timezone: options.timezone,
 						}),
 						loadOpenCodeSessions(),
 					]);

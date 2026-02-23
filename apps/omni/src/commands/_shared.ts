@@ -1,4 +1,6 @@
 import type { CombinedTotals, Source, UnifiedModelBreakdown } from '../_types.ts';
+import process from 'node:process';
+import { createLogger, setLoggerLevel } from '@ccusage/internal/logger';
 import { formatCurrency, formatNumber } from '@ccusage/terminal/table';
 import pc from 'picocolors';
 import { CODEX_CACHE_MARK, SOURCE_COLORS, SOURCE_LABELS } from '../_consts.ts';
@@ -14,6 +16,12 @@ export function formatSourcesTitle(sources: Source[]): string {
 	}
 
 	return sources.map((source) => SOURCE_LABELS[source]).join(', ');
+}
+
+export function enableJsonOutputMode(jsonOutput: boolean): void {
+	if (jsonOutput) {
+		setLoggerLevel(0);
+	}
 }
 
 export function formatCacheValue(source: Source, cacheTokens: number): string {
@@ -94,4 +102,34 @@ export function pushBreakdownRows(
 		}
 		table.push(row);
 	}
+}
+
+if (import.meta.vitest != null) {
+	describe('enableJsonOutputMode', () => {
+		it('silences all registered loggers', () => {
+			const loggerA = createLogger('@ccusage/omni-json-a');
+			const loggerB = createLogger('@ccusage/omni-json-b');
+			setLoggerLevel(3);
+
+			let stderrOutput = '';
+			const writeSpy = vi.spyOn(process.stderr, 'write').mockImplementation(((chunk: unknown) => {
+				stderrOutput += String(chunk);
+				return true;
+			}) as typeof process.stderr.write);
+
+			try {
+				loggerA.warn('before-json-mode');
+				expect(stderrOutput.length).toBeGreaterThan(0);
+
+				stderrOutput = '';
+				enableJsonOutputMode(true);
+				loggerA.warn('after-json-mode-a');
+				loggerB.warn('after-json-mode-b');
+				expect(stderrOutput).toBe('');
+			} finally {
+				writeSpy.mockRestore();
+				setLoggerLevel(3);
+			}
+		});
+	});
 }

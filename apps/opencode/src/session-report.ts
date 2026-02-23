@@ -75,3 +75,58 @@ export async function buildSessionReport(
 
 	return sessionData;
 }
+
+if (import.meta.vitest != null) {
+	describe('buildSessionReport', () => {
+		it('aggregates by session and applies metadata', async () => {
+			const entries: LoadedUsageEntry[] = [
+				{
+					timestamp: new Date('2026-02-20T00:00:00.000Z'),
+					sessionID: 's1',
+					usage: {
+						inputTokens: 10,
+						outputTokens: 5,
+						cacheCreationInputTokens: 2,
+						cacheReadInputTokens: 1,
+					},
+					model: 'gpt-5.3-codex',
+					costUSD: 0.5,
+				},
+				{
+					timestamp: new Date('2026-02-20T01:00:00.000Z'),
+					sessionID: 's1',
+					usage: {
+						inputTokens: 3,
+						outputTokens: 2,
+						cacheCreationInputTokens: 0,
+						cacheReadInputTokens: 0,
+					},
+					model: 'gpt-5.3-codex',
+					costUSD: 0.25,
+				},
+			];
+
+			const rows = await buildSessionReport(entries, {
+				pricingFetcher: {} as LiteLLMPricingFetcher,
+				sessionMetadata: new Map([
+					[
+						's1',
+						{
+							id: 's1',
+							parentID: null,
+							title: 'Session One',
+							projectID: 'p1',
+							directory: '/tmp/project',
+						},
+					],
+				]),
+			});
+
+			expect(rows).toHaveLength(1);
+			expect(rows[0]?.sessionTitle).toBe('Session One');
+			expect(rows[0]?.totalTokens).toBe(23);
+			expect(rows[0]?.totalCost).toBeCloseTo(0.75, 10);
+			expect(rows[0]?.lastActivity).toBe('2026-02-20T01:00:00.000Z');
+		});
+	});
+}

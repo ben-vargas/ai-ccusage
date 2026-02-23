@@ -15,6 +15,7 @@ import {
 } from '../data-aggregator.ts';
 import { log, logger } from '../logger.ts';
 import {
+	enableJsonOutputMode,
 	formatCacheValue,
 	formatCostSummary,
 	formatSourceLabel,
@@ -85,9 +86,7 @@ export const sessionCommand = define({
 	},
 	async run(ctx) {
 		const jsonOutput = Boolean(ctx.values.json);
-		if (jsonOutput) {
-			logger.level = 0;
-		}
+		enableJsonOutputMode(jsonOutput);
 
 		let sources;
 		let since: string | undefined;

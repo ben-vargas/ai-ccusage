@@ -2,6 +2,14 @@ import type { ConsolaInstance } from 'consola';
 import process from 'node:process';
 import { consola } from 'consola';
 
+const registeredLoggers = new Set<ConsolaInstance>();
+
+export function setLoggerLevel(level: number): void {
+	for (const logger of registeredLoggers) {
+		logger.level = level;
+	}
+}
+
 export function createLogger(name: string): ConsolaInstance {
 	const logger: ConsolaInstance = consola.withTag(name);
 
@@ -13,6 +21,7 @@ export function createLogger(name: string): ConsolaInstance {
 		}
 	}
 
+	registeredLoggers.add(logger);
 	return logger;
 }
 
