@@ -13,7 +13,7 @@ use super::{
 use crate::{
     LoadedEntry, PricingMap, Result,
     cli::{CostMode, SharedArgs},
-    collect_files_with_extension, debug_log, parse_tz,
+    collect_files_with_extension, debug_log, parse_tz, read_files_parallel,
 };
 
 pub(crate) fn load_entries(shared: &SharedArgs) -> Result<Vec<LoadedEntry>> {
@@ -73,15 +73,34 @@ pub(crate) fn load_entries_from_directory(
     let messages_dir = opencode_dir.join("storage").join("message");
     let mut files = Vec::new();
     collect_files_with_extension(&messages_dir, "json", &mut files);
-    for file in files {
-        if let Some(entry) = read_message_file(&file, tz.as_ref(), shared.mode, pricing.as_ref())? {
-            if let Some(id) = entry_id(&entry)
-                && !seen.insert(id.to_string())
-            {
-                continue;
-            }
-            entries.push(entry);
+
+    // Skip files the DB pass already covered. Message files are stored as
+    // `storage/message/<sessionID>/<messageID>.json`, so the file stem is the
+    // message id used for dedup. When the DB already contributed that id, the
+    // file would be discarded by the id dedup below anyway — drop it here so we
+    // never pay the read. Files whose stem is not a known id (or that have no
+    // usable stem) are kept and parsed normally.
+    if !seen.is_empty() {
+        files.retain(|file| {
+            file.file_stem()
+                .and_then(|stem| stem.to_str())
+                .is_none_or(|stem| !seen.contains(stem))
+        });
+    }
+
+    // Read the surviving files in parallel, then run the sequential id dedup
+    // over the results in their original file order so parallelism never changes
+    // which duplicate survives.
+    let loaded = read_files_parallel(&files, shared.single_thread, |file| {
+        read_message_file(file, tz.as_ref(), shared.mode, pricing.as_ref(), shared)
+    });
+    for entry in loaded.into_iter().flatten() {
+        if let Some(id) = entry_id(&entry)
+            && !seen.insert(id.to_string())
+        {
+            continue;
         }
+        entries.push(entry);
     }
     entries.sort_by_key(|entry| entry.timestamp);
     Ok(entries)
@@ -179,14 +198,23 @@ fn read_message_file(
     tz: Option<&JiffTimeZone>,
     mode: CostMode,
     pricing: Option<&PricingMap>,
-) -> Result<Option<LoadedEntry>> {
-    let content = fs::read(path)?;
-    let Ok(value) = serde_json::from_slice::<OpenCodeMessage>(&content) else {
-        return Ok(None);
+    shared: &SharedArgs,
+) -> Option<LoadedEntry> {
+    let content = match fs::read(path) {
+        Ok(content) => content,
+        Err(error) => {
+            debug_log(
+                shared,
+                format!(
+                    "Failed to read OpenCode message file {}: {error}",
+                    path.display()
+                ),
+            );
+            return None;
+        }
     };
-    Ok(message_value_to_entry(
-        &value, None, None, tz, mode, pricing,
-    ))
+    let value = serde_json::from_slice::<OpenCodeMessage>(&content).ok()?;
+    message_value_to_entry(&value, None, None, tz, mode, pricing)
 }
 
 fn entry_id(entry: &LoadedEntry) -> Option<&str> {
@@ -314,5 +342,110 @@ mod tests {
         assert_eq!(entries[0].session_id.as_ref(), "db-session-a");
         assert_eq!(entries[0].data.message.usage.input_tokens, 120);
         assert_eq!(entries[0].cost, 0.03);
+    }
+
+    #[test]
+    fn skips_message_files_already_covered_by_database() {
+        // Real OpenCode message files live at
+        // `storage/message/<sessionID>/<messageID>.json`, so the file stem is
+        // the message id. The DB pass contributes `msg-db`, so the matching
+        // file must be dropped (DB wins) while the file that the DB does not
+        // cover is still loaded.
+        let fixture = fs_fixture!({
+            "storage/message/ses_a/msg-db.json": r#"{"id":"msg-db","sessionID":"json-session","providerID":"anthropic","modelID":"claude-sonnet-4-20250514","time":{"created":1767312000000},"tokens":{"input":999,"output":999},"cost":0.99}"#,
+            "storage/message/ses_a/msg-file.json": r#"{"id":"msg-file","sessionID":"file-session","providerID":"anthropic","modelID":"claude-sonnet-4-20250514","time":{"created":1767312000001},"tokens":{"input":50,"output":25},"cost":0.01}"#,
+        });
+        create_db_message(
+            &fixture.path("opencode.db"),
+            "msg-db",
+            "db-session",
+            r#"{"providerID":"anthropic","modelID":"claude-sonnet-4-20250514","time":{"created":1767312000000},"tokens":{"input":120,"output":60},"cost":0.03}"#,
+        );
+
+        let shared = SharedArgs {
+            mode: CostMode::Display,
+            ..SharedArgs::default()
+        };
+        let entries = load_entries_from_directory(fixture.root(), &shared).unwrap();
+
+        assert_eq!(entries.len(), 2);
+        // The DB-covered id keeps the DB row, not the file's inflated tokens.
+        let db_entry = entries
+            .iter()
+            .find(|entry| entry.data.message.id.as_deref() == Some("msg-db"))
+            .expect("db-covered message present");
+        assert_eq!(db_entry.session_id.as_ref(), "db-session");
+        assert_eq!(db_entry.data.message.usage.input_tokens, 120);
+        // The file the DB does not cover is still read and parsed.
+        let file_entry = entries
+            .iter()
+            .find(|entry| entry.data.message.id.as_deref() == Some("msg-file"))
+            .expect("db-uncovered message present");
+        assert_eq!(file_entry.session_id.as_ref(), "file-session");
+        assert_eq!(file_entry.data.message.usage.input_tokens, 50);
+    }
+
+    #[test]
+    fn dedup_is_stable_across_thread_counts() {
+        // Build a directory with many files spread over several sessions, some
+        // sharing ids with each other and with the DB, so the file pass has to
+        // dedup. Parallel reads must not change which duplicate survives or the
+        // final ordering compared to the single-threaded read.
+        let fixture = ccusage_test_support::Fixture::new();
+        for session in 0..4 {
+            for message in 0..15 {
+                let id = format!("msg-{session}-{message}");
+                let created = 1_767_312_000_000_i64 + i64::from(session * 100 + message);
+                let path = format!("storage/message/ses_{session}/{id}.json");
+                let data = format!(
+                    r#"{{"id":"{id}","sessionID":"ses_{session}","providerID":"anthropic","modelID":"claude-sonnet-4-20250514","time":{{"created":{created}}},"tokens":{{"input":{input},"output":10}}}}"#,
+                    input = 100 + message,
+                );
+                let _ = fixture.write_file(path, data);
+            }
+        }
+        // A duplicate file (same id, later timestamp) to force the file-vs-file
+        // dedup path under both thread counts.
+        let _ = fixture.write_file(
+            "storage/message/ses_dup/msg-0-0.json",
+            r#"{"id":"msg-0-0","sessionID":"ses_dup","providerID":"anthropic","modelID":"claude-sonnet-4-20250514","time":{"created":1767312999999},"tokens":{"input":7777,"output":10}}"#,
+        );
+
+        create_db_message(
+            &fixture.path("opencode.db"),
+            "msg-1-1",
+            "db-session",
+            r#"{"providerID":"anthropic","modelID":"claude-sonnet-4-20250514","time":{"created":1767312000000},"tokens":{"input":120,"output":60}}"#,
+        );
+
+        let single = SharedArgs {
+            mode: CostMode::Display,
+            single_thread: true,
+            ..SharedArgs::default()
+        };
+        let multi = SharedArgs {
+            mode: CostMode::Display,
+            single_thread: false,
+            ..SharedArgs::default()
+        };
+
+        let single_entries = load_entries_from_directory(fixture.root(), &single).unwrap();
+        let multi_entries = load_entries_from_directory(fixture.root(), &multi).unwrap();
+
+        let project = |entries: &[crate::LoadedEntry]| {
+            entries
+                .iter()
+                .map(|entry| {
+                    (
+                        entry.timestamp.as_millis(),
+                        entry.data.message.id.clone(),
+                        entry.session_id.to_string(),
+                        entry.data.message.usage.input_tokens,
+                    )
+                })
+                .collect::<Vec<_>>()
+        };
+
+        assert_eq!(project(&single_entries), project(&multi_entries));
     }
 }
