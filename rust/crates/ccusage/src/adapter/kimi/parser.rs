@@ -5,19 +5,67 @@ use std::{
 };
 
 use jiff::tz::TimeZone as JiffTimeZone;
-use serde_json::Value;
+use serde::Deserialize;
 
+use super::super::jsonl;
 use crate::{
     LoadedEntry, PricingMap, Result, TimestampMs, TokenUsageRaw, UsageEntry, UsageMessage,
-    apply_total_token_fallback, calculate_cost_for_usage,
-    cli::CostMode,
-    fast::{LinePrefilter, prefiltered_json_values},
-    format_date_tz, json_value_u64, missing_pricing_model_for_candidates, non_empty_json_string,
+    apply_total_token_fallback, calculate_cost_for_usage, cli::CostMode, fast::LinePrefilter,
+    format_date_tz, missing_pricing_model_for_candidates,
 };
 
 const DEFAULT_MODEL: &str = "kimi-for-coding";
 const DEFAULT_PROVIDER: &str = "moonshot";
 const KIMI_FOR_CODING_K2_6_CUTOFF_MS: i64 = 1_776_698_890_072;
+
+/// Kimi `config.json` document, used to read the configured display model.
+#[derive(Debug, Deserialize)]
+struct KimiConfig {
+    #[serde(default, deserialize_with = "jsonl::non_empty_string")]
+    model: Option<String>,
+}
+
+/// A single Kimi wire JSONL line. Only the fields ccusage consumes are declared;
+/// serde skips everything else.
+#[derive(Debug, Deserialize)]
+struct KimiWireLine {
+    #[serde(default, deserialize_with = "jsonl::non_empty_string")]
+    r#type: Option<String>,
+    message: Option<KimiWireMessage>,
+    #[serde(default, deserialize_with = "jsonl::lenient_f64")]
+    timestamp: Option<f64>,
+}
+
+/// The `message` block carried by a Kimi wire line.
+#[derive(Debug, Deserialize)]
+struct KimiWireMessage {
+    #[serde(default, deserialize_with = "jsonl::non_empty_string")]
+    r#type: Option<String>,
+    payload: Option<KimiWirePayload>,
+}
+
+/// The `message.payload` block carrying token usage and the message id.
+#[derive(Debug, Deserialize)]
+struct KimiWirePayload {
+    token_usage: Option<KimiTokenUsage>,
+    #[serde(default, deserialize_with = "jsonl::non_empty_string")]
+    message_id: Option<String>,
+}
+
+/// Token counts reported under `message.payload.token_usage`.
+#[derive(Debug, Default, Deserialize)]
+struct KimiTokenUsage {
+    #[serde(default, deserialize_with = "jsonl::lenient_u64")]
+    input_other: u64,
+    #[serde(default, deserialize_with = "jsonl::lenient_u64")]
+    output: u64,
+    #[serde(default, deserialize_with = "jsonl::lenient_u64")]
+    input_cache_creation: u64,
+    #[serde(default, deserialize_with = "jsonl::lenient_u64")]
+    input_cache_read: u64,
+    #[serde(default, deserialize_with = "jsonl::lenient_u64")]
+    total: u64,
+}
 
 #[derive(Debug, Clone)]
 pub(super) struct KimiUsageEntry {
@@ -37,9 +85,11 @@ pub(super) fn read_wire_file(path: &Path) -> Result<Vec<KimiUsageEntry>> {
     let model = read_model_from_config(path);
     let fallback_timestamp = file_modified_timestamp(path);
     let content = fs::read(path)?;
+    // Usable Kimi wire lines are `StatusUpdate` records carrying a
+    // `token_usage` payload, so require both substrings before JSON parsing.
     let prefilter = LinePrefilter::all(&[br#""StatusUpdate""#, br#""token_usage""#]);
-    Ok(prefiltered_json_values(&content, &prefilter)
-        .filter_map(|value| wire_line_to_entry(&value, path, &model, fallback_timestamp))
+    Ok(jsonl::records::<KimiWireLine>(&content, Some(&prefilter))
+        .filter_map(|line| wire_line_to_entry(&line, path, &model, fallback_timestamp))
         .collect::<Vec<_>>())
 }
 
@@ -50,10 +100,10 @@ fn read_model_from_config(file_path: &Path) -> String {
     let Ok(content) = fs::read_to_string(root.join("config.json")) else {
         return DEFAULT_MODEL.to_string();
     };
-    let Ok(value) = serde_json::from_str::<Value>(&content) else {
+    let Ok(config) = serde_json::from_str::<KimiConfig>(&content) else {
         return DEFAULT_MODEL.to_string();
     };
-    non_empty_json_string(value.get("model")).unwrap_or_else(|| DEFAULT_MODEL.to_string())
+    config.model.unwrap_or_else(|| DEFAULT_MODEL.to_string())
 }
 
 fn kimi_root_from_wire_path(file_path: &Path) -> Option<PathBuf> {
@@ -76,25 +126,25 @@ fn file_modified_timestamp(path: &Path) -> TimestampMs {
 }
 
 fn wire_line_to_entry(
-    value: &Value,
+    line: &KimiWireLine,
     file_path: &Path,
     model: &str,
     fallback_timestamp: TimestampMs,
 ) -> Option<KimiUsageEntry> {
-    if value.get("type").and_then(Value::as_str) == Some("metadata") {
+    if line.r#type.as_deref() == Some("metadata") {
         return None;
     }
-    let message = value.get("message")?;
-    if message.get("type").and_then(Value::as_str) != Some("StatusUpdate") {
+    let message = line.message.as_ref()?;
+    if message.r#type.as_deref() != Some("StatusUpdate") {
         return None;
     }
-    let payload = message.get("payload")?;
-    let token_usage = payload.get("token_usage")?;
-    let input_tokens = json_value_u64(token_usage.get("input_other"));
-    let output_tokens = json_value_u64(token_usage.get("output"));
-    let cache_creation_tokens = json_value_u64(token_usage.get("input_cache_creation"));
-    let cache_read_tokens = json_value_u64(token_usage.get("input_cache_read"));
-    let total_tokens = json_value_u64(token_usage.get("total"));
+    let payload = message.payload.as_ref()?;
+    let token_usage = payload.token_usage.as_ref()?;
+    let input_tokens = token_usage.input_other;
+    let output_tokens = token_usage.output;
+    let cache_creation_tokens = token_usage.input_cache_creation;
+    let cache_read_tokens = token_usage.input_cache_read;
+    let total_tokens = token_usage.total;
     let usage = TokenUsageRaw {
         input_tokens,
         output_tokens,
@@ -107,9 +157,8 @@ fn wire_line_to_entry(
     if crate::total_usage_tokens(usage) + extra_total_tokens == 0 {
         return None;
     }
-    let timestamp = value
-        .get("timestamp")
-        .and_then(Value::as_f64)
+    let timestamp = line
+        .timestamp
         .and_then(timestamp_from_seconds)
         .unwrap_or(fallback_timestamp);
     Some(KimiUsageEntry {
@@ -117,7 +166,7 @@ fn wire_line_to_entry(
         timestamp_text: crate::format_rfc3339_millis(timestamp),
         session_id: extract_session_id(file_path),
         model: model.to_string(),
-        message_id: non_empty_json_string(payload.get("message_id")),
+        message_id: payload.message_id.clone(),
         input_tokens: usage.input_tokens,
         output_tokens: usage.output_tokens,
         cache_creation_tokens: usage.cache_creation_input_tokens,
@@ -285,7 +334,7 @@ mod tests {
             "sessions/group/session-a/wire.jsonl": "",
         });
         let file = fixture.path("sessions/group/session-a/wire.jsonl");
-        let value = serde_json::json!({
+        let line = serde_json::from_value::<KimiWireLine>(serde_json::json!({
             "timestamp": 1770983427.123,
             "message": {
                 "type": "StatusUpdate",
@@ -295,9 +344,10 @@ mod tests {
                     }
                 }
             }
-        });
+        }))
+        .unwrap();
 
-        let entry = wire_line_to_entry(&value, &file, "kimi-k2", TimestampMs::UNIX_EPOCH).unwrap();
+        let entry = wire_line_to_entry(&line, &file, "kimi-k2", TimestampMs::UNIX_EPOCH).unwrap();
 
         assert_eq!(entry.output_tokens, 432);
         assert_eq!(entry.extra_total_tokens, 0);
