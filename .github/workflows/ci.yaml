@@ -21,16 +21,6 @@ jobs:
       - id: detect
         uses: ./.github/actions/detect-code-changes
 
-  check:
-    needs: changes
-    if: needs.changes.outputs.code-changed == 'true'
-    runs-on: blacksmith-32vcpu-ubuntu-2404
-
-    steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-      - uses: ./.github/actions/setup-nix-cache
-      - run: nix flake check --print-build-logs
-
   test:
     needs: changes
     if: needs.changes.outputs.code-changed == 'true'
@@ -46,10 +36,21 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - uses: ./.github/actions/setup-nix-cache
-      # Node tests need the JS toolchain; the Rust tests run via `nix build`. Install
-      # just pnpm/node/just instead of realizing the full dev shell, which drags
-      # in every linter, formatter, and the pre-commit hook closure and dominated
-      # this job's wall time.
+      # `nix flake check` and the Rust test build (`nix build .#ccusage-tests`)
+      # only need the checkout and Nix — neither touches the JS toolchain — so
+      # start both as background steps right away. They run concurrently while
+      # the JS-only setup (toolchain install + pnpm install) happens below, and
+      # the Node tests join them afterwards via `wait-all`.
+      # https://github.blog/changelog/2026-06-25-actions-steps-can-now-be-run-in-parallel/
+      - name: Run nix flake check
+        background: true
+        run: nix flake check --print-build-logs
+      - name: Run Rust tests
+        background: true
+        run: nix build .#ccusage-tests --print-build-logs
+      # Node tests need the JS toolchain. Install just pnpm/node/just instead of
+      # realizing the full dev shell, which drags in every linter, formatter, and
+      # the pre-commit hook closure and dominated this job's wall time.
       - name: Install JS tooling
         run: nix profile install --inputs-from . nixpkgs#pnpm nixpkgs#nodejs nixpkgs#just
       - run: pnpm install --frozen-lockfile
@@ -58,9 +59,9 @@ jobs:
           mkdir -p "$HOME/.claude/projects"
           mkdir -p "$HOME/.config/claude/projects"
       - name: Run Node tests
+        background: true
         run: just test-node
-      - name: Run Rust tests
-        run: nix build .#ccusage-tests --print-build-logs
+      - wait-all:
 
   build-native-packages:
     needs: changes
@@ -407,7 +408,6 @@ jobs:
   action-timeline:
     needs:
       - changes
-      - check
       - test
       - build-native-packages
       - npm-publish-dry-run-and-upload-pkg-pr-now
