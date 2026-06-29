@@ -36,32 +36,18 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - uses: ./.github/actions/setup-nix-cache
-      # `nix flake check` and the Rust test build (`nix build .#ccusage-tests`)
-      # only need the checkout and Nix — neither touches the JS toolchain — so
-      # start both as background steps right away. They run concurrently while
-      # the JS-only setup (toolchain install + pnpm install) happens below, and
-      # the Node tests join them afterwards via `wait-all`.
-      # https://github.blog/changelog/2026-06-25-actions-steps-can-now-be-run-in-parallel/
-      - name: Run nix flake check
-        background: true
-        run: nix flake check --print-build-logs
-      - name: Run Rust tests
-        background: true
-        run: nix build .#ccusage-tests --print-build-logs
-      # Node tests need the JS toolchain. Install just pnpm/node/just instead of
-      # realizing the full dev shell, which drags in every linter, formatter, and
-      # the pre-commit hook closure and dominated this job's wall time.
-      - name: Install JS tooling
-        run: nix profile install --inputs-from . nixpkgs#pnpm nixpkgs#nodejs nixpkgs#just
-      - run: pnpm install --frozen-lockfile
-      - name: Create default Claude directories for tests
-        run: |
-          mkdir -p "$HOME/.claude/projects"
-          mkdir -p "$HOME/.config/claude/projects"
-      - name: Run Node tests
-        background: true
-        run: just test-node
-      - wait-all:
+      - parallel:
+          - name: Run nix flake check
+            run: nix flake check --print-build-logs
+          - name: Run Rust tests
+            run: nix build .#ccusage-tests --print-build-logs
+          - name: JS test
+            run: |
+              nix profile install --inputs-from . nixpkgs#pnpm nixpkgs#nodejs nixpkgs#just
+              pnpm install --frozen-lockfile
+              mkdir -p "$HOME/.claude/projects"
+              mkdir -p "$HOME/.config/claude/projects"
+              just test-node
 
   build-native-packages:
     needs: changes
