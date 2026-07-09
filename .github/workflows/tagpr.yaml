@@ -1,13 +1,43 @@
-name: npm publish
+name: tagpr
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - main
+
+concurrency: tagpr
 
 jobs:
+  tagpr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: read
+    outputs:
+      tag: ${{ steps.tagpr.outputs.tag }}
+    steps:
+      # persist-credentials stays on (default) so tagpr can push the release PR and tag
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+      # postVersionCommand in .tagpr runs `nix develop`, so the Nix store cache must be ready
+      - uses: ./.github/actions/setup-nix-cache
+      - id: tagpr
+        uses: Songmu/tagpr@e84001bd5dac8defa0c75b3913937d284a3b3660 # v1.20.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # The release jobs below run in this workflow instead of a tag-triggered one
+  # because tags pushed with GITHUB_TOKEN do not trigger `on: push: tags`
+  # workflows. They run only when tagpr just tagged a release-PR merge, and
+  # check out that tag explicitly. To retry a failed release, re-run only the
+  # failed jobs: a full re-run finds no new tag and skips everything.
   build-native-packages:
     name: ${{ matrix.name }}
+    needs: tagpr
+    if: needs.tagpr.outputs.tag != ''
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
@@ -48,6 +78,7 @@ jobs:
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
+          ref: ${{ needs.tagpr.outputs.tag }}
           fetch-depth: 0
           persist-credentials: false
       - uses: ./.github/actions/build-linux-native-package
@@ -70,7 +101,9 @@ jobs:
 
   npm:
     needs:
+      - tagpr
       - build-native-packages
+    if: needs.tagpr.outputs.tag != ''
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
     permissions:
@@ -79,6 +112,7 @@ jobs:
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
+          ref: ${{ needs.tagpr.outputs.tag }}
           fetch-depth: 0
           persist-credentials: false
       - uses: ./.github/actions/setup-nix-cache
@@ -105,13 +139,18 @@ jobs:
 
   release:
     needs:
+      - tagpr
       - npm
+    if: needs.tagpr.outputs.tag != ''
     runs-on: blacksmith-32vcpu-ubuntu-2404-arm
     permissions:
       contents: write
     steps:
+      # changelogithub resolves the release tag with `git tag --points-at HEAD`,
+      # so checking out the tag is what makes it pick the right release
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
+          ref: ${{ needs.tagpr.outputs.tag }}
           fetch-depth: 0
           persist-credentials: false
       - uses: ./.github/actions/setup-nix-cache
