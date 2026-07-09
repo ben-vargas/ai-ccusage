@@ -183,7 +183,9 @@ mod tests {
 
     #[test]
     fn calculates_tiered_cost() {
-        assert!((tiered_cost(300_000, 3e-6, Some(6e-6)) - 1.2).abs() < f64::EPSILON);
+        assert!((tiered_cost(300_000, 3e-6, Some(6e-6), 200_000) - 1.2).abs() < f64::EPSILON);
+        // A larger threshold keeps more tokens at the base rate.
+        assert!((tiered_cost(300_000, 5e-6, Some(10e-6), 272_000) - 1.64).abs() < 1e-9);
     }
 
     #[test]
