@@ -9,7 +9,7 @@ concurrency: tagpr
 
 jobs:
   tagpr:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-32vcpu-ubuntu-2404
     timeout-minutes: 15
     permissions:
       contents: write
@@ -142,7 +142,7 @@ jobs:
       - tagpr
       - npm
     if: needs.tagpr.outputs.tag != ''
-    runs-on: blacksmith-32vcpu-ubuntu-2404-arm
+    runs-on: blacksmith-32vcpu-ubuntu-2404
     permissions:
       contents: write
     steps:
