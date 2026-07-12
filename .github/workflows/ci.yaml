@@ -179,6 +179,8 @@ jobs:
               mkdir -p "$HOME/.claude/projects"
               mkdir -p "$HOME/.config/claude/projects"
               just test-node
+          - name: Babashka performance harness test
+            run: apps/ccusage/scripts/compare-pr-performance_test.clj
 
   build-native-packages:
     needs: [changes, tirith-scan, preflight]
@@ -492,7 +494,7 @@ jobs:
 
       - name: Compare performance
         run: |
-          apps/ccusage/scripts/compare-pr-performance.nu \
+          apps/ccusage/scripts/compare-pr-performance.bb \
             --base-package-url "https://pkg.pr.new/${{ github.repository }}/ccusage@${{ github.event.pull_request.base.sha }}" \
             --base-sha "${{ github.event.pull_request.base.sha }}" \
             --head-dir . \
