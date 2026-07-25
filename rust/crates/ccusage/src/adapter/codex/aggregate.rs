@@ -16,7 +16,7 @@ use crate::{
     format_date_tz, parse_ts_timestamp, parse_tz, wants_json, week_start,
 };
 
-use super::{parser, paths};
+use super::{parser, paths, replay::CodexReplayPlan};
 
 type CodexEventKey = (
     u64,
@@ -37,6 +37,15 @@ struct CodexAggregation {
     seen: FxHashSet<CodexEventKey>,
 }
 
+/// Read-only inputs every file of one aggregation run shares.
+struct CodexAggregateRun<'a> {
+    sessions_dir: &'a Path,
+    files: &'a [PathBuf],
+    shared: &'a SharedArgs,
+    kind: AgentReportKind,
+    replay_plan: &'a CodexReplayPlan,
+}
+
 pub(crate) fn load_groups(
     shared: &SharedArgs,
     kind: AgentReportKind,
@@ -53,12 +62,28 @@ fn load_groups_from_sources(
     shared: &SharedArgs,
     kind: AgentReportKind,
 ) -> Result<BTreeMap<String, CodexGroup>> {
+    let file_groups = paths::collect_deduped_codex_usage_files(sources);
+    let replay_plan = CodexReplayPlan::new(
+        file_groups
+            .iter()
+            .map(|group| (group.dir.as_path(), group.files.as_slice())),
+        shared.single_thread,
+    );
     let mut groups = BTreeMap::new();
     let seen = create_dedupe_shards();
-    for group in paths::collect_deduped_codex_usage_files(sources) {
+    for group in &file_groups {
         merge_groups(
             &mut groups,
-            aggregate_files_with_dedupe(&group.dir, &group.files, shared, kind, &seen)?,
+            aggregate_files_with_dedupe(
+                &CodexAggregateRun {
+                    sessions_dir: &group.dir,
+                    files: &group.files,
+                    shared,
+                    kind,
+                    replay_plan: &replay_plan,
+                },
+                &seen,
+            )?,
         );
     }
     Ok(groups)
@@ -70,82 +95,67 @@ pub(super) fn load_groups_from_directory(
     kind: AgentReportKind,
 ) -> Result<BTreeMap<String, CodexGroup>> {
     let files = paths::collect_codex_usage_files(sessions_dir);
+    let replay_plan =
+        CodexReplayPlan::new([(sessions_dir, files.as_slice())], shared.single_thread);
+    let run = CodexAggregateRun {
+        sessions_dir,
+        files: &files,
+        shared,
+        kind,
+        replay_plan: &replay_plan,
+    };
     if shared.single_thread {
-        return aggregate_files_local(sessions_dir, &files, shared, kind);
+        return aggregate_files_local(&run);
     }
     let seen = create_dedupe_shards();
-    aggregate_files_parallel(sessions_dir, &files, shared, kind, &seen)
+    aggregate_files_parallel(&run, &seen)
 }
 
 fn aggregate_files_with_dedupe(
-    sessions_dir: &Path,
-    files: &[PathBuf],
-    shared: &SharedArgs,
-    kind: AgentReportKind,
+    run: &CodexAggregateRun<'_>,
     seen: &CodexDedupeShards,
 ) -> Result<BTreeMap<String, CodexGroup>> {
-    if shared.single_thread {
-        return aggregate_files(sessions_dir, files, shared, kind, seen);
+    if run.shared.single_thread {
+        return aggregate_files(run, seen);
     }
-    aggregate_files_parallel(sessions_dir, files, shared, kind, seen)
+    aggregate_files_parallel(run, seen)
 }
 
 fn aggregate_files(
-    sessions_dir: &Path,
-    files: &[PathBuf],
-    shared: &SharedArgs,
-    kind: AgentReportKind,
+    run: &CodexAggregateRun<'_>,
     seen: &CodexDedupeShards,
 ) -> Result<BTreeMap<String, CodexGroup>> {
     let mut groups = BTreeMap::new();
-    let timezone = parse_tz(shared.timezone.as_deref()).or_else(|| Some(JiffTimeZone::system()));
-    for file in files {
-        aggregate_file(
-            sessions_dir,
-            file,
-            kind,
-            timezone.as_ref(),
-            shared,
-            seen,
-            &mut groups,
-        )?;
+    let timezone =
+        parse_tz(run.shared.timezone.as_deref()).or_else(|| Some(JiffTimeZone::system()));
+    for file in run.files {
+        aggregate_file(run, file, timezone.as_ref(), seen, &mut groups)?;
     }
     Ok(groups)
 }
 
 fn aggregate_files_parallel(
-    sessions_dir: &Path,
-    files: &[PathBuf],
-    shared: &SharedArgs,
-    kind: AgentReportKind,
+    run: &CodexAggregateRun<'_>,
     seen: &CodexDedupeShards,
 ) -> Result<BTreeMap<String, CodexGroup>> {
     let worker_count = thread::available_parallelism()
         .map(usize::from)
         .unwrap_or(1)
-        .min(files.len());
+        .min(run.files.len());
     if worker_count <= 1 {
-        return aggregate_files(sessions_dir, files, shared, kind, seen);
+        return aggregate_files(run, seen);
     }
 
-    let chunks = crate::chunk_file_indexes_by_size(files, worker_count);
+    let chunks = crate::chunk_file_indexes_by_size(run.files, worker_count);
     thread::scope(|scope| {
         let mut handles = Vec::with_capacity(chunks.len());
         for chunk in chunks {
             handles.push(scope.spawn(move || {
                 let mut groups = BTreeMap::new();
-                let timezone =
-                    parse_tz(shared.timezone.as_deref()).or_else(|| Some(JiffTimeZone::system()));
+                let timezone = parse_tz(run.shared.timezone.as_deref())
+                    .or_else(|| Some(JiffTimeZone::system()));
                 for index in chunk {
-                    aggregate_file(
-                        sessions_dir,
-                        &files[index],
-                        kind,
-                        timezone.as_ref(),
-                        shared,
-                        seen,
-                        &mut groups,
-                    )?;
+                    aggregate_file(run, &run.files[index], timezone.as_ref(), seen, &mut groups)?;
                 }
                 Result::<BTreeMap<String, CodexGroup>>::Ok(groups)
             }));
@@ -165,63 +175,49 @@ fn aggregate_files_parallel(
 }
 
 fn aggregate_file(
-    sessions_dir: &Path,
+    run: &CodexAggregateRun<'_>,
     file: &Path,
-    kind: AgentReportKind,
     timezone: Option<&JiffTimeZone>,
-    shared: &SharedArgs,
     seen: &CodexDedupeShards,
     groups: &mut BTreeMap<String, CodexGroup>,
 ) -> Result<()> {
-    parser::visit_codex_session_file(sessions_dir, file, |event| {
-        add_event_to_groups(&event, kind, timezone, shared, seen, groups)
-    })
+    parser::visit_codex_session_file(
+        run.sessions_dir,
+        file,
+        run.replay_plan.replay_prefix(file),
+        |event| add_event_to_groups(&event, run.kind, timezone, run.shared, seen, groups),
+    )
 }
 
-fn aggregate_files_local(
-    sessions_dir: &Path,
-    files: &[PathBuf],
-    shared: &SharedArgs,
-    kind: AgentReportKind,
-) -> Result<BTreeMap<String, CodexGroup>> {
-    Ok(aggregate_files_local_with_seen(sessions_dir, files, shared, kind)?.groups)
+fn aggregate_files_local(run: &CodexAggregateRun<'_>) -> Result<BTreeMap<String, CodexGroup>> {
+    Ok(aggregate_files_local_with_seen(run)?.groups)
 }
 
-fn aggregate_files_local_with_seen(
-    sessions_dir: &Path,
-    files: &[PathBuf],
-    shared: &SharedArgs,
-    kind: AgentReportKind,
-) -> Result<CodexAggregation> {
+fn aggregate_files_local_with_seen(run: &CodexAggregateRun<'_>) -> Result<CodexAggregation> {
     let mut aggregation = CodexAggregation {
         groups: BTreeMap::new(),
         seen: FxHashSet::default(),
     };
-    let timezone = parse_tz(shared.timezone.as_deref()).or_else(|| Some(JiffTimeZone::system()));
-    for file in files {
-        aggregate_file_local(
-            sessions_dir,
-            file,
-            kind,
-            timezone.as_ref(),
-            shared,
-            &mut aggregation,
-        )?;
+    let timezone =
+        parse_tz(run.shared.timezone.as_deref()).or_else(|| Some(JiffTimeZone::system()));
+    for file in run.files {
+        aggregate_file_local(run, file, timezone.as_ref(), &mut aggregation)?;
     }
     Ok(aggregation)
 }
 
 fn aggregate_file_local(
-    sessions_dir: &Path,
+    run: &CodexAggregateRun<'_>,
     file: &Path,
-    kind: AgentReportKind,
     timezone: Option<&JiffTimeZone>,
-    shared: &SharedArgs,
     aggregation: &mut CodexAggregation,
 ) -> Result<()> {
-    parser::visit_codex_session_file(sessions_dir, file, |event| {
-        add_event_to_groups_local(&event, kind, timezone, shared, aggregation)
-    })
+    parser::visit_codex_session_file(
+        run.sessions_dir,
+        file,
+        run.replay_plan.replay_prefix(file),
+        |event| add_event_to_groups_local(&event, run.kind, timezone, run.shared, aggregation),
+    )
 }
 
 fn add_event_to_groups(
@@ -495,6 +491,70 @@ mod tests {
     use crate::{
         adapter::codex::paths::CodexUsageSource, model_aliases::set_model_aliases_for_tests,
     };
+
+    #[test]
+    fn skips_forked_parent_prefix_rewritten_across_seconds() {
+        fn token_count(timestamp: &str, input: u64, total_input: u64) -> String {
+            json!({
+                "timestamp": timestamp,
+                "type": "event_msg",
+                "payload": {
+                    "type": "token_count",
+                    "info": {
+                        "model": "gpt-5.2",
+                        "last_token_usage": {
+                            "input_tokens": input,
+                            "output_tokens": 1,
+                            "total_tokens": input + 1,
+                        },
+                        "total_token_usage": {
+                            "input_tokens": total_input,
+                            "output_tokens": 1,
+                            "total_tokens": total_input + 1,
+                        },
+                    },
+                },
+            })
+            .to_string()
+        }
+
+        let fixture = fs_fixture!({
+            "sessions/parent.jsonl": [
+                json!({
+                    "type": "session_meta",
+                    "payload": {"id": "parent"},
+                })
+                .to_string(),
+                token_count("2026-07-10T08:01:00.000Z", 100, 100),
+                token_count("2026-07-10T08:02:00.000Z", 200, 300),
+            ]
+            .join("\n"),
+            "sessions/child.jsonl": [
+                json!({
+                    "type": "session_meta",
+                    "payload": {"id": "child", "forked_from_id": "parent"},
+                })
+                .to_string(),
+                token_count("2026-07-10T09:00:00.100Z", 100, 100),
+                token_count("2026-07-10T09:00:01.100Z", 200, 300),
+                token_count("2026-07-10T09:00:02.100Z", 50, 350),
+            ]
+            .join("\n"),
+        });
+        let shared = SharedArgs {
+            timezone: Some("UTC".to_string()),
+            single_thread: true,
+            ..SharedArgs::default()
+        };
+
+        let groups =
+            load_groups_from_directory(&fixture.path("sessions"), &shared, AgentReportKind::Daily)
+                .unwrap();
+
+        let group = groups.get("2026-07-10").unwrap();
+        assert_eq!(group.input_tokens, 350);
+        assert_eq!(group.total_tokens, 353);
+    }
 
     #[test]
     fn dedupes_copied_token_usage_across_session_files() {
