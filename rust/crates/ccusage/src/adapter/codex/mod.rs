@@ -17,7 +17,7 @@ pub(crate) use report::{
     calculate_codex_model_cost, calculate_group_cost, codex_model_missing_pricing,
     non_cached_input_tokens,
 };
-pub(crate) use speed::resolve_codex_speed;
+pub(crate) use speed::{CodexSpeedPolicy, resolve_codex_speed};
 
 use report::{print_table_from_groups, report_from_groups};
 
@@ -55,7 +55,7 @@ pub(crate) fn report_json(
     speed: CodexSpeed,
 ) -> Result<Value> {
     let groups = aggregate_events(events, kind, timezone)?;
-    Ok(report_from_groups(&groups, kind, pricing, speed))
+    Ok(report_from_groups(&groups, kind, pricing, speed.into()))
 }
 
 #[cfg(test)]
@@ -65,7 +65,7 @@ mod tests {
     use super::aggregate::load_groups_from_directory;
     use super::*;
     use crate::cli::SharedArgs;
-    use crate::{CodexModelUsage, CodexTokenUsageEvent};
+    use crate::{CodexModelUsage, CodexServiceTier, CodexTokenUsageEvent, CodexUsageBucket};
     use ccusage_test_support::fs_fixture;
 
     #[test]
@@ -134,6 +134,7 @@ mod tests {
                 reasoning_output_tokens: 0,
                 total_tokens: 105,
                 is_fallback_model: false,
+                service_tier: None,
             }],
             AgentReportKind::Daily,
             Some("UTC"),
@@ -177,6 +178,7 @@ mod tests {
                     reasoning_output_tokens: 0,
                     total_tokens: 105,
                     is_fallback_model: false,
+                    service_tier: None,
                 },
                 CodexTokenUsageEvent {
                     session_id: "session-1".to_string(),
@@ -188,6 +190,7 @@ mod tests {
                     reasoning_output_tokens: 0,
                     total_tokens: 53,
                     is_fallback_model: false,
+                    service_tier: None,
                 },
             ],
             AgentReportKind::Daily,
@@ -268,6 +271,54 @@ mod tests {
             + 40_000.0 * 1e-6
             + 800.0 * 45e-6;
         assert!((cost - expected).abs() < 1e-9);
+    }
+
+    #[test]
+    fn prices_mixed_speed_and_long_context_buckets_independently() {
+        let mut pricing = PricingMap::default();
+        pricing.load_json(
+            r#"{
+                "gpt-long": {
+                    "input_cost_per_token": 0.000005,
+                    "output_cost_per_token": 0.00003,
+                    "cache_read_input_token_cost": 0.0000005,
+                    "input_cost_per_token_above_200k_tokens": 0.00001,
+                    "output_cost_per_token_above_200k_tokens": 0.000045,
+                    "cache_read_input_token_cost_above_200k_tokens": 0.000001,
+                    "provider_specific_entry": { "fast": 2 }
+                }
+            }"#,
+        );
+        let usage = CodexModelUsage {
+            input_tokens: 350_000,
+            cached_input_tokens: 50_000,
+            output_tokens: 1_000,
+            total_tokens: 351_000,
+            long_context_input_tokens: 300_000,
+            long_context_cached_input_tokens: 40_000,
+            long_context_output_tokens: 800,
+            recorded_standard_usage: CodexUsageBucket {
+                input_tokens: 50_000,
+                cached_input_tokens: 10_000,
+                output_tokens: 200,
+                ..CodexUsageBucket::default()
+            },
+            recorded_fast_usage: CodexUsageBucket {
+                input_tokens: 300_000,
+                cached_input_tokens: 40_000,
+                output_tokens: 800,
+                long_context_input_tokens: 300_000,
+                long_context_cached_input_tokens: 40_000,
+                long_context_output_tokens: 800,
+            },
+            ..CodexModelUsage::default()
+        };
+
+        let cost = calculate_codex_model_cost("gpt-long", &usage, &pricing, CodexSpeed::Auto);
+
+        let standard_cost = 40_000.0 * 5e-6 + 10_000.0 * 0.5e-6 + 200.0 * 30e-6;
+        let fast_base_cost = 260_000.0 * 10e-6 + 40_000.0 * 1e-6 + 800.0 * 45e-6;
+        assert!((cost - (standard_cost + fast_base_cost * 2.0)).abs() < 1e-9);
     }
 
     #[test]
@@ -355,6 +406,134 @@ mod tests {
     }
 
     #[test]
+    fn uses_recorded_service_tiers_in_auto_mode() {
+        let mut pricing = PricingMap::default();
+        pricing.load_json(
+            r#"{
+                "gpt-test": {
+                    "input_cost_per_token": 0.000001,
+                    "output_cost_per_token": 0.000002,
+                    "provider_specific_entry": { "fast": 2 }
+                }
+            }"#,
+        );
+        let usage = CodexModelUsage {
+            input_tokens: 20,
+            total_tokens: 20,
+            recorded_standard_usage: CodexUsageBucket {
+                input_tokens: 10,
+                ..CodexUsageBucket::default()
+            },
+            recorded_fast_usage: CodexUsageBucket {
+                input_tokens: 10,
+                ..CodexUsageBucket::default()
+            },
+            ..CodexModelUsage::default()
+        };
+
+        let auto = calculate_codex_model_cost("gpt-test", &usage, &pricing, CodexSpeed::Auto);
+        let forced_standard =
+            calculate_codex_model_cost("gpt-test", &usage, &pricing, CodexSpeed::Standard);
+        let forced_fast =
+            calculate_codex_model_cost("gpt-test", &usage, &pricing, CodexSpeed::Fast);
+
+        assert!((auto - 30e-6).abs() < f64::EPSILON);
+        assert!((forced_standard - 20e-6).abs() < f64::EPSILON);
+        assert!((forced_fast - 40e-6).abs() < f64::EPSILON);
+    }
+
+    #[test]
+    fn config_fallback_applies_only_to_unclassified_usage() {
+        let mut pricing = PricingMap::default();
+        pricing.load_json(
+            r#"{
+                "gpt-test": {
+                    "input_cost_per_token": 0.000001,
+                    "output_cost_per_token": 0.000002,
+                    "provider_specific_entry": { "fast": 2 }
+                }
+            }"#,
+        );
+        let usage = CodexModelUsage {
+            input_tokens: 30,
+            total_tokens: 30,
+            recorded_standard_usage: CodexUsageBucket {
+                input_tokens: 10,
+                ..CodexUsageBucket::default()
+            },
+            recorded_fast_usage: CodexUsageBucket {
+                input_tokens: 10,
+                ..CodexUsageBucket::default()
+            },
+            ..CodexModelUsage::default()
+        };
+        let speed = CodexSpeedPolicy::Auto(CodexServiceTier::Fast);
+
+        let cost = calculate_codex_model_cost("gpt-test", &usage, &pricing, speed);
+
+        assert!((cost - 50e-6).abs() < f64::EPSILON);
+    }
+
+    #[test]
+    fn standard_config_fallback_leaves_unclassified_usage_at_standard_rate() {
+        let mut pricing = PricingMap::default();
+        pricing.load_json(
+            r#"{
+                "gpt-test": {
+                    "input_cost_per_token": 0.000001,
+                    "output_cost_per_token": 0.000002,
+                    "provider_specific_entry": { "fast": 2 }
+                }
+            }"#,
+        );
+        let usage = CodexModelUsage {
+            input_tokens: 30,
+            total_tokens: 30,
+            recorded_standard_usage: CodexUsageBucket {
+                input_tokens: 10,
+                ..CodexUsageBucket::default()
+            },
+            recorded_fast_usage: CodexUsageBucket {
+                input_tokens: 10,
+                ..CodexUsageBucket::default()
+            },
+            ..CodexModelUsage::default()
+        };
+        let speed = CodexSpeedPolicy::Auto(CodexServiceTier::Standard);
+
+        let cost = calculate_codex_model_cost("gpt-test", &usage, &pricing, speed);
+
+        assert!((cost - 40e-6).abs() < f64::EPSILON);
+    }
+
+    #[test]
+    fn does_not_assume_fast_pricing_without_a_model_multiplier() {
+        let mut pricing = PricingMap::default();
+        pricing.load_json(
+            r#"{
+                "gpt-test": {
+                    "input_cost_per_token": 0.000001,
+                    "output_cost_per_token": 0.000002
+                }
+            }"#,
+        );
+        let usage = CodexModelUsage {
+            input_tokens: 100,
+            cached_input_tokens: 40,
+            output_tokens: 5,
+            reasoning_output_tokens: 0,
+            total_tokens: 105,
+            ..CodexModelUsage::default()
+        };
+
+        let standard =
+            calculate_codex_model_cost("gpt-test", &usage, &pricing, CodexSpeed::Standard);
+        let fast = calculate_codex_model_cost("gpt-test", &usage, &pricing, CodexSpeed::Fast);
+
+        assert!((fast - standard).abs() < f64::EPSILON);
+    }
+
+    #[test]
     fn identifies_codex_models_missing_pricing() {
         let mut pricing = PricingMap::default();
         pricing.load_json(
@@ -419,6 +598,7 @@ mod tests {
                 reasoning_output_tokens: 2,
                 total_tokens: 147,
                 is_fallback_model: false,
+                service_tier: None,
             },
             CodexTokenUsageEvent {
                 session_id: "/workspace/api/session-a.jsonl".to_string(),
@@ -430,6 +610,7 @@ mod tests {
                 reasoning_output_tokens: 0,
                 total_tokens: 80,
                 is_fallback_model: true,
+                service_tier: None,
             },
             CodexTokenUsageEvent {
                 session_id: "/workspace/web/session-b.jsonl".to_string(),
@@ -441,6 +622,7 @@ mod tests {
                 reasoning_output_tokens: 0,
                 total_tokens: 12,
                 is_fallback_model: false,
+                service_tier: None,
             },
             CodexTokenUsageEvent {
                 session_id: "ignored-missing-model".to_string(),
@@ -452,6 +634,7 @@ mod tests {
                 reasoning_output_tokens: 0,
                 total_tokens: 1_998,
                 is_fallback_model: false,
+                service_tier: None,
             },
         ];
 
