@@ -4,7 +4,7 @@ use std::{
     thread,
 };
 
-use ccusage_core::{LoadedEntry, cli::SharedArgs};
+use ccusage_core::{LoadedEntry, cli::SharedArgs, date_within_range};
 
 pub mod jsonl;
 pub mod report;
@@ -38,9 +38,11 @@ pub fn filter_loaded_entries_by_date(entries: &mut Vec<LoadedEntry>, shared: &Sh
         return;
     }
     entries.retain(|entry| {
-        let date = entry.date.replace('-', "");
-        shared.since.as_ref().is_none_or(|since| &date >= since)
-            && shared.until.as_ref().is_none_or(|until| &date <= until)
+        date_within_range(
+            &entry.date,
+            shared.since.as_deref(),
+            shared.until.as_deref(),
+        )
     });
 }
 
