@@ -1,6 +1,8 @@
 #!/usr/bin/env nix
 #! nix shell --inputs-from ../.. nixpkgs#nushell nixpkgs#git --command nu
 
+use ./pricing-lock.nu report
+
 # Bump the pinned LiteLLM input and report whether it moved the pricing JSON that
 # the build embeds, so the workflow can skip validating lock-only churn.
 def main [] {
@@ -16,7 +18,10 @@ def main [] {
         }
     }
 
-    $"changed=($changed)(char nl)" | save --append $env.GITHUB_OUTPUT
+    report {
+        changed: $changed
+        paths: [flake.lock]
+    }
 }
 
 # Fetch model_prices_and_context_window.json at the revision flake.lock pins.
