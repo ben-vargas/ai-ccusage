@@ -2854,6 +2854,16 @@
 			"context": 1048576
 		}
 	},
+	"kimi-k3-eco": {
+		"cost": {
+			"cache_read": 0.1,
+			"input": 1,
+			"output": 4
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"kimi-thinking-preview": {
 		"cost": {
 			"input": 31.46,
