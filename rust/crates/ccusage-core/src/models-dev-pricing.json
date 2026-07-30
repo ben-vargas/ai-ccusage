@@ -619,6 +619,17 @@
 			"context": 200000
 		}
 	},
+	"anthropic/claude-3-7-sonnet-20250219": {
+		"cost": {
+			"cache_read": 0.3,
+			"cache_write": 3.75,
+			"input": 3,
+			"output": 15
+		},
+		"limit": {
+			"context": 200000
+		}
+	},
 	"anthropic/claude-3-haiku": {
 		"cost": {
 			"cache_read": 0.03,
@@ -2921,6 +2932,16 @@
 		},
 		"limit": {
 			"context": 262000
+		}
+	},
+	"moonshot/kimi-k2.7-code-highspeed": {
+		"cost": {
+			"cache_read": 0.38,
+			"input": 1.9,
+			"output": 8
+		},
+		"limit": {
+			"context": 262144
 		}
 	},
 	"moonshot/kimi-k3": {
