@@ -2893,6 +2893,26 @@
 			"context": 262144
 		}
 	},
+	"moonshot-ai/kimi-k2.7-code": {
+		"cost": {
+			"cache_read": 0.19,
+			"input": 0.95,
+			"output": 4
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
+	"moonshot-ai/kimi-k3": {
+		"cost": {
+			"cache_read": 0.3,
+			"input": 3,
+			"output": 15
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"moonshot-kimi-k2-instruct": {
 		"cost": {
 			"input": 0.574,
