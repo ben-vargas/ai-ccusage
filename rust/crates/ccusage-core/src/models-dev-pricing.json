@@ -3451,6 +3451,16 @@
 			"context": 262144
 		}
 	},
+	"umans-kimi-k3": {
+		"cost": {
+			"cache_read": 0.3,
+			"input": 3,
+			"output": 15
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"us.anthropic.claude-fable-5": {
 		"cost": {
 			"cache_read": 1,
