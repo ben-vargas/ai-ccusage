@@ -3168,7 +3168,7 @@
 	},
 	"moonshotai/Kimi-K2.6-TEE": {
 		"cost": {
-			"cache_read": 0.33,
+			"cache_read": 0.06599999999999999,
 			"input": 0.66,
 			"output": 3.5
 		},
@@ -3199,7 +3199,7 @@
 	},
 	"moonshotai/Kimi-K3-TEE": {
 		"cost": {
-			"cache_read": 1.5,
+			"cache_read": 0.29999999999999993,
 			"input": 3,
 			"output": 15
 		},
