@@ -905,17 +905,6 @@
 			"context": 1000000
 		}
 	},
-	"anthropic/claude-opus-4.6-fast": {
-		"cost": {
-			"cache_read": 3,
-			"cache_write": 37.5,
-			"input": 30,
-			"output": 150
-		},
-		"limit": {
-			"context": 1000000
-		}
-	},
 	"anthropic/claude-opus-4.6:thinking": {
 		"cost": {
 			"input": 4.998,
@@ -3142,11 +3131,11 @@
 	"moonshotai/kimi-k2-0905": {
 		"cost": {
 			"cache_read": 0.15,
-			"input": 0.4,
-			"output": 2
+			"input": 0.6,
+			"output": 2.5
 		},
 		"limit": {
-			"context": 131072
+			"context": 262000
 		}
 	},
 	"moonshotai/kimi-k2-instruct": {
@@ -3169,12 +3158,12 @@
 	},
 	"moonshotai/kimi-k2-thinking": {
 		"cost": {
-			"cache_read": 0.2,
-			"input": 0.47,
-			"output": 2
+			"cache_read": 0.15,
+			"input": 0.6,
+			"output": 2.5
 		},
 		"limit": {
-			"context": 131072
+			"context": 262144
 		}
 	},
 	"moonshotai/kimi-k2-thinking-maas": {
@@ -3337,6 +3326,17 @@
 		}
 	},
 	"stealth/claude-opus-4.7": {
+		"cost": {
+			"cache_read": 0.4,
+			"cache_write": 5,
+			"input": 4,
+			"output": 20
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
+	"stealth/claude-opus-4.8": {
 		"cost": {
 			"cache_read": 0.4,
 			"cache_write": 5,
@@ -3544,10 +3544,10 @@
 	},
 	"~anthropic/claude-sonnet-latest": {
 		"cost": {
-			"cache_read": 0.3,
-			"cache_write": 3.75,
-			"input": 3,
-			"output": 15
+			"cache_read": 0.2,
+			"cache_write": 2.5,
+			"input": 2,
+			"output": 10
 		},
 		"limit": {
 			"context": 1000000
@@ -3555,12 +3555,12 @@
 	},
 	"~moonshotai/kimi-latest": {
 		"cost": {
-			"cache_read": 0.14,
-			"input": 0.74,
-			"output": 3.49
+			"cache_read": 0.29,
+			"input": 2.9,
+			"output": 14
 		},
 		"limit": {
-			"context": 262142
+			"context": 1048576
 		}
 	}
 }
