@@ -3438,7 +3438,7 @@
 		"cost": {
 			"cache_read": 0.15,
 			"cache_write": 0,
-			"input": 0.73,
+			"input": 0.7,
 			"output": 3.5
 		},
 		"limit": {
