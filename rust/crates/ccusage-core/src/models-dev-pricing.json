@@ -1422,8 +1422,10 @@
 	},
 	"claude-4-5-sonnet": {
 		"cost": {
-			"input": 3.259,
-			"output": 16.296
+			"cache_read": 0.326,
+			"cache_write": 4.078,
+			"input": 2.989,
+			"output": 14.945
 		},
 		"limit": {
 			"context": 200000
@@ -1431,8 +1433,10 @@
 	},
 	"claude-4-6-sonnet": {
 		"cost": {
-			"input": 3.59,
-			"output": 17.92
+			"cache_read": 0.32,
+			"cache_write": 3.999,
+			"input": 3.196,
+			"output": 15.94
 		},
 		"limit": {
 			"context": 1000000
@@ -2026,8 +2030,10 @@
 	},
 	"claude-opus4-5": {
 		"cost": {
-			"input": 5.98,
-			"output": 29.89
+			"cache_read": 0.531,
+			"cache_write": 6.645,
+			"input": 5.313,
+			"output": 26.568
 		},
 		"limit": {
 			"context": 200000
@@ -2035,8 +2041,10 @@
 	},
 	"claude-opus4-6": {
 		"cost": {
-			"input": 5.98,
-			"output": 29.89
+			"cache_read": 0.531,
+			"cache_write": 6.645,
+			"input": 5.313,
+			"output": 26.561
 		},
 		"limit": {
 			"context": 1000000
@@ -2044,10 +2052,10 @@
 	},
 	"claude-opus4-7": {
 		"cost": {
-			"cache_read": 0.56,
-			"cache_write": 6.99,
-			"input": 5.6,
-			"output": 27.99
+			"cache_read": 0.544,
+			"cache_write": 6.797,
+			"input": 5.437,
+			"output": 27.186
 		},
 		"limit": {
 			"context": 1000000
@@ -2055,10 +2063,10 @@
 	},
 	"claude-opus4-8": {
 		"cost": {
-			"cache_read": 0.563,
-			"cache_write": 7.049,
-			"input": 5.64,
-			"output": 28.198
+			"cache_read": 0.544,
+			"cache_write": 6.797,
+			"input": 5.437,
+			"output": 27.186
 		},
 		"limit": {
 			"context": 1000000
@@ -2066,13 +2074,13 @@
 	},
 	"claude-sonnet-4": {
 		"cost": {
-			"cache_read": 0.3,
-			"cache_write": 3.75,
-			"input": 3,
-			"output": 15
+			"cache_read": 0.29,
+			"cache_write": 3.624,
+			"input": 2.898,
+			"output": 14.493
 		},
 		"limit": {
-			"context": 216000
+			"context": 200000
 		}
 	},
 	"claude-sonnet-4-20250514": {
@@ -2861,15 +2869,6 @@
 		},
 		"limit": {
 			"context": 256000
-		}
-	},
-	"kimi-k2-instruct": {
-		"cost": {
-			"input": 0.551,
-			"output": 2.646
-		},
-		"limit": {
-			"context": 131000
 		}
 	},
 	"kimi-k2-instruct-fast": {
