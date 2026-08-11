@@ -3449,10 +3449,10 @@
 	},
 	"moonshotai/kimi-k2.7-code": {
 		"cost": {
-			"cache_read": 0.15,
+			"cache_read": 0.14,
 			"cache_write": 0,
-			"input": 0.7,
-			"output": 3.5
+			"input": 0.69,
+			"output": 3.49
 		},
 		"limit": {
 			"context": 262144
