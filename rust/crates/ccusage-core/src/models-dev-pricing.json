@@ -1542,6 +1542,17 @@
 			"context": 200000
 		}
 	},
+	"claude-mythos-5": {
+		"cost": {
+			"cache_read": 1,
+			"cache_write": 12.5,
+			"input": 10,
+			"output": 50
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"claude-opus-4": {
 		"cost": {
 			"cache_read": 1.5,
@@ -3067,6 +3078,16 @@
 		},
 		"limit": {
 			"context": 1048576
+		}
+	},
+	"kimi-latest": {
+		"cost": {
+			"cache_read": 0.1733,
+			"input": 1.791,
+			"output": 8.9436
+		},
+		"limit": {
+			"context": 256000
 		}
 	},
 	"kimi/kimi-k2.5": {
