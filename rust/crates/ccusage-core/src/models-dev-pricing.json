@@ -3268,19 +3268,8 @@
 		"cost": {
 			"cache_read": 0.2,
 			"cache_write": 0,
-			"input": 0.66,
-			"output": 3.5
-		},
-		"limit": {
-			"context": 262144
-		}
-	},
-	"moonshotai/Kimi-K2.6-Fast": {
-		"cost": {
-			"cache_read": 0.4,
-			"cache_write": 0,
-			"input": 1.32,
-			"output": 7
+			"input": 0.6,
+			"output": 3.41
 		},
 		"limit": {
 			"context": 262144
@@ -3298,10 +3287,10 @@
 	},
 	"moonshotai/Kimi-K2.7-Code": {
 		"cost": {
-			"cache_read": 0.2,
+			"cache_read": 0.15,
 			"cache_write": 0,
-			"input": 0.75,
-			"output": 3.5
+			"input": 0.67,
+			"output": 3.4
 		},
 		"limit": {
 			"context": 262144
