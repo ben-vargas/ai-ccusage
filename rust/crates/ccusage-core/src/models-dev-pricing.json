@@ -150,6 +150,24 @@
 			"context": 1048576
 		}
 	},
+	"amazon/moonshot.kimi-k2-thinking": {
+		"cost": {
+			"input": 0.6,
+			"output": 2.5
+		},
+		"limit": {
+			"context": 128000
+		}
+	},
+	"amazon/moonshotai.kimi-k2.5": {
+		"cost": {
+			"input": 0.6,
+			"output": 3
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"anthropic--claude-3-haiku": {
 		"cost": {
 			"cache_read": 0.03,
@@ -2410,6 +2428,16 @@
 		},
 		"limit": {
 			"context": 128000
+		}
+	},
+	"deepinfra/moonshotai/Kimi-K2.5": {
+		"cost": {
+			"cache_read": 0.07,
+			"input": 0.45,
+			"output": 2.25
+		},
+		"limit": {
+			"context": 262144
 		}
 	},
 	"eu.anthropic.claude-fable-5": {
