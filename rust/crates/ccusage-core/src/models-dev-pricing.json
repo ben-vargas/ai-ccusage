@@ -5296,7 +5296,7 @@
 	"claude-opus-4-6@eu": {
 		"cost": {
 			"cache_read": 0.55,
-			"cache_write": 6.88,
+			"cache_write": 6.875,
 			"input": 5.5,
 			"output": 27.5
 		},
@@ -9246,16 +9246,16 @@
 	},
 	"gemini-3.1-flash-lite@eu": {
 		"cost": {
-			"cache_read": 0.025,
-			"cache_write": 0.08333,
-			"input": 0.25,
-			"output": 1.5,
+			"cache_read": 0.0275,
+			"cache_write": 0.091663,
+			"input": 0.275,
+			"output": 1.65,
 			"tiers": [
 				{
-					"cache_read": 0.025,
-					"cache_write": 0.08333,
-					"input": 0.5,
-					"output": 2.25,
+					"cache_read": 0.0275,
+					"cache_write": 0.091663,
+					"input": 0.55,
+					"output": 2.475,
 					"tier": {
 						"size": 200000,
 						"type": "context"
@@ -9334,10 +9334,10 @@
 	},
 	"gemini-3.5-flash@eu": {
 		"cost": {
-			"cache_read": 0.15,
-			"cache_write": 1.583,
-			"input": 1.5,
-			"output": 9
+			"cache_read": 0.165,
+			"cache_write": 1.7413,
+			"input": 1.65,
+			"output": 9.9
 		},
 		"exactOnly": true,
 		"limit": {
@@ -9366,9 +9366,9 @@
 	},
 	"gemini-3.7-flash@eu": {
 		"cost": {
-			"cache_read": 0.075,
-			"input": 0.75,
-			"output": 3.75
+			"cache_read": 0.0825,
+			"input": 0.825,
+			"output": 4.125
 		},
 		"exactOnly": true,
 		"limit": {
@@ -19394,14 +19394,12 @@
 	},
 	"qwen/qwen-plus-2025-07-28:thinking": {
 		"cost": {
-			"cache_write": 0.5,
-			"input": 0.4,
-			"output": 1.2,
+			"input": 0.26,
+			"output": 0.78,
 			"tiers": [
 				{
-					"cache_write": 1.5,
-					"input": 1.2,
-					"output": 3.6,
+					"input": 0.78,
+					"output": 2.34,
 					"tier": {
 						"size": 256000,
 						"type": "context"
@@ -24365,6 +24363,26 @@
 			"cache_read": 0.078,
 			"input": 0.42,
 			"output": 1.32
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
+	"zai-org/glm-5.3": {
+		"cost": {
+			"cache_read": 0.26,
+			"input": 1.4,
+			"output": 4.4
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
+	"zai-org/glm-5.3:thinking": {
+		"cost": {
+			"cache_read": 0.26,
+			"input": 1.4,
+			"output": 4.4
 		},
 		"limit": {
 			"context": 1048576
