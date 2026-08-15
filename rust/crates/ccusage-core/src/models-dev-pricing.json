@@ -7986,9 +7986,9 @@
 	},
 	"deepseek/deepseek-v4-flash:thinking": {
 		"cost": {
-			"cache_read": 0.014,
-			"input": 0.07,
-			"output": 0.14
+			"cache_read": 0.0028,
+			"input": 0.14,
+			"output": 0.28
 		},
 		"limit": {
 			"context": 1048576
@@ -16776,12 +16776,12 @@
 	},
 	"nvidia/nemotron-3.5-lightning": {
 		"cost": {
-			"cache_read": 0.01,
-			"input": 0.05,
+			"cache_read": 0.04,
+			"input": 0.08,
 			"output": 0.2
 		},
 		"limit": {
-			"context": 1000000
+			"context": 262144
 		}
 	},
 	"nvidia/nemotron-3.5-lightning:thinking": {
@@ -19983,6 +19983,15 @@
 		},
 		"limit": {
 			"context": 1000000
+		}
+	},
+	"qwen/qwen3.8-27b": {
+		"cost": {
+			"input": 0.45,
+			"output": 3.2
+		},
+		"limit": {
+			"context": 262144
 		}
 	},
 	"qwen/qwen3.8-max": {
@@ -23473,7 +23482,7 @@
 	},
 	"xiaomi/mimo-v2.5": {
 		"cost": {
-			"cache_read": 0.0028,
+			"cache_read": 0.003,
 			"input": 0.14,
 			"output": 0.28,
 			"tiers": [
@@ -23494,9 +23503,9 @@
 	},
 	"xiaomi/mimo-v2.5-pro": {
 		"cost": {
-			"cache_read": 0.08,
-			"input": 0.4,
-			"output": 1.5,
+			"cache_read": 0.004,
+			"input": 0.435,
+			"output": 0.87,
 			"tiers": [
 				{
 					"cache_read": 0.4,
@@ -24607,12 +24616,12 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.01596,
-			"input": 0.0798,
-			"output": 0.1596
+			"cache_read": 0.013692,
+			"input": 0.06846,
+			"output": 0.13692
 		},
 		"limit": {
-			"context": 1048576
+			"context": 1024000
 		}
 	},
 	"~google/gemini-flash-latest": {
