@@ -1573,6 +1573,16 @@
 			"context": 1048576
 		}
 	},
+	"TEE/deepseek-v4-pro-0813": {
+		"cost": {
+			"cache_read": 0.132,
+			"input": 1.32,
+			"output": 3.96
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"TEE/gemma-3-27b-it": {
 		"cost": {
 			"cache_read": 0.1,
@@ -7945,26 +7955,6 @@
 			"context": 1048576
 		}
 	},
-	"deepseek/deepseek-v4-flash-0731-cheaper": {
-		"cost": {
-			"cache_read": 0.014,
-			"input": 0.14,
-			"output": 0.28
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
-	"deepseek/deepseek-v4-flash-0731-cheaper:thinking": {
-		"cost": {
-			"cache_read": 0.014,
-			"input": 0.14,
-			"output": 0.28
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
 	"deepseek/deepseek-v4-flash-0731:thinking": {
 		"cost": {
 			"cache_read": 0.014,
@@ -8031,26 +8021,6 @@
 			"cache_read": 0.04,
 			"input": 1.1,
 			"output": 2.5
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
-	"deepseek/deepseek-v4-pro-cheaper": {
-		"cost": {
-			"cache_read": 0.003625,
-			"input": 0.435,
-			"output": 0.87
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
-	"deepseek/deepseek-v4-pro-cheaper:thinking": {
-		"cost": {
-			"cache_read": 0.003625,
-			"input": 0.435,
-			"output": 0.87
 		},
 		"limit": {
 			"context": 1048576
@@ -20917,6 +20887,16 @@
 			"cache_read": 0.625,
 			"input": 2.5,
 			"output": 6
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
+	"qwen3.8-27b:thinking": {
+		"cost": {
+			"cache_read": 0.2,
+			"input": 0.4,
+			"output": 3
 		},
 		"limit": {
 			"context": 262144
