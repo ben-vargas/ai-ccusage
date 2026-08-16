@@ -1402,6 +1402,16 @@
 			"context": 256000
 		}
 	},
+	"Qwen/Qwen3.8-27B-TEE": {
+		"cost": {
+			"cache_read": 0.039999999999999994,
+			"input": 0.4,
+			"output": 3
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"Qwen3.5-27B-BlueStar-v3-Derestricted": {
 		"cost": {
 			"cache_read": 0.153,
@@ -8801,7 +8811,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 786432
+			"context": 1000000
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
