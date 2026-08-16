@@ -8801,7 +8801,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 1000000
+			"context": 786432
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -8863,6 +8863,50 @@
 		}
 	},
 	"fugu-ultra-20260615": {
+		"cost": {
+			"cache_read": 0.5,
+			"input": 5,
+			"output": 30,
+			"tiers": [
+				{
+					"cache_read": 1,
+					"input": 10,
+					"output": 45,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 1000000
+		}
+	},
+	"fugu-ultra-v1-0": {
+		"cost": {
+			"cache_read": 1.5,
+			"input": 7.5,
+			"output": 45,
+			"tiers": [
+				{
+					"cache_read": 3,
+					"input": 15,
+					"output": 67.5,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 1000000
+		}
+	},
+	"fugu-ultra-v1-1": {
 		"cost": {
 			"cache_read": 0.5,
 			"input": 5,
@@ -16134,6 +16178,16 @@
 			"context": 512
 		}
 	},
+	"muse-glimmer-30b": {
+		"cost": {
+			"cache_read": 0.05,
+			"input": 0.2,
+			"output": 0.8
+		},
+		"limit": {
+			"context": 131072
+		}
+	},
 	"muse-spark-1.1": {
 		"cost": {
 			"cache_read": 0.15,
@@ -20267,6 +20321,16 @@
 			"context": 1000000
 		}
 	},
+	"qwen3-8-27b": {
+		"cost": {
+			"cache_read": 0.08,
+			"input": 0.17,
+			"output": 0.5
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"qwen3-8b": {
 		"cost": {
 			"input": 0.18,
@@ -21200,11 +21264,74 @@
 			"context": 256000
 		}
 	},
+	"seed-2-0-lite": {
+		"cost": {
+			"cache_read": 0.31,
+			"input": 0.31,
+			"output": 2.5,
+			"tiers": [
+				{
+					"cache_read": 0.62,
+					"input": 0.62,
+					"output": 5,
+					"tier": {
+						"size": 128000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 256000
+		}
+	},
+	"seed-2-0-mini": {
+		"cost": {
+			"cache_read": 0.12,
+			"input": 0.12,
+			"output": 0.5,
+			"tiers": [
+				{
+					"cache_read": 0.24,
+					"input": 0.24,
+					"output": 1,
+					"tier": {
+						"size": 128000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 256000
+		}
+	},
+	"seed-2-0-pro": {
+		"cost": {
+			"cache_read": 0.63,
+			"input": 0.63,
+			"output": 3.79,
+			"tiers": [
+				{
+					"cache_read": 1.26,
+					"input": 1.26,
+					"output": 7.58,
+					"tier": {
+						"size": 128000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 256000
+		}
+	},
 	"seed-2-1-turbo": {
 		"cost": {
-			"cache_read": 0.125,
-			"input": 0.625,
-			"output": 3.125
+			"cache_read": 0.63,
+			"input": 0.63,
+			"output": 3.13
 		},
 		"limit": {
 			"context": 256000
