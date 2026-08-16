@@ -2592,7 +2592,7 @@
 	},
 	"alibaba/qwen3.8-2.4t-a95b": {
 		"cost": {
-			"cache_read": 0.25,
+			"cache_read": 0.2,
 			"input": 2,
 			"output": 6
 		},
@@ -8821,7 +8821,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 1000000
+			"context": 786432
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -9671,11 +9671,12 @@
 	},
 	"gemma-4": {
 		"cost": {
-			"input": 5,
-			"output": 10
+			"cache_read": 0.5,
+			"input": 2,
+			"output": 5
 		},
 		"limit": {
-			"context": 32768
+			"context": 131072
 		}
 	},
 	"gemma-4-12b-it": {
@@ -13835,6 +13836,15 @@
 			"context": 250000
 		}
 	},
+	"magibu-11b-v8": {
+		"cost": {
+			"input": 0.1,
+			"output": 0.5
+		},
+		"limit": {
+			"context": 8192
+		}
+	},
 	"magistral-medium-latest": {
 		"cost": {
 			"input": 2,
@@ -14457,6 +14467,24 @@
 		"exactOnly": true,
 		"limit": {
 			"context": 1048576
+		}
+	},
+	"mimo/mimo-v2.5": {
+		"cost": {
+			"input": 0.14,
+			"output": 0.28
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
+	"mimo/mimo-v2.5-pro": {
+		"cost": {
+			"input": 0.435,
+			"output": 0.87
+		},
+		"limit": {
+			"context": 1000000
 		}
 	},
 	"minicpm-v-4.5": {
@@ -15469,6 +15497,16 @@
 			"context": 128000
 		}
 	},
+	"mistral/voxtral-small-latest": {
+		"cost": {
+			"input": 0.1,
+			"output": 0.3
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 32000
+		}
+	},
 	"mistral4-119b": {
 		"cost": {
 			"input": 0.2,
@@ -16284,6 +16322,17 @@
 			"input": 0.2,
 			"output": 0.8
 		},
+		"limit": {
+			"context": 131072
+		}
+	},
+	"muse-glimmer-30b-tr": {
+		"cost": {
+			"cache_read": 0.5,
+			"input": 2,
+			"output": 5
+		},
+		"exactOnly": true,
 		"limit": {
 			"context": 131072
 		}
@@ -18839,6 +18888,16 @@
 			"context": 127072
 		}
 	},
+	"perplexityai/sonar-deep-research": {
+		"cost": {
+			"input": 2,
+			"output": 8
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 128000
+		}
+	},
 	"perplexityai/sonar-pro": {
 		"cost": {
 			"input": 3,
@@ -19050,6 +19109,24 @@
 		},
 		"limit": {
 			"context": 204800
+		}
+	},
+	"publicai/apertus-70b-instruct": {
+		"cost": {
+			"input": 0.82,
+			"output": 2.92
+		},
+		"limit": {
+			"context": 65536
+		}
+	},
+	"publicai/apertus-8b-instruct": {
+		"cost": {
+			"input": 0.1,
+			"output": 0.2
+		},
+		"limit": {
+			"context": 65536
 		}
 	},
 	"qvq-max": {
@@ -22175,6 +22252,16 @@
 			"context": 8192
 		}
 	},
+	"trendyol-asure-12b": {
+		"cost": {
+			"cache_read": 0.025,
+			"input": 0.1,
+			"output": 0.5
+		},
+		"limit": {
+			"context": 40960
+		}
+	},
 	"umans-coder": {
 		"cost": {
 			"cache_read": 0.19,
@@ -22320,6 +22407,24 @@
 	"upstage/solar-pro-3": {
 		"cost": {
 			"cache_read": 0.015,
+			"input": 0.15,
+			"output": 0.6
+		},
+		"limit": {
+			"context": 131072
+		}
+	},
+	"upstage/solar-pro2": {
+		"cost": {
+			"input": 0.15,
+			"output": 0.6
+		},
+		"limit": {
+			"context": 65536
+		}
+	},
+	"upstage/solar-pro3": {
+		"cost": {
 			"input": 0.15,
 			"output": 0.6
 		},
