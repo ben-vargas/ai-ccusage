@@ -1543,16 +1543,6 @@
 			"context": 16384
 		}
 	},
-	"TEE/deepseek-v3.1": {
-		"cost": {
-			"cache_read": 0.5,
-			"input": 1,
-			"output": 2.5
-		},
-		"limit": {
-			"context": 164000
-		}
-	},
 	"TEE/deepseek-v3.2": {
 		"cost": {
 			"cache_read": 0.25,
@@ -8160,6 +8150,16 @@
 		},
 		"limit": {
 			"context": 32768
+		}
+	},
+	"dots-studio/dots-3-note-preview": {
+		"cost": {
+			"cache_read": 0.05,
+			"input": 0.1,
+			"output": 0.2
+		},
+		"limit": {
+			"context": 393216
 		}
 	},
 	"doubao-1.5-pro-256k": {
@@ -20586,6 +20586,16 @@
 			"context": 262144
 		}
 	},
+	"qwen3.5-0.8b": {
+		"cost": {
+			"cache_read": 0.03,
+			"input": 0.06,
+			"output": 0.12
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"qwen3.5-122b": {
 		"cost": {
 			"input": 0.9,
@@ -20631,6 +20641,16 @@
 		},
 		"limit": {
 			"context": 260096
+		}
+	},
+	"qwen3.5-2b": {
+		"cost": {
+			"cache_read": 0.04,
+			"input": 0.08,
+			"output": 0.16
+		},
+		"limit": {
+			"context": 262144
 		}
 	},
 	"qwen3.5-35b-a3b": {
