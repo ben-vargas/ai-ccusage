@@ -8791,7 +8791,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 1000000
+			"context": 786432
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -20030,6 +20030,7 @@
 	},
 	"qwen/qwen3.8-27b": {
 		"cost": {
+			"cache_read": 0.05,
 			"input": 0.45,
 			"output": 3.2
 		},
@@ -24792,12 +24793,12 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.012292,
-			"input": 0.06146,
-			"output": 0.12292
+			"cache_read": 0.01206,
+			"input": 0.0603,
+			"output": 0.1206
 		},
 		"limit": {
-			"context": 1024000
+			"context": 262144
 		}
 	},
 	"~google/gemini-flash-latest": {
