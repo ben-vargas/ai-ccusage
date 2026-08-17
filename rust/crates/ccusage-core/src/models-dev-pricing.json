@@ -8831,7 +8831,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 1000000
+			"context": 786432
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -21111,7 +21111,7 @@
 	},
 	"qwen3.8-27b:thinking": {
 		"cost": {
-			"cache_read": 0.2,
+			"cache_read": 0.05,
 			"input": 0.4,
 			"output": 3
 		},
