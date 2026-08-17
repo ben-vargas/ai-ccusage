@@ -8830,7 +8830,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 786432
+			"context": 1000000
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -24992,12 +24992,12 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.01568,
-			"input": 0.0784,
-			"output": 0.1568
+			"cache_read": 0.01566,
+			"input": 0.0783,
+			"output": 0.1566
 		},
 		"limit": {
-			"context": 1024000
+			"context": 262144
 		}
 	},
 	"~google/gemini-flash-latest": {
