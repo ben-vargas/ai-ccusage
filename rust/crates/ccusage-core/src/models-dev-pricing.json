@@ -21096,9 +21096,9 @@
 	},
 	"qwen3.8-27b:thinking": {
 		"cost": {
-			"cache_read": 0.05,
-			"input": 0.4,
-			"output": 3
+			"cache_read": 0.04,
+			"input": 0.2,
+			"output": 1.4
 		},
 		"limit": {
 			"context": 262144
@@ -24992,9 +24992,9 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.015719,
-			"input": 0.078596,
-			"output": 0.157192
+			"cache_read": 0.01568,
+			"input": 0.0784,
+			"output": 0.1568
 		},
 		"limit": {
 			"context": 1024000
