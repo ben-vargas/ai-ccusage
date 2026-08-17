@@ -8262,12 +8262,11 @@
 	},
 	"doubao-seed-1-8-251215": {
 		"cost": {
-			"cache_read": 0.306,
-			"input": 0.612,
-			"output": 6.12
+			"input": 0.114,
+			"output": 0.286
 		},
 		"limit": {
-			"context": 128000
+			"context": 224000
 		}
 	},
 	"doubao-seed-2-0-code-preview": {
@@ -8831,7 +8830,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 786432
+			"context": 1000000
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -14826,26 +14825,6 @@
 		},
 		"limit": {
 			"context": 128000
-		}
-	},
-	"mirothinker-1-7-deepresearch": {
-		"cost": {
-			"cache_read": 2,
-			"input": 4,
-			"output": 25
-		},
-		"limit": {
-			"context": 262144
-		}
-	},
-	"mirothinker-1-7-deepresearch-mini": {
-		"cost": {
-			"cache_read": 0.625,
-			"input": 1.25,
-			"output": 10
-		},
-		"limit": {
-			"context": 262144
 		}
 	},
 	"mistral-3-14B": {
@@ -21840,36 +21819,6 @@
 		},
 		"limit": {
 			"context": 16384
-		}
-	},
-	"step-2-16k-exp": {
-		"cost": {
-			"cache_read": 3.502,
-			"input": 7.004,
-			"output": 19.992
-		},
-		"limit": {
-			"context": 16000
-		}
-	},
-	"step-2-mini": {
-		"cost": {
-			"cache_read": 0.1003,
-			"input": 0.2006,
-			"output": 0.408
-		},
-		"limit": {
-			"context": 8000
-		}
-	},
-	"step-3": {
-		"cost": {
-			"cache_read": 0.12495,
-			"input": 0.2499,
-			"output": 0.6494
-		},
-		"limit": {
-			"context": 65536
 		}
 	},
 	"step-3.5-flash": {
