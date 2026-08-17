@@ -25037,12 +25037,12 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.01206,
-			"input": 0.0603,
-			"output": 0.1206
+			"cache_read": 0.015719,
+			"input": 0.078596,
+			"output": 0.157192
 		},
 		"limit": {
-			"context": 262144
+			"context": 1024000
 		}
 	},
 	"~google/gemini-flash-latest": {
