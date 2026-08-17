@@ -24,7 +24,7 @@
 			"output": 1.32
 		},
 		"limit": {
-			"context": 1048576
+			"context": 1310720
 		}
 	},
 	"@cf/deepseek-ai/deepseek-v4-pro-0813": {
