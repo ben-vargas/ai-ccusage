@@ -354,6 +354,8 @@
 		"qwen3-max",
 		"qwen3-next-80b-a3b-instruct",
 		"qwen3-next-80b-a3b-thinking",
+		"qwen3-vl-235b-a22b-instruct",
+		"qwen3-vl-235b-a22b-thinking",
 		"qwen3-vl-plus",
 		"qwq-32b",
 		"qwq-plus",
