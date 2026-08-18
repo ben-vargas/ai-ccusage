@@ -14409,8 +14409,8 @@
 	"meta/muse-glimmer-30b": {
 		"cost": {
 			"cache_read": 0.04,
-			"input": 0.3,
-			"output": 1.2
+			"input": 0.35,
+			"output": 1.5
 		},
 		"limit": {
 			"context": 131072
@@ -20253,7 +20253,7 @@
 			"output": 0.688
 		},
 		"limit": {
-			"context": 131072
+			"context": 256000
 		}
 	},
 	"qwen/qwen3.5-397b-a17b-thinking": {
@@ -25315,12 +25315,12 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.0154,
-			"input": 0.077,
-			"output": 0.154
+			"cache_read": 0.0153,
+			"input": 0.0765,
+			"output": 0.153
 		},
 		"limit": {
-			"context": 1024000
+			"context": 262144
 		}
 	},
 	"~google/gemini-flash-latest": {
