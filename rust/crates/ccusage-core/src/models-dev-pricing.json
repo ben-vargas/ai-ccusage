@@ -8850,7 +8850,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 786432
+			"context": 1000000
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
