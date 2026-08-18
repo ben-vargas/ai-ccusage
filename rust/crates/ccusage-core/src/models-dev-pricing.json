@@ -1434,9 +1434,9 @@
 	},
 	"Qwen/Qwen3.8-27B-TEE": {
 		"cost": {
-			"cache_read": 0.039999999999999994,
-			"input": 0.4,
-			"output": 3
+			"cache_read": 0.04499999999999999,
+			"input": 0.45,
+			"output": 3.2
 		},
 		"limit": {
 			"context": 262144
@@ -20253,7 +20253,7 @@
 			"output": 0.688
 		},
 		"limit": {
-			"context": 256000
+			"context": 131072
 		}
 	},
 	"qwen/qwen3.5-397b-a17b-thinking": {
@@ -24318,6 +24318,16 @@
 			"context": 200000
 		}
 	},
+	"z-ai-glm-5-3": {
+		"cost": {
+			"cache_read": 0.325,
+			"input": 1.75,
+			"output": 5.5
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"z-ai-glm-5-turbo": {
 		"cost": {
 			"cache_read": 0.24,
@@ -25305,9 +25315,9 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.015719,
-			"input": 0.078596,
-			"output": 0.157192
+			"cache_read": 0.0154,
+			"input": 0.077,
+			"output": 0.154
 		},
 		"limit": {
 			"context": 1024000
