@@ -2630,6 +2630,16 @@
 			"context": 262144
 		}
 	},
+	"alibaba/qwen3.8-27b": {
+		"cost": {
+			"cache_read": 0.01,
+			"input": 0.1,
+			"output": 0.4
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"alibaba/qwen3.8-max": {
 		"cost": {
 			"cache_read": 0.25,
@@ -6175,6 +6185,16 @@
 			"context": 32768
 		}
 	},
+	"cloudflare/@cf/qwen/qwen3.8-27b": {
+		"cost": {
+			"cache_read": 0.05,
+			"input": 0.45,
+			"output": 3.2
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"cloudflare/@cf/zai-org/glm-4.7-flash": {
 		"cost": {
 			"input": 0.0605,
@@ -7007,6 +7027,16 @@
 		},
 		"limit": {
 			"context": 256000
+		}
+	},
+	"deepinfra/Qwen/Qwen3.8-27B": {
+		"cost": {
+			"cache_read": 0.04,
+			"input": 0.4,
+			"output": 3
+		},
+		"limit": {
+			"context": 262144
 		}
 	},
 	"deepinfra/deepseek-ai/DeepSeek-R1": {
@@ -8850,7 +8880,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 1000000
+			"context": 786432
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -19728,8 +19758,8 @@
 	},
 	"qwen/deepseek-v4-pro-0813": {
 		"cost": {
-			"input": 1.32,
-			"output": 3.96
+			"input": 1.452,
+			"output": 4.356
 		},
 		"limit": {
 			"context": 1000000
