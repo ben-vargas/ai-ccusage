@@ -21220,6 +21220,17 @@
 			"context": 128000
 		}
 	},
+	"sakana-namazu": {
+		"cost": {
+			"cache_read": 0.15,
+			"input": 0.95,
+			"output": 4
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 262144
+		}
+	},
 	"sakana/fugu-ultra": {
 		"cost": {
 			"cache_read": 0.5,
