@@ -16479,7 +16479,7 @@
 			"output": 3
 		},
 		"limit": {
-			"context": 8000
+			"context": 1048576
 		}
 	},
 	"nebius/nvidia/nemotron-3-super-120b-a12b": {
