@@ -8880,7 +8880,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 1000000
+			"context": 786432
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -16540,9 +16540,9 @@
 	},
 	"nemotron-3-ultra-550b": {
 		"cost": {
-			"cache_read": 0.15,
+			"cache_read": 0.1,
 			"input": 0.5,
-			"output": 2.5
+			"output": 2.2
 		},
 		"limit": {
 			"context": 1048576
