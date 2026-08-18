@@ -8880,7 +8880,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 786432
+			"context": 1000000
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -13017,8 +13017,8 @@
 	},
 	"ionos/meta-llama/Llama-3.3-70B-Instruct": {
 		"cost": {
-			"input": 0.753545,
-			"output": 0.753545
+			"input": 0.75244,
+			"output": 0.75244
 		},
 		"limit": {
 			"context": 128000
@@ -13026,8 +13026,8 @@
 	},
 	"ionos/openai/gpt-oss-120b": {
 		"cost": {
-			"input": 0.173895,
-			"output": 0.753545
+			"input": 0.17364,
+			"output": 0.75244
 		},
 		"limit": {
 			"context": 131072
@@ -19758,8 +19758,8 @@
 	},
 	"qwen/deepseek-v4-pro-0813": {
 		"cost": {
-			"input": 1.452,
-			"output": 4.356
+			"input": 0.66,
+			"output": 1.98
 		},
 		"limit": {
 			"context": 1000000
@@ -21638,8 +21638,8 @@
 	},
 	"scaleway/deepseek-v4-flash-0731": {
 		"cost": {
-			"input": 0.46372,
-			"output": 0.927441
+			"input": 0.46304,
+			"output": 0.92608
 		},
 		"limit": {
 			"context": 256000
@@ -21647,8 +21647,8 @@
 	},
 	"scaleway/gpt-oss-120b": {
 		"cost": {
-			"input": 0.173895,
-			"output": 0.69558
+			"input": 0.17364,
+			"output": 0.69456
 		},
 		"limit": {
 			"context": 128000
@@ -21656,8 +21656,8 @@
 	},
 	"scaleway/llama-3.3-70b-instruct": {
 		"cost": {
-			"input": 1.043371,
-			"output": 1.043371
+			"input": 1.04184,
+			"output": 1.04184
 		},
 		"limit": {
 			"context": 128000
