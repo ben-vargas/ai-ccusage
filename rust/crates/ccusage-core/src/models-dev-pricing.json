@@ -2593,12 +2593,12 @@
 	},
 	"alibaba/qwen3.8-27b": {
 		"cost": {
-			"cache_read": 0.01,
-			"input": 0.1,
-			"output": 0.4
+			"cache_read": 0.11,
+			"input": 0.55,
+			"output": 3.3
 		},
 		"limit": {
-			"context": 262144
+			"context": 1000000
 		}
 	},
 	"alibaba/qwen3.8-max": {
@@ -14034,16 +14034,6 @@
 		},
 		"limit": {
 			"context": 256000
-		}
-	},
-	"mancer/weaver": {
-		"cost": {
-			"input": 0.5,
-			"output": 0.75
-		},
-		"exactOnly": true,
-		"limit": {
-			"context": 8000
 		}
 	},
 	"medgemma-4b": {
@@ -25548,12 +25538,12 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.0153,
-			"input": 0.0765,
-			"output": 0.153
+			"cache_read": 0.014,
+			"input": 0.07,
+			"output": 0.14
 		},
 		"limit": {
-			"context": 262144
+			"context": 1048576
 		}
 	},
 	"~google/gemini-flash-latest": {
