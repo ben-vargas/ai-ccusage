@@ -1130,7 +1130,7 @@
 			"output": 0.2
 		},
 		"limit": {
-			"context": 262144
+			"context": 32768
 		}
 	},
 	"Qwen/Qwen3-8B": {
@@ -1141,7 +1141,7 @@
 			"output": 0.2
 		},
 		"limit": {
-			"context": 131072
+			"context": 40960
 		}
 	},
 	"Qwen/Qwen3-Coder-480B-A35B-Instruct": {
@@ -8865,7 +8865,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 786432
+			"context": 1000000
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -9288,7 +9288,7 @@
 			"output": 3
 		},
 		"limit": {
-			"context": 1048576
+			"context": 1000000
 		}
 	},
 	"gemini-3-flash-preview": {
@@ -14182,7 +14182,7 @@
 			"output": 0.2
 		},
 		"limit": {
-			"context": 131072
+			"context": 128000
 		}
 	},
 	"meta-llama/Llama-3.2-1B": {
@@ -15142,7 +15142,7 @@
 			"output": 7.5
 		},
 		"limit": {
-			"context": 262144
+			"context": 256000
 		}
 	},
 	"mistral-medium-3.5-128b": {
@@ -15832,7 +15832,7 @@
 			"output": 0.6
 		},
 		"limit": {
-			"context": 262144
+			"context": 32000
 		}
 	},
 	"mistralai/Pixtral-12B-2409": {
@@ -17083,7 +17083,7 @@
 			"output": 0.45
 		},
 		"limit": {
-			"context": 1000000
+			"context": 256000
 		}
 	},
 	"nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B": {
@@ -22805,16 +22805,6 @@
 			"context": 262144
 		}
 	},
-	"umans-glm-5.1": {
-		"cost": {
-			"cache_read": 0.29,
-			"input": 1.4,
-			"output": 4.4
-		},
-		"limit": {
-			"context": 204800
-		}
-	},
 	"umans-glm-5.2": {
 		"cost": {
 			"cache_read": 0.26,
@@ -24790,12 +24780,13 @@
 	},
 	"z-ai/glm-5.3": {
 		"cost": {
-			"cache_read": 0.26,
-			"input": 1.4,
+			"cache_read": 0.3,
+			"cache_write": 1.2,
+			"input": 1.2,
 			"output": 4.4
 		},
 		"limit": {
-			"context": 1048576
+			"context": 1000000
 		}
 	},
 	"z-ai/glm-5v-turbo": {
@@ -25008,7 +24999,7 @@
 			"output": 3.08
 		},
 		"limit": {
-			"context": 202752
+			"context": 202000
 		}
 	},
 	"zai-org/GLM-5.1-FP8": {
