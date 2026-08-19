@@ -2237,15 +2237,6 @@
 			"context": 1048576
 		}
 	},
-	"ai21/jamba-large-1.7": {
-		"cost": {
-			"input": 2,
-			"output": 8
-		},
-		"limit": {
-			"context": 256000
-		}
-	},
 	"aion-labs-aion-3-0": {
 		"cost": {
 			"cache_read": 0.9375,
@@ -8874,7 +8865,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 1000000
+			"context": 786432
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
