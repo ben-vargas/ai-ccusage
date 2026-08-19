@@ -4468,9 +4468,9 @@
 	"bailian/qwen3.6-max-preview": {
 		"cost": {
 			"cache_read": 0.2,
-			"cache_write": 2,
-			"input": 2,
-			"output": 12
+			"cache_write": 1.17,
+			"input": 2.15,
+			"output": 12.86
 		},
 		"limit": {
 			"context": 262144
@@ -4929,17 +4929,6 @@
 			"cache_write": 0.3,
 			"input": 0.25,
 			"output": 1.25
-		},
-		"limit": {
-			"context": 200000
-		}
-	},
-	"claude-3-opus": {
-		"cost": {
-			"cache_read": 1.5,
-			"cache_write": 18.75,
-			"input": 15,
-			"output": 75
 		},
 		"limit": {
 			"context": 200000
@@ -23437,10 +23426,10 @@
 	},
 	"volcengine/doubao-seed-2.1-pro": {
 		"cost": {
-			"cache_read": 0.177,
-			"cache_write": 0.0025,
-			"input": 0.884,
-			"output": 4.42
+			"cache_read": 0.1416,
+			"cache_write": 0.002,
+			"input": 0.7072,
+			"output": 3.536
 		},
 		"limit": {
 			"context": 256000
@@ -23448,10 +23437,10 @@
 	},
 	"volcengine/doubao-seed-2.1-turbo": {
 		"cost": {
-			"cache_read": 0.085,
-			"cache_write": 0.0024,
-			"input": 0.442,
-			"output": 2.212
+			"cache_read": 0.068,
+			"cache_write": 0.0019,
+			"input": 0.3536,
+			"output": 1.7696
 		},
 		"limit": {
 			"context": 256000
