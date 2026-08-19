@@ -8924,7 +8924,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 786432
+			"context": 1000000
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -10148,6 +10148,17 @@
 			"context": 204800
 		}
 	},
+	"glm-5-3": {
+		"cost": {
+			"cache_read": 1.4,
+			"input": 1.4,
+			"output": 4.4
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"glm-5-turbo": {
 		"cost": {
 			"cache_read": 0.24,
@@ -10390,17 +10401,6 @@
 		"exactOnly": true,
 		"limit": {
 			"context": 1048576
-		}
-	},
-	"glm-5.3": {
-		"cost": {
-			"cache_read": 0.26,
-			"input": 1.4,
-			"output": 4.4
-		},
-		"exactOnly": true,
-		"limit": {
-			"context": 1000000
 		}
 	},
 	"glm-5v-turbo": {
