@@ -1434,9 +1434,9 @@
 	},
 	"Qwen/Qwen3.8-27B-TEE": {
 		"cost": {
-			"cache_read": 0.04499999999999999,
-			"input": 0.45,
-			"output": 3.2
+			"cache_read": 0.039999999999999994,
+			"input": 0.4,
+			"output": 3
 		},
 		"limit": {
 			"context": 262144
@@ -1598,26 +1598,6 @@
 			"cache_read": 0.04,
 			"input": 0.2,
 			"output": 0.4
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
-	"TEE/deepseek-v4-pro-0813": {
-		"cost": {
-			"cache_read": 0.132,
-			"input": 1.32,
-			"output": 3.96
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
-	"TEE/deepseek-v4-pro-0813:thinking": {
-		"cost": {
-			"cache_read": 0.132,
-			"input": 1.32,
-			"output": 3.96
 		},
 		"limit": {
 			"context": 1048576
@@ -8924,7 +8904,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 1000000
+			"context": 786432
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
