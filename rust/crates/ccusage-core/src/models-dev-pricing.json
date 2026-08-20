@@ -16854,15 +16854,6 @@
 			"context": 8192
 		}
 	},
-	"nvidia-nemotron-3-5-lightning-30b-a3b": {
-		"cost": {
-			"input": 0.1,
-			"output": 0.25
-		},
-		"limit": {
-			"context": 1000000
-		}
-	},
 	"nvidia-nemotron-3-nano-30b-a3b": {
 		"cost": {
 			"input": 0.06,
