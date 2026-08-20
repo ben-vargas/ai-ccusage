@@ -7143,16 +7143,6 @@
 			"context": 262144
 		}
 	},
-	"deepinfra/tencent/Hy3": {
-		"cost": {
-			"cache_read": 0.035,
-			"input": 0.14,
-			"output": 0.58
-		},
-		"limit": {
-			"context": 262144
-		}
-	},
 	"deepinfra/thinkingmachines/Inkling": {
 		"cost": {
 			"cache_read": 0.16,
