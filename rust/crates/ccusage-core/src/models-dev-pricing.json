@@ -8854,7 +8854,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 786432
+			"context": 1000000
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -19942,8 +19942,8 @@
 	},
 	"qwen/deepseek-v4-pro-0813": {
 		"cost": {
-			"input": 0.726,
-			"output": 2.178
+			"input": 1.32,
+			"output": 3.96
 		},
 		"limit": {
 			"context": 1000000
