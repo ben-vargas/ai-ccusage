@@ -13048,8 +13048,8 @@
 	},
 	"ionos/meta-llama/Llama-3.3-70B-Instruct": {
 		"cost": {
-			"input": 0.754325,
-			"output": 0.754325
+			"input": 0.759265,
+			"output": 0.759265
 		},
 		"limit": {
 			"context": 128000
@@ -13057,8 +13057,8 @@
 	},
 	"ionos/openai/gpt-oss-120b": {
 		"cost": {
-			"input": 0.174075,
-			"output": 0.754325
+			"input": 0.175215,
+			"output": 0.759265
 		},
 		"limit": {
 			"context": 131072
@@ -17079,11 +17079,13 @@
 	},
 	"nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16": {
 		"cost": {
-			"input": 0.05,
-			"output": 0.15
+			"cache_read": 0.5,
+			"cache_write": 0.5,
+			"input": 0.5,
+			"output": 0.5
 		},
 		"limit": {
-			"context": 262144
+			"context": 8192
 		}
 	},
 	"nvidia/Nemotron-120B-A12B": {
@@ -19933,8 +19935,8 @@
 	},
 	"qwen/deepseek-v4-flash-0731": {
 		"cost": {
-			"input": 0.484,
-			"output": 1.452
+			"input": 0.242,
+			"output": 0.726
 		},
 		"limit": {
 			"context": 1000000
@@ -19942,8 +19944,8 @@
 	},
 	"qwen/deepseek-v4-pro-0813": {
 		"cost": {
-			"input": 1.32,
-			"output": 3.96
+			"input": 0.726,
+			"output": 2.178
 		},
 		"limit": {
 			"context": 1000000
@@ -21842,8 +21844,8 @@
 	},
 	"scaleway/deepseek-v4-flash-0731": {
 		"cost": {
-			"input": 0.4642,
-			"output": 0.9284
+			"input": 0.46724,
+			"output": 0.93448
 		},
 		"limit": {
 			"context": 256000
@@ -21851,8 +21853,8 @@
 	},
 	"scaleway/gpt-oss-120b": {
 		"cost": {
-			"input": 0.174075,
-			"output": 0.6963
+			"input": 0.175215,
+			"output": 0.70086
 		},
 		"limit": {
 			"context": 128000
@@ -21860,8 +21862,8 @@
 	},
 	"scaleway/llama-3.3-70b-instruct": {
 		"cost": {
-			"input": 1.044449,
-			"output": 1.044449
+			"input": 1.05129,
+			"output": 1.05129
 		},
 		"limit": {
 			"context": 128000
