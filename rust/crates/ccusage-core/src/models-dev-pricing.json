@@ -8854,7 +8854,7 @@
 			"output": 0.18
 		},
 		"limit": {
-			"context": 1000000
+			"context": 786432
 		}
 	},
 	"flexai/Muse-Glimmer-30B": {
@@ -10171,13 +10171,13 @@
 	},
 	"glm-5.2-fast": {
 		"cost": {
-			"cache_read": 0.3625,
-			"input": 1.45,
-			"output": 4.5
+			"cache_read": 0.4,
+			"input": 1.99,
+			"output": 6.16
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048560
+			"context": 1000000
 		}
 	},
 	"glm-5.2-flex": {
@@ -25539,11 +25539,11 @@
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
 			"cache_read": 0.014,
-			"input": 0.07,
+			"input": 0.065,
 			"output": 0.14
 		},
 		"limit": {
-			"context": 1048576
+			"context": 262144
 		}
 	},
 	"~google/gemini-flash-latest": {
