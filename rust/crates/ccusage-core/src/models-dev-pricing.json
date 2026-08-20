@@ -15884,6 +15884,15 @@
 			"context": 131072
 		}
 	},
+	"mistralai/ministral-8b": {
+		"cost": {
+			"input": 0.11,
+			"output": 0.11
+		},
+		"limit": {
+			"context": 128000
+		}
+	},
 	"mistralai/ministral-8b-2512": {
 		"cost": {
 			"cache_read": 0.015,
