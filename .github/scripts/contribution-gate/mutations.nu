@@ -13,6 +13,7 @@ use ./core.nu [
     required-env
     write-output
 ]
+use ./context.nu [require-open-issue]
 use ./verdict.nu [issue-verdict-record pr-verdict-record]
 
 def ensure-priority-label [repo: string, label: string, color: string]: nothing -> nothing {
@@ -26,6 +27,7 @@ def ensure-priority-label [repo: string, label: string, color: string]: nothing 
             msg: (format-gh-error [$endpoint] $result)
         }
     }
+    require-open-issue | ignore
     gh-api-body POST $"repos/($repo)/labels" {name: $label, color: $color} | ignore
 }
 
@@ -50,6 +52,7 @@ def apply-priority-label [repo: string, number: int, priority: string]: nothing 
         | flatten
     )
 
+    require-open-issue | ignore
     (gh-api-body
         POST
         $"repos/($repo)/issues/($number)/labels"
@@ -63,11 +66,22 @@ def apply-priority-label [repo: string, number: int, priority: string]: nothing 
         let name = $label | get --optional name
         ($name in $PRIORITY_LABELS) and $name != $priority
     }
-    | each {|label| gh-api-delete $"repos/($repo)/issues/($number)/labels/($label.name)" }
+    | each {|label|
+        require-open-issue | ignore
+        gh-api-delete $"repos/($repo)/issues/($number)/labels/($label.name)"
+    }
     | ignore
 }
 
-def create-comment [repo: string, number: int, body: string]: nothing -> nothing {
+def create-comment [
+    repo: string
+    number: int
+    body: string
+    require_open_issue: bool
+]: nothing -> nothing {
+    if $require_open_issue {
+        require-open-issue | ignore
+    }
     (gh-api-body
         POST
         $"repos/($repo)/issues/($number)/comments"
@@ -80,7 +94,11 @@ def patch-comment [
     number: int
     comment_id: int
     body: string
+    require_open_issue: bool
 ]: nothing -> nothing {
+    if $require_open_issue {
+        require-open-issue | ignore
+    }
     let endpoint = $"repos/($repo)/issues/comments/($comment_id)"
     let result = (
         {body: $body}
@@ -100,7 +118,7 @@ def patch-comment [
         return
     }
     if ($result.stderr | str contains 'HTTP 404') {
-        create-comment $repo $number $body
+        create-comment $repo $number $body $require_open_issue
         return
     }
     (error make {
@@ -108,7 +126,12 @@ def patch-comment [
     }) | ignore
 }
 
-export def upsert-comment [repo: string, number: int, body: string]: nothing -> nothing {
+export def upsert-comment [
+    repo: string
+    number: int
+    body: string
+    --require-open-issue
+]: nothing -> nothing {
     let comments = (
         gh-api-json [
             '--paginate'
@@ -129,15 +152,16 @@ export def upsert-comment [repo: string, number: int, body: string]: nothing -> 
 
     match ($existing | get --optional id) {
         null => {
-            create-comment $repo $number $body
+            create-comment $repo $number $body $require_open_issue
         }
         $comment_id => {
-            patch-comment $repo $number $comment_id $body
+            patch-comment $repo $number $comment_id $body $require_open_issue
         }
     }
 }
 
 def close-issue [repo: string, number: int]: nothing -> nothing {
+    require-open-issue | ignore
     gh-api-body PATCH $"repos/($repo)/issues/($number)" {state: closed} | ignore
 }
 
@@ -176,37 +200,50 @@ def pr-comment [verdict: record]: nothing -> string {
     ] | str join "\n")
 }
 
-def report-failure [repo: string, number: int, subject: string]: nothing -> nothing {
+def report-failure [
+    repo: string
+    number: int
+    subject: string
+    require_open_issue: bool = false
+]: nothing -> nothing {
     let body = comment-body $COMMENT_MARKER $"Pullfrog could not complete the automated ($subject) review. The ($subject) was left open for maintainer review."
-    upsert-comment $repo $number $body
+    upsert-comment $repo $number $body --require-open-issue=$require_open_issue
 }
 
 export def issue-verdict []: nothing -> nothing {
     let repo = repository
     let number = issue-number
+    require-open-issue | ignore
     let close_allowed = (required-env CLOSE_ALLOWED) == 'true'
+    let force_implementation = (optional-env FORCE_IMPLEMENTATION 'false') == 'true'
     let outcome = optional-env JUDGE_OUTCOME failure
     let result = optional-env RESULT ''
 
     if $outcome != 'success' {
-        report-failure $repo $number issue
+        report-failure $repo $number issue true
         write-output implementation none
         exit 1
     }
 
-    let verdict = (try { issue-verdict-record $result $close_allowed } catch { null })
+    let verdict = (try {
+        if $force_implementation {
+            issue-verdict-record $result $close_allowed --force-implementation
+        } else {
+            issue-verdict-record $result $close_allowed
+        }
+    } catch { null })
     if $verdict == null {
-        report-failure $repo $number issue
+        report-failure $repo $number issue true
         write-output implementation none
         exit 1
     }
 
     ensure-priority-labels $repo
     apply-priority-label $repo $number $verdict.priority
+    upsert-comment $repo $number (issue-comment $verdict) --require-open-issue
     if $verdict.decision == 'close' and $close_allowed {
         close-issue $repo $number
     }
-    upsert-comment $repo $number (issue-comment $verdict)
     write-output decision $verdict.decision
     write-output priority $verdict.priority
     write-output reason $verdict.reason
