@@ -12,6 +12,7 @@ use crate::{
 
 use super::{
     parser::visit_codex_session_file,
+    paths,
     paths::{
         CodexUsageSource, codex_usage_sources, collect_codex_usage_files,
         collect_deduped_codex_usage_files,
@@ -25,58 +26,145 @@ pub fn load_codex_events_from_directory(
 ) -> Result<Vec<CodexTokenUsageEvent>> {
     let files = collect_codex_usage_files(sessions_dir);
     let replay_plan = CodexReplayPlan::new([(sessions_dir, files.as_slice())], single_thread);
-    let mut events = if single_thread {
-        files
-            .iter()
-            .flat_map(|file| read_codex_session_file(sessions_dir, file, &replay_plan))
-            .collect::<Vec<_>>()
-    } else {
-        read_codex_session_files_parallel(sessions_dir, &files, &replay_plan)
-    };
+    let mut events =
+        read_codex_events_from_files(sessions_dir, &files, single_thread, &replay_plan);
     dedupe_codex_events(&mut events);
     Ok(events)
 }
 
-pub fn load_codex_events(shared: &SharedArgs) -> Result<Vec<CodexTokenUsageEvent>> {
+/// Loads Codex usage events and reports whether any source file existed before
+/// date filtering narrowed the files to parse.
+pub fn load_codex_events_with_detection(
+    shared: &SharedArgs,
+) -> Result<(Vec<CodexTokenUsageEvent>, bool)> {
     progress::track_usage_load(progress::UsageLoadAgent("Codex"), shared.json, || {
-        load_codex_events_inner(shared)
+        load_codex_events_from_sources_with_shared(&codex_usage_sources()?, shared)
     })
 }
 
-fn load_codex_events_inner(shared: &SharedArgs) -> Result<Vec<CodexTokenUsageEvent>> {
-    load_codex_events_from_sources(&codex_usage_sources()?, shared.single_thread)
-}
-
+#[cfg(test)]
 fn load_codex_events_from_sources(
     sources: &[CodexUsageSource],
     single_thread: bool,
 ) -> Result<Vec<CodexTokenUsageEvent>> {
+    load_codex_events_from_sources_with_files(sources, single_thread, None)
+        .map(|(events, _)| events)
+}
+
+fn load_codex_events_from_sources_with_shared(
+    sources: &[CodexUsageSource],
+    shared: &SharedArgs,
+) -> Result<(Vec<CodexTokenUsageEvent>, bool)> {
+    load_codex_events_from_sources_with_files(sources, shared.single_thread, Some(shared))
+}
+
+fn load_codex_events_from_sources_with_files(
+    sources: &[CodexUsageSource],
+    single_thread: bool,
+    shared: Option<&SharedArgs>,
+) -> Result<(Vec<CodexTokenUsageEvent>, bool)> {
     if let [source] = sources {
-        return load_codex_events_from_directory(&source.dir, single_thread);
+        if let Some(shared) = shared {
+            return load_codex_events_from_directory_with_shared(&source.dir, shared);
+        }
+        let files = collect_codex_usage_files(&source.dir);
+        let replay_plan =
+            CodexReplayPlan::new([(source.dir.as_path(), files.as_slice())], single_thread);
+        let mut events =
+            read_codex_events_from_files(&source.dir, &files, single_thread, &replay_plan);
+        dedupe_codex_events(&mut events);
+        return Ok((events, false));
     }
 
     let groups = collect_deduped_codex_usage_files(sources);
-    let replay_plan = CodexReplayPlan::new(
-        groups
-            .iter()
-            .map(|group| (group.dir.as_path(), group.files.as_slice())),
-        single_thread,
-    );
-    let mut events = Vec::new();
-    for group in groups {
-        let mut source_events = if single_thread {
-            group
-                .files
+    let detected_before_filter = groups.iter().any(|group| !group.files.is_empty());
+    let files_by_group = groups
+        .iter()
+        .map(|group| {
+            shared.map_or_else(
+                || group.files.clone(),
+                |shared| paths::filter_codex_usage_files(&group.dir, &group.files, shared),
+            )
+        })
+        .collect::<Vec<_>>();
+    let replay_plan = if shared.is_some_and(has_date_bounds) {
+        CodexReplayPlan::for_bounded_files(
+            groups
                 .iter()
-                .flat_map(|file| read_codex_session_file(&group.dir, file, &replay_plan))
-                .collect::<Vec<_>>()
-        } else {
-            read_codex_session_files_parallel(&group.dir, &group.files, &replay_plan)
-        };
+                .zip(&files_by_group)
+                .map(|(group, files)| (group.dir.as_path(), files.as_slice())),
+            groups
+                .iter()
+                .map(|group| (group.dir.as_path(), group.files.as_slice())),
+            single_thread,
+        )
+    } else {
+        CodexReplayPlan::new(
+            groups
+                .iter()
+                .map(|group| (group.dir.as_path(), group.files.as_slice())),
+            single_thread,
+        )
+    };
+    let mut events = Vec::new();
+    for (group, files) in groups.into_iter().zip(files_by_group) {
+        let mut source_events =
+            read_codex_events_from_files(&group.dir, &files, single_thread, &replay_plan);
         events.append(&mut source_events);
     }
     dedupe_codex_events(&mut events);
-    Ok(events)
+    let detected = if shared.is_some_and(has_date_bounds) {
+        detected_before_filter
+    } else {
+        !events.is_empty()
+    };
+    Ok((events, detected))
+}
+
+fn load_codex_events_from_directory_with_shared(
+    sessions_dir: &Path,
+    shared: &SharedArgs,
+) -> Result<(Vec<CodexTokenUsageEvent>, bool)> {
+    let all_files = collect_codex_usage_files(sessions_dir);
+    let files = paths::filter_codex_usage_files(sessions_dir, &all_files, shared);
+    let replay_plan = if has_date_bounds(shared) {
+        CodexReplayPlan::for_bounded_files(
+            [(sessions_dir, files.as_slice())],
+            [(sessions_dir, all_files.as_slice())],
+            shared.single_thread,
+        )
+    } else {
+        CodexReplayPlan::new([(sessions_dir, all_files.as_slice())], shared.single_thread)
+    };
+    let mut events =
+        read_codex_events_from_files(sessions_dir, &files, shared.single_thread, &replay_plan);
+    dedupe_codex_events(&mut events);
+    let detected = if has_date_bounds(shared) {
+        !all_files.is_empty()
+    } else {
+        !events.is_empty()
+    };
+    Ok((events, detected))
+}
+
+fn read_codex_events_from_files(
+    sessions_dir: &Path,
+    files: &[PathBuf],
+    single_thread: bool,
+    replay_plan: &CodexReplayPlan,
+) -> Vec<CodexTokenUsageEvent> {
+    if single_thread {
+        files
+            .iter()
+            .flat_map(|file| read_codex_session_file(sessions_dir, file, replay_plan))
+            .collect()
+    } else {
+        read_codex_session_files_parallel(sessions_dir, files, replay_plan)
+    }
+}
+
+fn has_date_bounds(shared: &SharedArgs) -> bool {
+    shared.since.is_some() || shared.until.is_some()
 }
 
 fn read_codex_session_files_parallel(
@@ -1911,10 +1999,17 @@ mod tests {
             .join("\n"),
         });
 
-        assert_eq!(
-            replay_input_tokens_by_session(fixture.root()),
-            [("self".to_string(), 100), ("self".to_string(), 200)]
-        );
+        for single_thread in [true, false] {
+            let events = load_codex_events_from_directory(fixture.root(), single_thread).unwrap();
+            assert_eq!(
+                events
+                    .iter()
+                    .map(|event| (event.session_id.clone(), event.input_tokens))
+                    .collect::<Vec<_>>(),
+                [("self".to_string(), 100), ("self".to_string(), 200)],
+                "single_thread={single_thread}"
+            );
+        }
     }
 
     #[test]
@@ -2065,6 +2160,369 @@ mod tests {
 
         assert_eq!(events.len(), 1);
         assert_eq!(events[0].total_tokens, 110);
+    }
+
+    #[test]
+    fn bounded_loading_resolves_thread_id_rollout_parent_by_payload_id() {
+        let fixture = fs_fixture!({
+            "sessions/2025/01/01/2025-01-01T08-00-00-thread_id_rollout.jsonl": [
+                replay_metadata("2025-01-01T08:00:00.000Z", "parent-id", None),
+                replay_token_count("2025-01-01T08:01:00.000Z", 100),
+            ]
+            .join("\n"),
+            "sessions/2026/03/15/child.jsonl": [
+                replay_metadata("2026-03-15T08:00:00.000Z", "child", Some("parent-id")),
+                replay_token_count("2026-03-15T08:00:00.000Z", 100),
+                replay_token_count("2026-03-15T08:01:00.000Z", 50),
+            ]
+            .join("\n"),
+        });
+        let parent =
+            fixture.path("sessions/2025/01/01/2025-01-01T08-00-00-thread_id_rollout.jsonl");
+        let child = fixture.path("sessions/2026/03/15/child.jsonl");
+        crate::paths::set_file_modified(
+            &parent,
+            crate::parse_ts_timestamp("2025-01-01T08:00:00.000Z").unwrap(),
+        );
+        crate::paths::set_file_modified(
+            &child,
+            crate::parse_ts_timestamp("2026-03-15T08:00:00.000Z").unwrap(),
+        );
+        let sources = [CodexUsageSource::new_for_test(
+            fixture.path("sessions"),
+            fixture.root().to_path_buf(),
+        )];
+        let shared = SharedArgs {
+            since: Some("20260315".to_string()),
+            until: Some("20260315".to_string()),
+            timezone: Some("UTC".to_string()),
+            ..SharedArgs::default()
+        };
+
+        for single_thread in [true, false] {
+            let (events, detected) = load_codex_events_from_sources_with_shared(
+                &sources,
+                &SharedArgs {
+                    single_thread,
+                    ..shared.clone()
+                },
+            )
+            .unwrap();
+
+            assert!(detected, "single_thread={single_thread}");
+            assert_eq!(events.len(), 1, "single_thread={single_thread}");
+            assert_eq!(
+                events[0].session_id, "2026/03/15/child",
+                "single_thread={single_thread}"
+            );
+            assert_eq!(events[0].input_tokens, 50, "single_thread={single_thread}");
+        }
+    }
+
+    #[test]
+    fn bounded_loading_does_not_select_a_misleading_filename() {
+        let fixture = fs_fixture!({
+            "sessions/2025/01/01/aaa-target-id.jsonl": [
+                replay_metadata("2025-01-01T08:00:00.000Z", "different-id", None),
+                replay_token_count("2025-01-01T08:01:00.000Z", 999),
+            ]
+            .join("\n"),
+            "sessions/2025/01/02/zzz-actual-parent.jsonl": [
+                replay_metadata("2025-01-01T08:00:00.000Z", "target-id", None),
+                replay_token_count("2025-01-01T08:01:00.000Z", 100),
+            ]
+            .join("\n"),
+            "sessions/2026/03/15/child.jsonl": [
+                replay_metadata("2026-03-15T08:00:00.000Z", "child", Some("target-id")),
+                replay_token_count("2026-03-15T08:00:00.000Z", 100),
+                replay_token_count("2026-03-15T08:01:00.000Z", 50),
+            ]
+            .join("\n"),
+        });
+        let misleading = fixture.path("sessions/2025/01/01/aaa-target-id.jsonl");
+        let parent = fixture.path("sessions/2025/01/02/zzz-actual-parent.jsonl");
+        let child = fixture.path("sessions/2026/03/15/child.jsonl");
+        for path in [&misleading, &parent] {
+            crate::paths::set_file_modified(
+                path,
+                crate::parse_ts_timestamp("2025-01-01T08:00:00.000Z").unwrap(),
+            );
+        }
+        crate::paths::set_file_modified(
+            &child,
+            crate::parse_ts_timestamp("2026-03-15T08:00:00.000Z").unwrap(),
+        );
+        let sources = [CodexUsageSource::new_for_test(
+            fixture.path("sessions"),
+            fixture.root().to_path_buf(),
+        )];
+        let shared = SharedArgs {
+            since: Some("20260315".to_string()),
+            until: Some("20260315".to_string()),
+            timezone: Some("UTC".to_string()),
+            ..SharedArgs::default()
+        };
+
+        for single_thread in [true, false] {
+            let _ = crate::replay::take_observed_file_read_events();
+            let (events, detected) = load_codex_events_from_sources_with_shared(
+                &sources,
+                &SharedArgs {
+                    single_thread,
+                    ..shared.clone()
+                },
+            )
+            .unwrap();
+
+            assert!(detected, "single_thread={single_thread}");
+            assert_eq!(events.len(), 1, "single_thread={single_thread}");
+            assert_eq!(events[0].input_tokens, 50, "single_thread={single_thread}");
+            if single_thread {
+                let reads = crate::replay::take_observed_file_read_events();
+                assert!(reads.iter().any(|read| matches!(
+                    read,
+                    crate::replay::ObservedFileRead::ParentUsage(path) if path == &parent
+                )));
+                assert!(!reads.iter().any(|read| matches!(
+                    read,
+                    crate::replay::ObservedFileRead::ParentUsage(path) if path == &misleading
+                )));
+            }
+        }
+    }
+
+    #[test]
+    fn bounded_loading_uses_the_first_duplicate_parent_id() {
+        let fixture = fs_fixture!({
+            "sessions/2025/01/01/aaa-first-parent.jsonl": [
+                replay_metadata("2025-01-01T08:00:00.000Z", "parent-id", None),
+                replay_token_count("2025-01-01T08:01:00.000Z", 100),
+            ]
+            .join("\n"),
+            "sessions/2025/01/02/zzz-second-parent.jsonl": [
+                replay_metadata("2025-01-01T08:00:00.000Z", "parent-id", None),
+                replay_token_count("2025-01-01T08:01:00.000Z", 200),
+            ]
+            .join("\n"),
+            "sessions/2026/03/15/child.jsonl": [
+                replay_metadata("2026-03-15T08:00:00.000Z", "child", Some("parent-id")),
+                replay_token_count("2026-03-15T08:00:00.000Z", 100),
+                replay_token_count("2026-03-15T08:01:00.000Z", 50),
+            ]
+            .join("\n"),
+        });
+        let first_parent = fixture.path("sessions/2025/01/01/aaa-first-parent.jsonl");
+        let second_parent = fixture.path("sessions/2025/01/02/zzz-second-parent.jsonl");
+        let child = fixture.path("sessions/2026/03/15/child.jsonl");
+        for path in [&first_parent, &second_parent] {
+            crate::paths::set_file_modified(
+                path,
+                crate::parse_ts_timestamp("2025-01-01T08:00:00.000Z").unwrap(),
+            );
+        }
+        crate::paths::set_file_modified(
+            &child,
+            crate::parse_ts_timestamp("2026-03-15T08:00:00.000Z").unwrap(),
+        );
+        let sources = [CodexUsageSource::new_for_test(
+            fixture.path("sessions"),
+            fixture.root().to_path_buf(),
+        )];
+        let shared = SharedArgs {
+            since: Some("20260315".to_string()),
+            until: Some("20260315".to_string()),
+            timezone: Some("UTC".to_string()),
+            ..SharedArgs::default()
+        };
+
+        for single_thread in [true, false] {
+            let (events, detected) = load_codex_events_from_sources_with_shared(
+                &sources,
+                &SharedArgs {
+                    single_thread,
+                    ..shared.clone()
+                },
+            )
+            .unwrap();
+
+            assert!(detected, "single_thread={single_thread}");
+            assert_eq!(events.len(), 1, "single_thread={single_thread}");
+            assert_eq!(events[0].session_id, "2026/03/15/child");
+            assert_eq!(events[0].input_tokens, 50, "single_thread={single_thread}");
+        }
+    }
+
+    #[test]
+    fn bounded_loading_skips_a_self_parent_candidate_for_a_duplicate_parent_id() {
+        let fixture = fs_fixture!({
+            "sessions/2025/01/01/aaa-child.jsonl": [
+                replay_metadata(
+                    "2026-03-15T08:00:00.000Z",
+                    "shared-id",
+                    Some("shared-id"),
+                ),
+                replay_token_count("2026-03-15T08:00:01.000Z", 100),
+                replay_token_count("2026-03-15T08:01:00.000Z", 50),
+            ]
+            .join("\n"),
+            "sessions/2025/01/02/zzz-parent.jsonl": [
+                replay_metadata("2025-01-01T08:00:00.000Z", "shared-id", None),
+                replay_token_count("2025-01-01T08:01:00.000Z", 100),
+            ]
+            .join("\n"),
+        });
+        let child = fixture.path("sessions/2025/01/01/aaa-child.jsonl");
+        let parent = fixture.path("sessions/2025/01/02/zzz-parent.jsonl");
+        crate::paths::set_file_modified(
+            &child,
+            crate::parse_ts_timestamp("2026-03-15T08:00:00.000Z").unwrap(),
+        );
+        crate::paths::set_file_modified(
+            &parent,
+            crate::parse_ts_timestamp("2025-01-01T08:00:00.000Z").unwrap(),
+        );
+        let sources = [CodexUsageSource::new_for_test(
+            fixture.path("sessions"),
+            fixture.root().to_path_buf(),
+        )];
+        let shared = SharedArgs {
+            since: Some("20260315".to_string()),
+            until: Some("20260315".to_string()),
+            timezone: Some("UTC".to_string()),
+            ..SharedArgs::default()
+        };
+
+        for single_thread in [true, false] {
+            let _ = crate::replay::take_observed_file_read_events();
+            let (events, detected) = load_codex_events_from_sources_with_shared(
+                &sources,
+                &SharedArgs {
+                    single_thread,
+                    ..shared.clone()
+                },
+            )
+            .unwrap();
+
+            assert!(detected, "single_thread={single_thread}");
+            assert_eq!(events.len(), 1, "single_thread={single_thread}");
+            assert_eq!(events[0].input_tokens, 50, "single_thread={single_thread}");
+        }
+    }
+
+    #[test]
+    fn unbounded_loading_skips_a_self_parent_candidate_for_a_duplicate_parent_id() {
+        let fixture = fs_fixture!({
+            "sessions/2025/01/01/aaa-child.jsonl": [
+                replay_metadata(
+                    "2026-03-15T08:00:00.000Z",
+                    "shared-id",
+                    Some("shared-id"),
+                ),
+                replay_token_count("2026-03-15T08:00:01.000Z", 100),
+                replay_token_count("2026-03-15T08:01:00.000Z", 50),
+            ]
+            .join("\n"),
+            "sessions/2025/01/02/zzz-parent.jsonl": [
+                replay_metadata("2025-01-01T08:00:00.000Z", "shared-id", None),
+                replay_token_count("2025-01-01T08:01:00.000Z", 100),
+            ]
+            .join("\n"),
+        });
+        let child = fixture.path("sessions/2025/01/01/aaa-child.jsonl");
+        let parent = fixture.path("sessions/2025/01/02/zzz-parent.jsonl");
+        crate::paths::set_file_modified(
+            &child,
+            crate::parse_ts_timestamp("2026-03-15T08:00:00.000Z").unwrap(),
+        );
+        crate::paths::set_file_modified(
+            &parent,
+            crate::parse_ts_timestamp("2025-01-01T08:00:00.000Z").unwrap(),
+        );
+
+        for single_thread in [true, false] {
+            let events =
+                load_codex_events_from_directory(&fixture.path("sessions"), single_thread).unwrap();
+            let child_events = events
+                .iter()
+                .filter(|event| event.session_id.ends_with("2025/01/01/aaa-child"))
+                .collect::<Vec<_>>();
+
+            assert_eq!(child_events.len(), 1, "single_thread={single_thread}");
+            assert_eq!(
+                child_events[0].input_tokens, 50,
+                "single_thread={single_thread}"
+            );
+        }
+    }
+
+    #[test]
+    fn bounded_loading_metadata_probes_history_but_reads_parent_usage_only() {
+        let fixture = fs_fixture!({
+            "sessions/2025/01/01/parent.jsonl": [
+                replay_metadata("2025-01-01T08:00:00.000Z", "parent", None),
+                replay_token_count("2025-01-01T08:01:00.000Z", 100),
+            ]
+            .join("\n"),
+            "sessions/2025/01/01/unrelated.jsonl": [
+                replay_metadata("2025-01-01T08:00:00.000Z", "unrelated", None),
+                replay_token_count("2025-01-01T08:01:00.000Z", 999),
+            ]
+            .join("\n"),
+            "sessions/2026/03/15/child.jsonl": [
+                replay_metadata("2026-03-15T08:00:00.000Z", "child", Some("parent")),
+                replay_token_count("2026-03-15T08:00:00.000Z", 100),
+                replay_token_count("2026-03-15T08:01:00.000Z", 50),
+            ]
+            .join("\n"),
+        });
+        let parent = fixture.path("sessions/2025/01/01/parent.jsonl");
+        let unrelated = fixture.path("sessions/2025/01/01/unrelated.jsonl");
+        let child = fixture.path("sessions/2026/03/15/child.jsonl");
+        for path in [&parent, &unrelated] {
+            crate::paths::set_file_modified(
+                path,
+                crate::parse_ts_timestamp("2025-01-01T08:00:00.000Z").unwrap(),
+            );
+        }
+        crate::paths::set_file_modified(
+            &child,
+            crate::parse_ts_timestamp("2026-03-15T08:00:00.000Z").unwrap(),
+        );
+        let sources = [CodexUsageSource::new_for_test(
+            fixture.path("sessions"),
+            fixture.root().to_path_buf(),
+        )];
+        let shared = SharedArgs {
+            since: Some("20260315".to_string()),
+            until: Some("20260315".to_string()),
+            timezone: Some("UTC".to_string()),
+            single_thread: true,
+            ..SharedArgs::default()
+        };
+
+        let _ = crate::replay::take_observed_file_reads();
+        let (events, detected) =
+            load_codex_events_from_sources_with_shared(&sources, &shared).unwrap();
+
+        assert!(detected);
+        assert_eq!(events.len(), 1);
+        assert_eq!(events[0].session_id, "2026/03/15/child");
+        assert_eq!(events[0].input_tokens, 50);
+        let reads = crate::replay::take_observed_file_read_events();
+        for path in [&child, &parent, &unrelated] {
+            assert!(reads.iter().any(|read| matches!(
+                read,
+                crate::replay::ObservedFileRead::MetadataProbe(observed) if observed == path
+            )));
+        }
+        let parent_usage_reads = reads
+            .iter()
+            .filter_map(|read| match read {
+                crate::replay::ObservedFileRead::ParentUsage(path) => Some(path.clone()),
+                crate::replay::ObservedFileRead::MetadataProbe(_) => None,
+            })
+            .collect::<Vec<_>>();
+        assert_eq!(parent_usage_reads, vec![parent]);
     }
 
     fn replay_metadata(timestamp: &str, id: &str, parent: Option<&str>) -> String {
