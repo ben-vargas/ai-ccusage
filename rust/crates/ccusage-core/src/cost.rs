@@ -280,46 +280,79 @@ mod tests {
 
     #[test]
     fn prices_two_stage_model_as_whole_request_at_long_context_rates() {
-        let pricing = PricingMap::load_embedded();
-
-        // gpt-5.6-sol has a 272K threshold with long-context rates of
-        // $10/$45 per 1M input/output tokens and a $1 per 1M cache-read rate.
-        let long = TokenUsageRaw {
-            input_tokens: 300_000,
-            output_tokens: 1_000,
-            cache_read_input_tokens: 100,
-            ..TokenUsageRaw::default()
-        };
-        let cost = calculate_cost_for_usage(
-            Some("gpt-5.6-sol"),
-            long,
-            None,
-            CostMode::Calculate,
-            Some(&pricing),
+        let mut pricing = PricingMap::default();
+        assert_eq!(
+            pricing.load_models_dev_json_for_tests(
+                r#"{
+                    "two-stage-test": {
+                        "cost": {
+                            "input": 1,
+                            "output": 10,
+                            "cache_read": 0.1,
+                            "tiers": [{
+                                "input": 2,
+                                "output": 20,
+                                "cache_read": 0.2,
+                                "tier": { "type": "context", "size": 100 }
+                            }]
+                        }
+                    }
+                }"#,
+            ),
+            Some(1)
         );
-        // The whole request switches to long rates once input exceeds 272K,
-        // including the output and cache-read buckets that are individually
-        // far below the threshold: 3.0 + 0.045 + 0.0001.
-        assert!((cost - 3.0451).abs() < 1e-9, "long-context cost was {cost}");
 
-        // Below the threshold every bucket stays on the short-context rates:
-        // 0.5 + 0.03 + 0.00005.
+        // Keep cache reads non-zero so tier selection covers the whole context
+        // rather than only freshly processed input.
         let short = TokenUsageRaw {
-            input_tokens: 100_000,
-            output_tokens: 1_000,
-            cache_read_input_tokens: 100,
+            input_tokens: 59,
+            output_tokens: 3,
+            cache_read_input_tokens: 40,
             ..TokenUsageRaw::default()
         };
         let cost = calculate_cost_for_usage(
-            Some("gpt-5.6-sol"),
+            Some("two-stage-test"),
             short,
             None,
             CostMode::Calculate,
             Some(&pricing),
         );
         assert!(
-            (cost - 0.53005).abs() < 1e-9,
+            (cost - 93e-6).abs() < 1e-12,
             "short-context cost was {cost}"
+        );
+
+        let boundary = TokenUsageRaw {
+            input_tokens: 60,
+            output_tokens: 3,
+            cache_read_input_tokens: 40,
+            ..TokenUsageRaw::default()
+        };
+        let cost = calculate_cost_for_usage(
+            Some("two-stage-test"),
+            boundary,
+            None,
+            CostMode::Calculate,
+            Some(&pricing),
+        );
+        assert!((cost - 94e-6).abs() < 1e-12, "boundary cost was {cost}");
+
+        let long = TokenUsageRaw {
+            input_tokens: 61,
+            output_tokens: 3,
+            cache_read_input_tokens: 40,
+            ..TokenUsageRaw::default()
+        };
+        let cost = calculate_cost_for_usage(
+            Some("two-stage-test"),
+            long,
+            None,
+            CostMode::Calculate,
+            Some(&pricing),
+        );
+        assert!(
+            (cost - 190e-6).abs() < 1e-12,
+            "long-context cost was {cost}"
         );
     }
 

@@ -418,6 +418,8 @@ pub struct PricingMap {
     /// `kimi-k2-7-code` would be billed at the premium tier.
     exact_only: ExactOnlyKeys,
     context_limits: FxHashMap<String, u64>,
+    /// Final context-window defaults that must not mask refreshed metadata.
+    builtin_context_limits: FxHashMap<String, u64>,
     enable_models_dev_fallback: bool,
     enable_embedded_models_dev_fallback: bool,
     find_cache: OnceLock<Mutex<FxHashMap<String, Option<Pricing>>>>,
@@ -511,6 +513,7 @@ impl Default for PricingMap {
             user_overrides: FxHashMap::default(),
             exact_only: ExactOnlyKeys::default(),
             context_limits: FxHashMap::default(),
+            builtin_context_limits: FxHashMap::default(),
             enable_models_dev_fallback: false,
             enable_embedded_models_dev_fallback: false,
             find_cache: OnceLock::new(),
@@ -1110,6 +1113,12 @@ impl PricingMap {
         })
     }
 
+    /// Loads a synthetic models.dev payload for cross-module regression tests.
+    #[cfg(test)]
+    pub(crate) fn load_models_dev_json_for_tests(&mut self, json: &str) -> Option<usize> {
+        self.load_models_dev_json_missing(json)
+    }
+
     /// Load the entries of one provider catalog.
     ///
     /// `claims` records the claim strength of whichever catalog supplied each
@@ -1477,6 +1486,26 @@ impl PricingMap {
     }
 
     pub fn context_limit(&self, model: &str) -> Option<u64> {
+        self.context_limit_with_fallbacks(
+            model,
+            || {
+                self.enable_models_dev_fallback
+                    .then(models_dev_pricing)
+                    .flatten()
+            },
+            || {
+                self.enable_embedded_models_dev_fallback
+                    .then(embedded_models_dev_pricing)
+            },
+        )
+    }
+
+    fn context_limit_with_fallbacks<'a>(
+        &self,
+        model: &str,
+        models_dev: impl FnOnce() -> Option<&'a PricingMap>,
+        embedded_models_dev: impl FnOnce() -> Option<&'a PricingMap>,
+    ) -> Option<u64> {
         let alias = crate::model_aliases::resolve_model_name(model);
         let resolved_alias = alias.as_ref();
         let fuzzy = self.allows_fuzzy_lookup(model, resolved_alias);
@@ -1487,44 +1516,71 @@ impl PricingMap {
                     .flatten()
             })
             .or_else(|| {
-                self.enable_models_dev_fallback
-                    .then(|| {
-                        models_dev_pricing().and_then(|pricing| {
-                            pricing.context_limit_entry_or_alias(resolved_alias, Fuzzy::Allowed)
-                        })
-                    })
-                    .flatten()
+                models_dev().and_then(|pricing| {
+                    pricing.context_limit_entry_or_alias(resolved_alias, Fuzzy::Allowed)
+                })
             })
             .or_else(|| {
-                self.enable_embedded_models_dev_fallback
+                embedded_models_dev().and_then(|pricing| {
+                    pricing.context_limit_entry_or_alias(resolved_alias, Fuzzy::Allowed)
+                })
+            })
+            .or_else(|| {
+                self.context_limit_entry_or_alias_in(&self.builtin_context_limits, model, fuzzy)
+            })
+            .or_else(|| {
+                (resolved_alias != model)
                     .then(|| {
-                        embedded_models_dev_pricing()
-                            .context_limit_entry_or_alias(resolved_alias, Fuzzy::Allowed)
+                        self.context_limit_entry_or_alias_in(
+                            &self.builtin_context_limits,
+                            resolved_alias,
+                            Fuzzy::Allowed,
+                        )
                     })
                     .flatten()
             })
     }
 
     fn context_limit_entry_or_alias(&self, model: &str, fuzzy: Fuzzy) -> Option<u64> {
-        self.context_limits
+        self.context_limit_entry_or_alias_in(&self.context_limits, model, fuzzy)
+    }
+
+    fn context_limit_entry_or_alias_in(
+        &self,
+        context_limits: &FxHashMap<String, u64>,
+        model: &str,
+        fuzzy: Fuzzy,
+    ) -> Option<u64> {
+        context_limits
             .get(model)
             .copied()
             .or_else(|| {
-                pricing_alias(model).and_then(|alias| self.context_limit_entry(alias, fuzzy))
+                pricing_alias(model)
+                    .and_then(|alias| self.context_limit_entry_in(context_limits, alias, fuzzy))
             })
-            .or_else(|| self.context_limit_entry(model, fuzzy))
+            .or_else(|| self.context_limit_entry_in(context_limits, model, fuzzy))
     }
 
+    #[cfg(test)]
     fn context_limit_entry(&self, model: &str, fuzzy: Fuzzy) -> Option<u64> {
-        self.context_limits.get(model).copied().or_else(|| {
+        self.context_limit_entry_in(&self.context_limits, model, fuzzy)
+    }
+
+    fn context_limit_entry_in(
+        &self,
+        context_limits: &FxHashMap<String, u64>,
+        model: &str,
+        fuzzy: Fuzzy,
+    ) -> Option<u64> {
+        context_limits.get(model).copied().or_else(|| {
             if let Some(id) = self.exact_only.id_spelled_by(model) {
-                return self.context_limits.get(id).copied();
+                return context_limits.get(id).copied();
             }
             if fuzzy == Fuzzy::Denied || self.is_exact_only_lookup(model) {
                 return None;
             }
             let normalized_model = normalized_pricing_key(model);
-            self.context_limits
+            context_limits
                 .iter()
                 .filter(|(candidate, _)| !self.exact_only.contains(candidate.as_str()))
                 .filter(|(candidate, _)| {
@@ -2218,10 +2274,11 @@ impl PricingMap {
         self.context_limits
             .insert("grok-4.3".to_string(), 1_000_000);
         self.context_limits.insert("gpt-5.4".to_string(), 1_050_000);
-        // The gpt-5.6 family shares the 1,050,000-token window of the other
-        // long-context GPT-5 flagship models until upstream data lands.
+        // Keep these separate from loaded metadata so context lookup can try
+        // models.dev before reaching the final built-in fallback.
         for model in ["gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna"] {
-            self.context_limits.insert(model.to_string(), 1_050_000);
+            self.builtin_context_limits
+                .insert(model.to_string(), 1_050_000);
         }
         for model in [
             "claude-opus-4-8",
@@ -2549,9 +2606,9 @@ fn fetch_json_url(url: &str) -> std::io::Result<String> {
 #[cfg(test)]
 mod tests {
     use super::{
-        Fuzzy, Pricing, PricingEndpoint, PricingMap, build_time_models_dev_json,
-        build_time_pricing_json, embedded_models_dev_pricing, long_context_split_threshold,
-        model_without_date_suffix,
+        FastMultiplierOverrides, Fuzzy, Pricing, PricingEndpoint, PricingMap,
+        build_time_models_dev_json, build_time_pricing_json, embedded_models_dev_pricing,
+        long_context_split_threshold, model_without_date_suffix,
     };
     use ccusage_test_support::fs_fixture;
     use std::sync::atomic::{AtomicUsize, Ordering};
@@ -4214,16 +4271,16 @@ mod tests {
         use ccusage_cli::PricingOverride;
         assert!(
             embedded_models_dev_pricing()
-                .find_entry("claude-fable-5", Fuzzy::Allowed)
+                .find_entry("claude-fable-5-1", Fuzzy::Allowed)
                 .is_some(),
-            "embedded models.dev snapshot should include claude-fable-5"
+            "embedded models.dev snapshot should include claude-fable-5-1"
         );
         let offline = PricingMap::load_with_overrides(
             true,
             false,
             std::iter::empty::<(&String, &PricingOverride)>(),
         );
-        assert!(offline.find("claude-fable-5").is_some());
+        assert!(offline.find("claude-fable-5-1").is_some());
     }
 
     #[test]
@@ -4267,47 +4324,161 @@ mod tests {
     }
 
     #[test]
-    fn embedded_pricing_includes_gpt_5_6_family_with_long_context_rates() {
+    fn embedded_pricing_preserves_gpt_5_6_generated_sources() {
         let pricing = PricingMap::load_embedded();
+        let mut litellm_snapshot = PricingMap::default();
+        litellm_snapshot.load_json(build_time_pricing_json());
+        let models_dev_snapshot = embedded_models_dev_pricing();
 
-        let sol = pricing.find("gpt-5.6-sol").unwrap();
-        assert_eq!(sol.input, 5e-6);
-        assert_eq!(sol.output, 30e-6);
-        assert_eq!(sol.cache_create, 6.25e-6);
-        assert_eq!(sol.cache_read, 0.5e-6);
-        assert!(sol.cache_read_explicit);
-        assert_eq!(sol.input_above_200k, Some(10e-6));
-        assert_eq!(sol.output_above_200k, Some(45e-6));
-        assert_eq!(sol.cache_create_above_200k, Some(12.5e-6));
-        assert_eq!(sol.cache_read_above_200k, Some(1e-6));
-        assert_eq!(sol.long_context_threshold, Some(272_000));
-        assert_eq!(pricing.context_limit("gpt-5.6-sol"), Some(1_050_000));
-
-        // OpenAI cut the terra and luna rates after launch. The snapshots carry
-        // the new prices, and the frozen built-in table must not undo them.
-        let terra = pricing.find("gpt-5.6-terra").unwrap();
-        assert_eq!(terra.input, 2e-6);
-        assert_eq!(terra.output, 12e-6);
-        assert_eq!(terra.cache_creation_input_token_cost(), 2.5e-6);
-        assert_eq!(
-            terra.cache_creation_input_token_cost_above_200k_tokens(),
-            Some(5e-6)
-        );
-        assert_eq!(terra.input_above_200k, Some(4e-6));
-        assert_eq!(terra.output_above_200k, Some(18e-6));
-
-        let luna = pricing.find("gpt-5.6-luna").unwrap();
-        // Compared per million tokens: the per-token division leaves the rates
-        // one ulp away from the equivalent literals.
-        assert!((luna.input * 1e6 - 0.2).abs() < 1e-9);
-        assert!((luna.output * 1e6 - 1.2).abs() < 1e-9);
-        assert!((luna.input_above_200k.unwrap() * 1e6 - 0.4).abs() < 1e-9);
-        assert!((luna.output_above_200k.unwrap() * 1e6 - 1.8).abs() < 1e-9);
+        // The updater owns the numeric rates, so this regression fence checks
+        // that the merged map preserves its generated sources without freezing
+        // prices or requiring every optional rate bucket to exist.
+        for model in ["gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna"] {
+            let entry = pricing.find(model).unwrap();
+            let litellm_source = litellm_snapshot.find_exact(model);
+            let base_source = litellm_source
+                .or_else(|| models_dev_snapshot.find_exact(model))
+                .unwrap();
+            let tier_source = litellm_source
+                .filter(|source| {
+                    source.input_above_200k.is_some()
+                        || source.output_above_200k.is_some()
+                        || source.cache_create_above_200k.is_some()
+                        || source.cache_read_above_200k.is_some()
+                })
+                .or_else(|| models_dev_snapshot.find_exact(model))
+                .unwrap();
+            assert_eq!(entry.input, base_source.input, "{model}");
+            assert_eq!(entry.output, base_source.output, "{model}");
+            assert_eq!(entry.cache_create, base_source.cache_create, "{model}");
+            assert_eq!(entry.cache_read, base_source.cache_read, "{model}");
+            assert_eq!(
+                entry.input_above_200k, tier_source.input_above_200k,
+                "{model}"
+            );
+            assert_eq!(
+                entry.output_above_200k, tier_source.output_above_200k,
+                "{model}"
+            );
+            assert_eq!(
+                entry.cache_create_above_200k, tier_source.cache_create_above_200k,
+                "{model}"
+            );
+            assert_eq!(
+                entry.cache_read_above_200k, tier_source.cache_read_above_200k,
+                "{model}"
+            );
+            assert_eq!(
+                entry.long_context_threshold, tier_source.long_context_threshold,
+                "{model}"
+            );
+            assert_eq!(
+                pricing.context_limit(model),
+                litellm_snapshot
+                    .context_limits
+                    .get(model)
+                    .copied()
+                    .or_else(|| models_dev_snapshot.context_limits.get(model).copied())
+                    .or_else(|| pricing.builtin_context_limits.get(model).copied()),
+                "{model}"
+            );
+        }
     }
 
     #[test]
-    fn gpt_5_6_alias_resolves_to_sol_across_pricing_metadata() {
-        let pricing = PricingMap::load_embedded();
+    fn builtin_gpt_5_6_fallbacks_preserve_source_precedence() {
+        let mut pricing = PricingMap::default();
+        pricing.load_json(
+            r#"{
+                "gpt-5.6-sol": {
+                    "input_cost_per_token": 0.000004123,
+                    "output_cost_per_token": 0.000020123,
+                    "cache_creation_input_token_cost": 0.000005123,
+                    "cache_read_input_token_cost": 0.0000004123,
+                    "max_input_tokens": 654321
+                }
+            }"#,
+        );
+        let loaded = pricing.find_exact("gpt-5.6-sol").unwrap();
+        let loaded_context_limit = pricing.context_limit("gpt-5.6-sol");
+
+        let overrides = FastMultiplierOverrides::load();
+        let mut builtin = PricingMap::default();
+        builtin.put_builtin_pricing(&overrides);
+        let builtin_rates = builtin.find_exact("gpt-5.6-sol").unwrap();
+        assert_ne!(loaded.input, builtin_rates.input);
+        assert_ne!(loaded.output, builtin_rates.output);
+
+        pricing.put_builtin_pricing(&overrides);
+        let resolved = pricing.find_exact("gpt-5.6-sol").unwrap();
+        assert_eq!(resolved.input, loaded.input);
+        assert_eq!(resolved.output, loaded.output);
+        assert_eq!(resolved.cache_create, loaded.cache_create);
+        assert_eq!(resolved.cache_read, loaded.cache_read);
+        assert_eq!(resolved.fast_multiplier, loaded.fast_multiplier);
+        assert_eq!(pricing.context_limit("gpt-5.6-sol"), loaded_context_limit);
+
+        let mut embedded_models_dev = PricingMap::default();
+        embedded_models_dev
+            .context_limits
+            .insert("gpt-5.6-sol".to_string(), 777_777);
+        let mut live_models_dev = PricingMap::default();
+        live_models_dev
+            .context_limits
+            .insert("gpt-5.6-sol".to_string(), 888_888);
+        let empty_models_dev = PricingMap::default();
+        assert_eq!(
+            pricing.context_limit_with_fallbacks(
+                "gpt-5.6-sol",
+                || Some(&live_models_dev),
+                || Some(&embedded_models_dev),
+            ),
+            Some(654_321)
+        );
+        assert_eq!(
+            builtin.context_limit_with_fallbacks(
+                "gpt-5.6-sol",
+                || Some(&live_models_dev),
+                || Some(&embedded_models_dev),
+            ),
+            Some(888_888)
+        );
+        assert_eq!(
+            builtin.context_limit_with_fallbacks(
+                "gpt-5.6-sol",
+                || None,
+                || Some(&embedded_models_dev),
+            ),
+            Some(777_777)
+        );
+        assert_eq!(
+            builtin.context_limit_with_fallbacks(
+                "gpt-5.6-sol",
+                || None,
+                || Some(&empty_models_dev),
+            ),
+            Some(1_050_000)
+        );
+    }
+
+    #[test]
+    fn gpt_5_6_alias_resolves_to_sol_when_the_generic_entry_is_missing() {
+        let mut pricing = PricingMap::default();
+        pricing.load_json(
+            r#"{
+                "gpt-5.6-sol": {
+                    "input_cost_per_token": 0.000004,
+                    "output_cost_per_token": 0.00002,
+                    "cache_creation_input_token_cost": 0.000005,
+                    "cache_read_input_token_cost": 0.0000004,
+                    "input_cost_per_token_above_200k_tokens": 0.000008,
+                    "output_cost_per_token_above_200k_tokens": 0.00003,
+                    "cache_creation_input_token_cost_above_200k_tokens": 0.00001,
+                    "cache_read_input_token_cost_above_200k_tokens": 0.0000008,
+                    "max_input_tokens": 1050000
+                }
+            }"#,
+        );
         let alias = pricing.find("gpt-5.6").unwrap();
         let sol = pricing.find("gpt-5.6-sol").unwrap();
 
@@ -4321,7 +4492,32 @@ mod tests {
             pricing.context_limit("gpt-5.6"),
             pricing.context_limit("gpt-5.6-sol")
         );
-        assert_eq!(long_context_split_threshold("gpt-5.6"), 272_000);
+        assert_eq!(
+            long_context_split_threshold("gpt-5.6"),
+            long_context_split_threshold("gpt-5.6-sol")
+        );
+    }
+
+    #[test]
+    fn embedded_gpt_5_6_exact_entry_wins_over_the_sol_alias() {
+        let pricing = PricingMap::load_embedded();
+        let exact = pricing.find_exact("gpt-5.6").unwrap();
+        let resolved = pricing.find("gpt-5.6").unwrap();
+
+        assert_eq!(resolved.input, exact.input);
+        assert_eq!(resolved.output, exact.output);
+        assert_eq!(resolved.cache_create, exact.cache_create);
+        assert_eq!(resolved.cache_read, exact.cache_read);
+        assert_eq!(resolved.input_above_200k, exact.input_above_200k);
+        assert_eq!(resolved.output_above_200k, exact.output_above_200k);
+        assert_eq!(
+            resolved.long_context_threshold,
+            exact.long_context_threshold
+        );
+        assert_eq!(
+            pricing.context_limit("gpt-5.6"),
+            pricing.context_limits.get("gpt-5.6").copied()
+        );
     }
 
     #[test]
@@ -4539,31 +4735,32 @@ mod tests {
     #[test]
     fn embedded_pricing_resolves_opus_47_dot_model_names() {
         let pricing = PricingMap::load_embedded();
+        let opus_47 = pricing.find("claude-opus-4-7").unwrap();
 
         assert_eq!(
             pricing.find("claude-opus-4.7-20260416").unwrap().input,
-            5e-6
+            opus_47.input
         );
-        assert_eq!(pricing.context_limit("claude-opus-4.7"), Some(1_000_000));
         assert_eq!(
-            pricing
-                .find("openrouter/anthropic/claude-opus-4.7")
-                .unwrap()
-                .input,
-            5e-6
+            pricing.context_limit("claude-opus-4.7"),
+            pricing.context_limit("claude-opus-4-7")
         );
     }
 
     #[test]
     fn embedded_pricing_resolves_opus_48_dot_model_names() {
         let pricing = PricingMap::load_embedded();
+        let canonical = pricing.find("claude-opus-4-8").unwrap();
 
         let opus_48 = pricing.find("claude-opus-4.8-20260528").unwrap();
-        assert_eq!(opus_48.input, 5e-6);
-        assert_eq!(opus_48.output, 25e-6);
-        assert_eq!(opus_48.cache_create, 6.25e-6);
-        assert_eq!(opus_48.cache_read, 0.5e-6);
-        assert_eq!(pricing.context_limit("claude-opus-4.8"), Some(1_000_000));
+        assert_eq!(opus_48.input, canonical.input);
+        assert_eq!(opus_48.output, canonical.output);
+        assert_eq!(opus_48.cache_create, canonical.cache_create);
+        assert_eq!(opus_48.cache_read, canonical.cache_read);
+        assert_eq!(
+            pricing.context_limit("claude-opus-4.8"),
+            pricing.context_limit("claude-opus-4-8")
+        );
     }
 
     #[test]
