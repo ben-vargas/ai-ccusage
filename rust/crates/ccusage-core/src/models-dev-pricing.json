@@ -21688,16 +21688,6 @@
 			"context": 200000
 		}
 	},
-	"openai/o1-preview": {
-		"cost": {
-			"cache_read": 7.5,
-			"input": 15,
-			"output": 60
-		},
-		"limit": {
-			"context": 128000
-		}
-	},
 	"openai/o1-pro": {
 		"cost": {
 			"cache_read": 75,
