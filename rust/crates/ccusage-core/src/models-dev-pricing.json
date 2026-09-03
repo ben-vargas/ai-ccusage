@@ -7567,6 +7567,16 @@
 			"context": 128000
 		}
 	},
+	"consensusprotocol/Qwen3.8-27B": {
+		"cost": {
+			"cache_read": 0.08,
+			"input": 0.41,
+			"output": 2.5
+		},
+		"limit": {
+			"context": 32768
+		}
+	},
 	"consensusprotocol/deepseek-v4-flash": {
 		"cost": {
 			"cache_read": 0.02,
@@ -23095,7 +23105,7 @@
 			"output": 0.688
 		},
 		"limit": {
-			"context": 256000
+			"context": 131072
 		}
 	},
 	"qwen/qwen3.5-397b-a17b-thinking": {
