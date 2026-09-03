@@ -329,7 +329,7 @@
 			"output": 0.493
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"EVA-UNIT-01/EVA-LLaMA-3.33-70B-v0.0": {
@@ -339,7 +339,7 @@
 			"output": 2.006
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"EVA-UNIT-01/EVA-LLaMA-3.33-70B-v0.1": {
@@ -349,7 +349,7 @@
 			"output": 2.006
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"EVA-UNIT-01/EVA-Qwen2.5-32B-v0.2": {
@@ -510,7 +510,7 @@
 			"output": 0.1003
 		},
 		"limit": {
-			"context": 4000
+			"context": 4096
 		}
 	},
 	"HuggingFaceTB/SmolLM3-3B-Base": {
@@ -602,7 +602,7 @@
 			"output": 0.7
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"Ling-1T": {
@@ -902,16 +902,6 @@
 			"cache_read": 0.15,
 			"input": 0.3,
 			"output": 1.2
-		},
-		"limit": {
-			"context": 128000
-		}
-	},
-	"NousResearch/hermes-4-70b": {
-		"cost": {
-			"cache_read": 0.1003,
-			"input": 0.2006,
-			"output": 0.3995
 		},
 		"limit": {
 			"context": 128000
@@ -1480,7 +1470,7 @@
 			"output": 0.5
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"Ring-1T": {
@@ -1529,7 +1519,7 @@
 			"output": 0.493
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"Sao10K/L3.3-70B-Euryale-v2.3": {
@@ -1549,7 +1539,7 @@
 			"output": 0.493
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"Steelskull/L3.3-Electra-R1-70b": {
@@ -1559,7 +1549,7 @@
 			"output": 0.69989
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"Steelskull/L3.3-MS-Evayale-70B": {
@@ -1579,7 +1569,7 @@
 			"output": 0.493
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"Steelskull/L3.3-Nevoria-R1-70b": {
@@ -1589,7 +1579,7 @@
 			"output": 0.493
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"TEE/deepseek-v3.2": {
@@ -1909,7 +1899,7 @@
 			"output": 0.1207
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"TheDrummer/Cydonia-24B-v4": {
@@ -1919,7 +1909,7 @@
 			"output": 0.2414
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"TheDrummer/Cydonia-24B-v4.3": {
@@ -1959,7 +1949,7 @@
 			"output": 0.493
 		},
 		"limit": {
-			"context": 8192
+			"context": 32768
 		}
 	},
 	"VongolaChouko/Starcannon-Unleashed-12B-v1.0": {
@@ -5431,7 +5421,7 @@
 			"output": 1.8
 		},
 		"limit": {
-			"context": 128000
+			"context": 131072
 		}
 	},
 	"bge-m3": {
@@ -9621,16 +9611,6 @@
 			"context": 128000
 		}
 	},
-	"dots-studio/dots-3-note-preview": {
-		"cost": {
-			"cache_read": 0.05,
-			"input": 0.1,
-			"output": 0.2
-		},
-		"limit": {
-			"context": 393216
-		}
-	},
 	"doubao-1.5-pro-256k": {
 		"cost": {
 			"cache_read": 0.3995,
@@ -12232,16 +12212,6 @@
 		"exactOnly": true,
 		"limit": {
 			"context": 200000
-		}
-	},
-	"glm-z1-air": {
-		"cost": {
-			"cache_read": 0.035,
-			"input": 0.07,
-			"output": 0.07
-		},
-		"limit": {
-			"context": 32000
 		}
 	},
 	"glm-z1-airx": {
@@ -15011,7 +14981,7 @@
 			"output": 0.7
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"huihui-ai/Qwen2.5-32B-Instruct-abliterated": {
@@ -16254,7 +16224,7 @@
 			"output": 0.5
 		},
 		"limit": {
-			"context": 32768
+			"context": 65536
 		}
 	},
 	"meituan/longcat-2.0": {
@@ -19080,7 +19050,7 @@
 			"output": 0.493
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"nousresearch/hermes-2-pro-llama-3-8b": {
@@ -19096,6 +19066,15 @@
 		"cost": {
 			"input": 1,
 			"output": 1
+		},
+		"limit": {
+			"context": 131072
+		}
+	},
+	"nousresearch/hermes-4-70b": {
+		"cost": {
+			"input": 0.13,
+			"output": 0.4
 		},
 		"limit": {
 			"context": 131072
@@ -21911,7 +21890,7 @@
 			"output": 0.4
 		},
 		"limit": {
-			"context": 32768
+			"context": 131072
 		}
 	},
 	"pearl-ai/gemma-4-31b-it": {
@@ -21941,7 +21920,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 127000
+			"context": 128000
 		}
 	},
 	"perplexity/sonar": {
@@ -23638,7 +23617,7 @@
 			"output": 0.69989
 		},
 		"limit": {
-			"context": 32000
+			"context": 128000
 		}
 	},
 	"qwen3-14b": {
@@ -25229,7 +25208,7 @@
 			"output": 0.3
 		},
 		"limit": {
-			"context": 16384
+			"context": 32768
 		}
 	},
 	"soob3123/Veiled-Calla-12B": {
@@ -25513,7 +25492,7 @@
 			"output": 0.3
 		},
 		"limit": {
-			"context": 256000
+			"context": 262144
 		}
 	},
 	"stepfun-ai/step-3.5-flash-2603": {
@@ -25523,7 +25502,7 @@
 			"output": 0.3
 		},
 		"limit": {
-			"context": 256000
+			"context": 262144
 		}
 	},
 	"stepfun/step-3": {
@@ -26156,7 +26135,7 @@
 			"output": 0.272
 		},
 		"limit": {
-			"context": 128000
+			"context": 131072
 		}
 	},
 	"unsloth/gemma-3-27b-it": {
@@ -27979,7 +27958,7 @@
 			"output": 3
 		},
 		"limit": {
-			"context": 200000
+			"context": 204800
 		}
 	},
 	"z-ai/GLM-4.6-turbo:thinking": {
@@ -27989,7 +27968,7 @@
 			"output": 3
 		},
 		"limit": {
-			"context": 200000
+			"context": 204800
 		}
 	},
 	"z-ai/glm-4.5": {
@@ -28031,7 +28010,7 @@
 			"output": 1.8
 		},
 		"limit": {
-			"context": 64000
+			"context": 65536
 		}
 	},
 	"z-ai/glm-4.6": {
