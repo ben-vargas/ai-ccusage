@@ -15172,6 +15172,16 @@
 			"context": 262144
 		}
 	},
+	"inclusionai/ling-3.0-flash-fin": {
+		"cost": {
+			"cache_read": 0.012,
+			"input": 0.06,
+			"output": 0.18
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"inclusionai/ling-3.0-flash:thinking": {
 		"cost": {
 			"cache_read": 0.015,
