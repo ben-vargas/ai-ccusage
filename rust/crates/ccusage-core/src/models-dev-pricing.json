@@ -21775,6 +21775,26 @@
 			"context": 262144
 		}
 	},
+	"ornith-ai/ornith-1.5-9b": {
+		"cost": {
+			"cache_read": 0.05,
+			"input": 0.1,
+			"output": 0.2
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
+	"ornith-ai/ornith-1.5-9b:thinking": {
+		"cost": {
+			"cache_read": 0.05,
+			"input": 0.1,
+			"output": 0.2
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"osmosis/osmosis-structure-0.6b": {
 		"cost": {
 			"input": 0.1,
@@ -23165,6 +23185,26 @@
 		},
 		"limit": {
 			"context": 983616
+		}
+	},
+	"qwen/qwen3.6-35b-a3b-uncensored": {
+		"cost": {
+			"cache_read": 0.075,
+			"input": 0.15,
+			"output": 0.95
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
+	"qwen/qwen3.6-35b-a3b-uncensored:thinking": {
+		"cost": {
+			"cache_read": 0.075,
+			"input": 0.15,
+			"output": 0.95
+		},
+		"limit": {
+			"context": 262144
 		}
 	},
 	"qwen/qwen3.6-flash": {
@@ -28998,9 +29038,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.184,
-			"input": 1.12,
-			"output": 3.52
+			"cache_read": 0.1863,
+			"input": 1.134,
+			"output": 3.564
 		},
 		"exactOnly": true,
 		"limit": {
