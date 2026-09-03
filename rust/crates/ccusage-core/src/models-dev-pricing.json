@@ -29121,9 +29121,9 @@
 	},
 	"~z-ai/glm-flash-latest": {
 		"cost": {
-			"cache_read": 0.01425,
-			"input": 0.07125,
-			"output": 0.2375
+			"cache_read": 0.015,
+			"input": 0.075,
+			"output": 0.25
 		},
 		"exactOnly": true,
 		"limit": {
@@ -29132,13 +29132,13 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.1886,
-			"input": 1.148,
-			"output": 3.608
+			"cache_read": 0.1,
+			"input": 1.15,
+			"output": 3.5
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048576
+			"context": 262144
 		}
 	}
 }
