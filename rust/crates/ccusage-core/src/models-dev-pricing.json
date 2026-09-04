@@ -7591,11 +7591,21 @@
 	"consensusprotocol/deepseek-v4-flash": {
 		"cost": {
 			"cache_read": 0.02,
-			"input": 0.13,
-			"output": 0.27
+			"input": 0.08,
+			"output": 0.16
 		},
 		"limit": {
 			"context": 524288
+		}
+	},
+	"consensusprotocol/glm-5.3-flash": {
+		"cost": {
+			"cache_read": 0.02,
+			"input": 0.1,
+			"output": 0.25
+		},
+		"limit": {
+			"context": 1048576
 		}
 	},
 	"consensusprotocol/gpt-oss-20b": {
