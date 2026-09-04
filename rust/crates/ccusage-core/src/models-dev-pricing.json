@@ -19905,6 +19905,15 @@
 			"context": 1000000
 		}
 	},
+	"nvidia/nemotron-3.5-content-safety": {
+		"cost": {
+			"input": 0.2,
+			"output": 0.2
+		},
+		"limit": {
+			"context": 131072
+		}
+	},
 	"nvidia/nemotron-3.5-lightning": {
 		"cost": {
 			"cache_read": 0.04,
