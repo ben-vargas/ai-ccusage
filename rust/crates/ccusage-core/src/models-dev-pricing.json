@@ -1772,6 +1772,16 @@
 			"context": 65536
 		}
 	},
+	"TEE/qwen3-8b": {
+		"cost": {
+			"cache_read": 0.11,
+			"input": 0.11,
+			"output": 0.45
+		},
+		"limit": {
+			"context": 40960
+		}
+	},
 	"TEE/qwen3.5-27b": {
 		"cost": {
 			"cache_read": 0.15,
@@ -14799,15 +14809,6 @@
 		"cost": {
 			"input": 0.996,
 			"output": 2.989
-		},
-		"limit": {
-			"context": 128000
-		}
-	},
-	"hermes-4-70b": {
-		"cost": {
-			"input": 0.129,
-			"output": 0.399
 		},
 		"limit": {
 			"context": 128000
