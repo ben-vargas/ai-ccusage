@@ -12623,6 +12623,17 @@
 			"context": 1048576
 		}
 	},
+	"google-ai-studio/gemini-3.8-flash": {
+		"cost": {
+			"cache_read": 0.075,
+			"cache_write": 0.08333,
+			"input": 0.75,
+			"output": 3.75
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"google-ai-studio/gemini-pro-latest": {
 		"cost": {
 			"cache_read": 0.2,
@@ -14210,7 +14221,19 @@
 			"cache_read": 1,
 			"cache_write": 12.5,
 			"input": 10,
-			"output": 50
+			"output": 50,
+			"tiers": [
+				{
+					"cache_read": 2,
+					"cache_write": 25,
+					"input": 20,
+					"output": 75,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
 		},
 		"limit": {
 			"context": 1050000
@@ -19287,6 +19310,16 @@
 			"context": 1048576
 		}
 	},
+	"novita/glm-5.3-flash": {
+		"cost": {
+			"cache_read": 0.015,
+			"input": 0.075,
+			"output": 0.25
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"novita/hy3": {
 		"cost": {
 			"cache_read": 0.035,
@@ -23302,7 +23335,7 @@
 			"output": 0.688
 		},
 		"limit": {
-			"context": 256000
+			"context": 131072
 		}
 	},
 	"qwen/qwen3.5-397b-a17b-thinking": {
