@@ -19343,9 +19343,9 @@
 	},
 	"novita/glm-5.3-flash": {
 		"cost": {
-			"cache_read": 0.015,
-			"input": 0.075,
-			"output": 0.25
+			"cache_read": 0.03,
+			"input": 0.15,
+			"output": 0.5
 		},
 		"limit": {
 			"context": 1048576
@@ -21815,16 +21815,16 @@
 	},
 	"openai/gpt-latest": {
 		"cost": {
-			"cache_read": 0.4,
-			"cache_write": 5,
-			"input": 4,
-			"output": 20,
+			"cache_read": 1,
+			"cache_write": 12.5,
+			"input": 10,
+			"output": 50,
 			"tiers": [
 				{
-					"cache_read": 0.8,
-					"cache_write": 10,
-					"input": 8,
-					"output": 30,
+					"cache_read": 2,
+					"cache_write": 25,
+					"input": 20,
+					"output": 75,
 					"tier": {
 						"size": 272000,
 						"type": "context"
