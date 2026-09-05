@@ -15281,9 +15281,9 @@
 	},
 	"inkling": {
 		"cost": {
-			"cache_read": 0.17,
-			"input": 1,
-			"output": 4.05
+			"cache_read": 0.185096,
+			"input": 1.0888,
+			"output": 4.40964
 		},
 		"exactOnly": true,
 		"limit": {
