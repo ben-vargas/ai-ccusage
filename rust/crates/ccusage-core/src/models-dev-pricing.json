@@ -4968,6 +4968,17 @@
 			"context": 1050000
 		}
 	},
+	"azure/gpt-6-astra": {
+		"cost": {
+			"cache_read": 1,
+			"cache_write": 12.5,
+			"input": 10,
+			"output": 50
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
 	"azure/gpt-oss-120b": {
 		"cost": {
 			"input": 0.15,
@@ -24852,6 +24863,16 @@
 		},
 		"limit": {
 			"context": 262144
+		}
+	},
+	"runware/kimi-k3": {
+		"cost": {
+			"cache_read": 0.3,
+			"input": 3,
+			"output": 15
+		},
+		"limit": {
+			"context": 1048576
 		}
 	},
 	"sakana-namazu": {
