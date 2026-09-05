@@ -20591,6 +20591,29 @@
 			"context": 1050000
 		}
 	},
+	"openai-gpt-6-astra-pro": {
+		"cost": {
+			"cache_read": 1.25,
+			"cache_write": 15.625,
+			"input": 12.5,
+			"output": 62.5,
+			"tiers": [
+				{
+					"cache_read": 2.5,
+					"cache_write": 31.25,
+					"input": 25,
+					"output": 93.75,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
 	"openai-o1": {
 		"cost": {
 			"cache_read": 7.5,
@@ -21542,7 +21565,7 @@
 	"openai/gpt-5.6-luna-fast": {
 		"cost": {
 			"cache_read": 0.04,
-			"cache_write": 0.25,
+			"cache_write": 0.5,
 			"input": 0.4,
 			"output": 2.4
 		},
@@ -21610,7 +21633,7 @@
 	"openai/gpt-5.6-sol-fast": {
 		"cost": {
 			"cache_read": 0.4,
-			"cache_write": 2.5,
+			"cache_write": 5,
 			"input": 4,
 			"output": 20
 		},
@@ -21667,7 +21690,7 @@
 	"openai/gpt-5.6-terra-fast": {
 		"cost": {
 			"cache_read": 0.4,
-			"cache_write": 2.5,
+			"cache_write": 5,
 			"input": 4,
 			"output": 24
 		},
@@ -21724,7 +21747,7 @@
 	"openai/gpt-6-astra-fast": {
 		"cost": {
 			"cache_read": 2,
-			"cache_write": 12.5,
+			"cache_write": 25,
 			"input": 20,
 			"output": 100,
 			"tiers": [
