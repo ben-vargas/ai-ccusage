@@ -10774,7 +10774,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-flash-lite-preview-09-2025": {
@@ -10785,7 +10785,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-flash-lite-preview-09-2025-thinking": {
@@ -10796,7 +10796,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-flash-lite@eu": {
@@ -10829,7 +10829,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-flash-preview-04-17": {
@@ -10840,7 +10840,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-flash-preview-04-17:thinking": {
@@ -10851,7 +10851,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-flash-preview-05-20": {
@@ -10884,7 +10884,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-flash-preview-09-2025-thinking": {
@@ -10895,7 +10895,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-flash@eu": {
@@ -10939,7 +10939,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-pro-preview-03-25": {
@@ -10950,7 +10950,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-pro-preview-05-06": {
@@ -10961,7 +10961,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-pro-preview-06-05": {
@@ -10972,7 +10972,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"gemini-2.5-pro@eu": {
@@ -13025,7 +13025,7 @@
 			"output": 3
 		},
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"google/gemini-3-pro": {
@@ -13143,7 +13143,7 @@
 			"output": 12
 		},
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"google/gemini-3.1-pro-preview-low": {
@@ -13154,7 +13154,7 @@
 			"output": 12
 		},
 		"limit": {
-			"context": 1048756
+			"context": 1048576
 		}
 	},
 	"google/gemini-3.5-flash": {
