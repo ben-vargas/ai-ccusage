@@ -23380,6 +23380,15 @@
 			"context": 262144
 		}
 	},
+	"prism-ml/ternary-bonsai-2-27b": {
+		"cost": {
+			"input": 0.075,
+			"output": 0.5
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"public/deepseek-r1": {
 		"cost": {
 			"input": 0.55,
@@ -31077,9 +31086,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.16692,
-			"input": 0.8988,
-			"output": 2.8248
+			"cache_read": 0.146625,
+			"input": 0.8925,
+			"output": 2.805
 		},
 		"exactOnly": true,
 		"limit": {
