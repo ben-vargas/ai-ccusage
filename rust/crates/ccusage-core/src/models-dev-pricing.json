@@ -30935,9 +30935,9 @@
 	},
 	"~moonshotai/kimi-latest": {
 		"cost": {
-			"cache_read": 0.23,
-			"input": 2.1,
-			"output": 10.95
+			"cache_read": 0.2262,
+			"input": 1.95,
+			"output": 10.92
 		},
 		"exactOnly": true,
 		"limit": {
@@ -31086,9 +31086,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.146625,
-			"input": 0.8925,
-			"output": 2.805
+			"cache_read": 0.16562,
+			"input": 0.8918,
+			"output": 2.8028
 		},
 		"exactOnly": true,
 		"limit": {
