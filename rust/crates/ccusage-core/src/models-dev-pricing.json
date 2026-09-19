@@ -13615,6 +13615,17 @@
 			"context": 131072
 		}
 	},
+	"google/diffusiongemma": {
+		"cost": {
+			"cache_read": 0.025,
+			"input": 0.05,
+			"output": 0.15
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 262144
+		}
+	},
 	"google/diffusiongemma-26B-A4B-it": {
 		"cost": {
 			"cache_read": 0.5,
