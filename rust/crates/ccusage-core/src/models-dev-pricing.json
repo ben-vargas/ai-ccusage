@@ -19159,16 +19159,6 @@
 			"context": 131072
 		}
 	},
-	"mistralai/mistral-large-3-675b-instruct-2512": {
-		"cost": {
-			"cache_read": 0.5,
-			"input": 1,
-			"output": 3
-		},
-		"limit": {
-			"context": 262144
-		}
-	},
 	"mistralai/mistral-medium-3": {
 		"cost": {
 			"cache_read": 0.04,
@@ -23382,6 +23372,7 @@
 	},
 	"prism-ml/ternary-bonsai-2-27b": {
 		"cost": {
+			"cache_read": 0.0375,
 			"input": 0.075,
 			"output": 0.5
 		},
@@ -30890,9 +30881,9 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.001694,
-			"input": 0.05324,
-			"output": 0.15972
+			"cache_read": 0.001666,
+			"input": 0.05236,
+			"output": 0.15708
 		},
 		"limit": {
 			"context": 1024000
