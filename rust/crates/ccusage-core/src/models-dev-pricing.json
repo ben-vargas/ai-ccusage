@@ -14182,6 +14182,16 @@
 			"context": 32768
 		}
 	},
+	"google/gemma4-31b-splituntied": {
+		"cost": {
+			"cache_read": 0.05,
+			"input": 0.1,
+			"output": 0.3
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"gpt-3.5-turbo": {
 		"cost": {
 			"cache_read": 0,
@@ -26455,16 +26465,6 @@
 			"context": 163840
 		}
 	},
-	"slowburn/gemma4-31b-splituntied": {
-		"cost": {
-			"cache_read": 0.05,
-			"input": 0.1,
-			"output": 0.3
-		},
-		"limit": {
-			"context": 262144
-		}
-	},
 	"solar-mini": {
 		"cost": {
 			"input": 0.15,
@@ -30901,7 +30901,7 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.008,
+			"cache_read": 0.016,
 			"input": 0.04,
 			"output": 0.08
 		},
