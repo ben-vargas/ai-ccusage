@@ -14119,6 +14119,16 @@
 			"context": 262144
 		}
 	},
+	"google/gemma-4-26b-a4b-it-cybersecurity": {
+		"cost": {
+			"cache_read": 0.0528,
+			"input": 0.1056,
+			"output": 0.3344
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"google/gemma-4-26b-a4b-it:thinking": {
 		"cost": {
 			"cache_read": 0.065,
@@ -20970,8 +20980,9 @@
 	},
 	"nvidia/nemotron-3.5-content-safety": {
 		"cost": {
-			"input": 0.2,
-			"output": 0.2
+			"cache_read": 0.025,
+			"input": 0.05,
+			"output": 0.15
 		},
 		"limit": {
 			"context": 131072
@@ -24732,6 +24743,16 @@
 			"context": 1000000
 		}
 	},
+	"qwen/qwen3.8-27b-cybersecurity": {
+		"cost": {
+			"cache_read": 0.05,
+			"input": 0.1,
+			"output": 0.6
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"qwen/qwen3.8-27b-fable": {
 		"cost": {
 			"cache_read": 0.125,
@@ -24774,9 +24795,9 @@
 	},
 	"qwen/qwen3.8-27b-uncensored": {
 		"cost": {
-			"cache_read": 0.125,
-			"input": 0.25,
-			"output": 1.5
+			"cache_read": 0.2,
+			"input": 0.2,
+			"output": 1.7
 		},
 		"limit": {
 			"context": 524288
@@ -24784,9 +24805,9 @@
 	},
 	"qwen/qwen3.8-27b-uncensored:thinking": {
 		"cost": {
-			"cache_read": 0.125,
-			"input": 0.25,
-			"output": 1.5
+			"cache_read": 0.2,
+			"input": 0.2,
+			"output": 1.7
 		},
 		"limit": {
 			"context": 524288
@@ -30148,6 +30169,16 @@
 		},
 		"limit": {
 			"context": 1000000
+		}
+	},
+	"z-ai/glm-5.3-flash-cybersecurity": {
+		"cost": {
+			"cache_read": 0.075,
+			"input": 0.15,
+			"output": 0.5
+		},
+		"limit": {
+			"context": 1048576
 		}
 	},
 	"z-ai/glm-5.3-flash-uncensored": {
