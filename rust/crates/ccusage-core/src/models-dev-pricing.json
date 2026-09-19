@@ -21419,16 +21419,16 @@
 	},
 	"openai-gpt-56-sol": {
 		"cost": {
-			"cache_read": 0.25,
-			"cache_write": 3.125,
-			"input": 2.5,
-			"output": 12.5,
+			"cache_read": 0.5,
+			"cache_write": 6.25,
+			"input": 5,
+			"output": 25,
 			"tiers": [
 				{
-					"cache_read": 0.5,
-					"cache_write": 6.25,
-					"input": 5,
-					"output": 18.75,
+					"cache_read": 1,
+					"cache_write": 12.5,
+					"input": 10,
+					"output": 37.5,
 					"tier": {
 						"size": 272000,
 						"type": "context"
@@ -21442,16 +21442,16 @@
 	},
 	"openai-gpt-56-sol-pro": {
 		"cost": {
-			"cache_read": 0.25,
-			"cache_write": 3.125,
-			"input": 2.5,
-			"output": 12.5,
+			"cache_read": 0.5,
+			"cache_write": 6.25,
+			"input": 5,
+			"output": 25,
 			"tiers": [
 				{
-					"cache_read": 0.5,
-					"cache_write": 6.25,
-					"input": 5,
-					"output": 18.75,
+					"cache_read": 1,
+					"cache_write": 12.5,
+					"input": 10,
+					"output": 37.5,
 					"tier": {
 						"size": 272000,
 						"type": "context"
@@ -30881,12 +30881,12 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.001666,
-			"input": 0.05236,
-			"output": 0.15708
+			"cache_read": 0.001624,
+			"input": 0.05104,
+			"output": 0.15312
 		},
 		"limit": {
-			"context": 1024000
+			"context": 1048576
 		}
 	},
 	"~google/gemini-flash-latest": {
