@@ -22563,23 +22563,12 @@
 			"context": 1050000
 		}
 	},
-	"openai/gpt-5.6-sol-discounted": {
-		"cost": {
-			"cache_read": 0.2,
-			"cache_write": 2.5,
-			"input": 2,
-			"output": 10
-		},
-		"limit": {
-			"context": 1050000
-		}
-	},
 	"openai/gpt-5.6-sol-fast": {
 		"cost": {
-			"cache_read": 0.4,
-			"cache_write": 5,
-			"input": 4,
-			"output": 20
+			"cache_read": 0.8,
+			"cache_write": 10,
+			"input": 8,
+			"output": 40
 		},
 		"limit": {
 			"context": 1050000
@@ -30903,9 +30892,9 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.00154,
-			"input": 0.0484,
-			"output": 0.1452
+			"cache_read": 0.001512,
+			"input": 0.04752,
+			"output": 0.14256
 		},
 		"limit": {
 			"context": 1024000
@@ -30948,9 +30937,9 @@
 	},
 	"~moonshotai/kimi-latest": {
 		"cost": {
-			"cache_read": 0.240062,
-			"input": 2.0695,
-			"output": 11.5892
+			"cache_read": 0.2175,
+			"input": 1.875,
+			"output": 10.5
 		},
 		"exactOnly": true,
 		"limit": {
