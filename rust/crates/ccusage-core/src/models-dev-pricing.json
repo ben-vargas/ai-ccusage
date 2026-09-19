@@ -30881,12 +30881,12 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.00161,
-			"input": 0.0506,
-			"output": 0.1518
+			"cache_read": 0.001582,
+			"input": 0.04972,
+			"output": 0.14916
 		},
 		"limit": {
-			"context": 1024000
+			"context": 1048576
 		}
 	},
 	"~google/gemini-flash-latest": {
