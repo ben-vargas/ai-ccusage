@@ -30150,6 +30150,16 @@
 			"context": 1048576
 		}
 	},
+	"z-ai/glm-5.3-flashx": {
+		"cost": {
+			"cache_read": 0.075,
+			"input": 0.37,
+			"output": 1.25
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"z-ai/glm-5.3:thinking": {
 		"cost": {
 			"cache_read": 0.2,
@@ -30881,12 +30891,12 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.001582,
-			"input": 0.04972,
-			"output": 0.14916
+			"cache_read": 0.001568,
+			"input": 0.04928,
+			"output": 0.14784
 		},
 		"limit": {
-			"context": 1048576
+			"context": 1024000
 		}
 	},
 	"~google/gemini-flash-latest": {
