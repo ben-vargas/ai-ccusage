@@ -1591,16 +1591,6 @@
 			"context": 164000
 		}
 	},
-	"TEE/deepseek-v4-flash": {
-		"cost": {
-			"cache_read": 0.04,
-			"input": 0.2,
-			"output": 0.4
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
 	"TEE/deepseek-v4.1-flash": {
 		"cost": {
 			"cache_read": 0.13,
@@ -30995,9 +30985,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.018144,
-			"input": 0.57024,
-			"output": 1.71072
+			"cache_read": 0.01806,
+			"input": 0.5676,
+			"output": 1.7028
 		},
 		"exactOnly": true,
 		"limit": {
