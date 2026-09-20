@@ -16326,16 +16326,6 @@
 			"context": 64000
 		}
 	},
-	"jev-latest": {
-		"cost": {
-			"input": 0.042,
-			"output": 0
-		},
-		"exactOnly": true,
-		"limit": {
-			"context": 64000
-		}
-	},
 	"jp.amazon.nova-2-lite-v1:0": {
 		"cost": {
 			"cache_read": 0.099,
@@ -31007,9 +30997,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.017136,
-			"input": 0.53856,
-			"output": 1.61568
+			"cache_read": 0.016968,
+			"input": 0.53328,
+			"output": 1.59984
 		},
 		"exactOnly": true,
 		"limit": {
