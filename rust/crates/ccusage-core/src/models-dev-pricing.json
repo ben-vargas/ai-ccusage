@@ -24803,9 +24803,9 @@
 	},
 	"qwen/qwen3.8-27b-uncensored": {
 		"cost": {
-			"cache_read": 0.18,
-			"input": 0.2,
-			"output": 1.7
+			"cache_read": 0.125,
+			"input": 0.15,
+			"output": 1.2
 		},
 		"limit": {
 			"context": 524288
@@ -24813,9 +24813,9 @@
 	},
 	"qwen/qwen3.8-27b-uncensored:thinking": {
 		"cost": {
-			"cache_read": 0.18,
-			"input": 0.2,
-			"output": 1.7
+			"cache_read": 0.125,
+			"input": 0.15,
+			"output": 1.2
 		},
 		"limit": {
 			"context": 524288
@@ -24897,11 +24897,12 @@
 	"qwen/qwen3.8-omni-flash": {
 		"cost": {
 			"cache_read": 0.016,
-			"input": 0.15,
-			"output": 0.47
+			"cache_write": 0.13,
+			"input": 0.13,
+			"output": 0.43
 		},
 		"limit": {
-			"context": 991808
+			"context": 1000000
 		}
 	},
 	"qwen/qwenCoder/models/Qwen3-Coder-30B-A3B-Instruct": {
@@ -27554,6 +27555,17 @@
 	"typesafe/jev": {
 		"cost": {
 			"cache_read": 0,
+			"input": 0.042,
+			"output": 0
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 32000
+		}
+	},
+	"typesafe/jev-latest": {
+		"cost": {
+			"cache_read": 0.021,
 			"input": 0.042,
 			"output": 0
 		},
@@ -30985,13 +30997,13 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.01806,
-			"input": 0.5676,
-			"output": 1.7028
+			"cache_read": 0.018876,
+			"input": 0.56628,
+			"output": 1.69884
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048576
+			"context": 1024000
 		}
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
