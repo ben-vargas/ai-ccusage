@@ -26946,6 +26946,16 @@
 			"context": 262144
 		}
 	},
+	"stepfun/step-5-preview": {
+		"cost": {
+			"cache_read": 0.05,
+			"input": 1,
+			"output": 2.7
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"subconscious/glm-5.2": {
 		"cost": {
 			"cache_read": 0.26,
