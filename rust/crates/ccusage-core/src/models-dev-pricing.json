@@ -5597,7 +5597,7 @@
 	},
 	"baidu/deepseek-v4-flash": {
 		"cost": {
-			"cache_read": 0.044,
+			"cache_read": 0.014,
 			"input": 0.44,
 			"output": 1.32
 		},
@@ -5607,9 +5607,19 @@
 	},
 	"baidu/deepseek-v4-pro": {
 		"cost": {
-			"cache_read": 0.132,
+			"cache_read": 0.042,
 			"input": 1.32,
 			"output": 3.96
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
+	"baidu/deepseek-v4.1-flash": {
+		"cost": {
+			"cache_read": 0.006,
+			"input": 0.3,
+			"output": 1.2
 		},
 		"limit": {
 			"context": 1048576
@@ -30997,9 +31007,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.018348,
-			"input": 0.55044,
-			"output": 1.65132
+			"cache_read": 0.01826,
+			"input": 0.5478,
+			"output": 1.6434
 		},
 		"exactOnly": true,
 		"limit": {
