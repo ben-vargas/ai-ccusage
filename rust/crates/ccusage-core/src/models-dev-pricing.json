@@ -18046,6 +18046,26 @@
 			"context": 1048576
 		}
 	},
+	"mimo-v2.6-flash": {
+		"cost": {
+			"cache_read": 0.0028,
+			"input": 0.14,
+			"output": 0.28
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
+	"mimo-v2.6-pro": {
+		"cost": {
+			"cache_read": 0.003625,
+			"input": 0.435,
+			"output": 0.87
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"mimo/mimo-v2.5": {
 		"cost": {
 			"input": 0.14,
@@ -31410,13 +31430,13 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.018018,
-			"input": 0.56628,
-			"output": 1.69884
+			"cache_read": 0.018621,
+			"input": 0.558624,
+			"output": 1.675872
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048576
+			"context": 1024000
 		}
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
