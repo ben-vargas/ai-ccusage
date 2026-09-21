@@ -30135,6 +30135,36 @@
 			"context": 1048576
 		}
 	},
+	"xiaomi/mimo-v2.6-flash": {
+		"cost": {
+			"cache_read": 0.0028,
+			"input": 0.14,
+			"output": 0.28
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
+	"xiaomi/mimo-v2.6-pro": {
+		"cost": {
+			"cache_read": 0.0036,
+			"input": 0.435,
+			"output": 0.87
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
+	"xiaomi/mimo-v2.6-pro-ultraspeed": {
+		"cost": {
+			"cache_read": 0.036,
+			"input": 4.35,
+			"output": 8.7
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"xiaomimimo/mimo-v2-flash": {
 		"cost": {
 			"cache_read": 0.3,
@@ -31430,9 +31460,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.018621,
-			"input": 0.558624,
-			"output": 1.675872
+			"cache_read": 0.01848,
+			"input": 0.5544,
+			"output": 1.6632
 		},
 		"exactOnly": true,
 		"limit": {
