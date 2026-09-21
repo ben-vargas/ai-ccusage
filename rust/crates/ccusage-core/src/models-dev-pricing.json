@@ -17984,6 +17984,26 @@
 			"context": 65536
 		}
 	},
+	"mimo-v2-6-flash": {
+		"cost": {
+			"cache_read": 0.7,
+			"input": 0.7,
+			"output": 1.4
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
+	"mimo-v2-6-pro": {
+		"cost": {
+			"cache_read": 2.175,
+			"input": 2.175,
+			"output": 4.35
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"mimo-v2-flash": {
 		"cost": {
 			"cache_read": 0.0028,
@@ -18042,26 +18062,6 @@
 			"output": 2.61
 		},
 		"exactOnly": true,
-		"limit": {
-			"context": 1048576
-		}
-	},
-	"mimo-v2.6-flash": {
-		"cost": {
-			"cache_read": 0.0028,
-			"input": 0.14,
-			"output": 0.28
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
-	"mimo-v2.6-pro": {
-		"cost": {
-			"cache_read": 0.003625,
-			"input": 0.435,
-			"output": 0.87
-		},
 		"limit": {
 			"context": 1048576
 		}
@@ -31460,9 +31460,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.018216,
-			"input": 0.54648,
-			"output": 1.63944
+			"cache_read": 0.017952,
+			"input": 0.53856,
+			"output": 1.61568
 		},
 		"exactOnly": true,
 		"limit": {
@@ -31473,7 +31473,7 @@
 		"cost": {
 			"cache_read": 0.01,
 			"input": 0.04,
-			"output": 0.2
+			"output": 0.4
 		},
 		"limit": {
 			"context": 1048576
@@ -31516,9 +31516,9 @@
 	},
 	"~moonshotai/kimi-latest": {
 		"cost": {
-			"cache_read": 0.17,
-			"input": 1.7,
-			"output": 8.5
+			"cache_read": 0.15,
+			"input": 1.5,
+			"output": 7.5
 		},
 		"exactOnly": true,
 		"limit": {
