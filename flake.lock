@@ -137,11 +137,11 @@
     "litellm": {
       "flake": false,
       "locked": {
-        "lastModified": 1789960162,
-        "narHash": "sha256-XhYSwwi9EX5OpnL/jQPziH/gfsNJbCjiEDqFscPD4/0=",
+        "lastModified": 1789961981,
+        "narHash": "sha256-QqmcKhgdaN0Pz86ehPBycERpYC3Sit8sOTMRKoi+XHo=",
         "owner": "BerriAI",
         "repo": "litellm",
-        "rev": "0ece1cd426ea9585bc78161dd669bb7dac889623",
+        "rev": "e484a7c89c4ced103645c33159d33922e7eac84a",
         "type": "github"
       },
       "original": {
