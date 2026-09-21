@@ -13395,6 +13395,16 @@
 			"context": 390000
 		}
 	},
+	"gonka24/glm-5.3-flash": {
+		"cost": {
+			"cache_read": 0.015,
+			"input": 0.07,
+			"output": 0.19
+		},
+		"limit": {
+			"context": 200000
+		}
+	},
 	"gonka24/minimax-m2.7": {
 		"cost": {
 			"cache_read": 0.017,
@@ -24676,7 +24686,7 @@
 			"output": 0.688
 		},
 		"limit": {
-			"context": 256000
+			"context": 131072
 		}
 	},
 	"qwen/qwen3.5-27b:thinking": {
@@ -29698,6 +29708,16 @@
 			"context": 2000000
 		}
 	},
+	"xai/grok-4-7": {
+		"cost": {
+			"cache_read": 0.5,
+			"input": 2,
+			"output": 6
+		},
+		"limit": {
+			"context": 500000
+		}
+	},
 	"xai/grok-4-fast-non-reasoning": {
 		"cost": {
 			"cache_read": 0.05,
@@ -31390,9 +31410,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.018186,
-			"input": 0.57156,
-			"output": 1.71468
+			"cache_read": 0.018018,
+			"input": 0.56628,
+			"output": 1.69884
 		},
 		"exactOnly": true,
 		"limit": {
@@ -31401,9 +31421,9 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.016,
+			"cache_read": 0.01,
 			"input": 0.04,
-			"output": 0.16
+			"output": 0.2
 		},
 		"limit": {
 			"context": 1048576
@@ -31586,7 +31606,7 @@
 	},
 	"~z-ai/glm-flash-latest": {
 		"cost": {
-			"cache_read": 0.015,
+			"cache_read": 0.02,
 			"input": 0.075,
 			"output": 0.25
 		},
