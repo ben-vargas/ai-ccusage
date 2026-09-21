@@ -26184,6 +26184,16 @@
 			"context": 128000
 		}
 	},
+	"scx-ai-gp/deepseek-v4.1-flash": {
+		"cost": {
+			"cache_read": 0.01,
+			"input": 0.15,
+			"output": 0.6
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"scx-ai-gp/glm-5.2": {
 		"cost": {
 			"cache_read": 0.16,
@@ -30977,9 +30987,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.022,
-			"input": 0.66,
-			"output": 1.98
+			"cache_read": 0.088,
+			"input": 0.7,
+			"output": 2.88
 		},
 		"exactOnly": true,
 		"limit": {
