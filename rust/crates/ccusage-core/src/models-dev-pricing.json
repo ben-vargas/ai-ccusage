@@ -24771,6 +24771,16 @@
 			"context": 524288
 		}
 	},
+	"qwen/qwen3.8-27b-hemmingway": {
+		"cost": {
+			"cache_read": 0.125,
+			"input": 0.25,
+			"output": 1.5
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"qwen/qwen3.8-27b-obliterated": {
 		"cost": {
 			"cache_read": 0.2,
