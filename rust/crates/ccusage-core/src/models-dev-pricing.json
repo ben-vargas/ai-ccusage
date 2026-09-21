@@ -25367,9 +25367,9 @@
 	},
 	"qwen3-vl-235b-a22b-instruct-original": {
 		"cost": {
-			"cache_read": 0.25,
-			"input": 0.5,
-			"output": 1.2
+			"cache_read": 0.15,
+			"input": 0.3,
+			"output": 1.9
 		},
 		"exactOnly": true,
 		"limit": {
