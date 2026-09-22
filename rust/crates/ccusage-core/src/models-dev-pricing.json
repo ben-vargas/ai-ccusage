@@ -17579,6 +17579,16 @@
 			"context": 250000
 		}
 	},
+	"lumen-stealth": {
+		"cost": {
+			"input": 0.05,
+			"output": 0
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 200000
+		}
+	},
 	"magibu-11b-v8": {
 		"cost": {
 			"input": 0.1,
@@ -23378,6 +23388,29 @@
 			"context": 1050000
 		}
 	},
+	"openai/gpt-6-luna-fast": {
+		"cost": {
+			"cache_read": 0.02,
+			"cache_write": 0.25,
+			"input": 0.2,
+			"output": 1,
+			"tiers": [
+				{
+					"cache_read": 0.04,
+					"cache_write": 0.5,
+					"input": 0.4,
+					"output": 1.5,
+					"tier": {
+						"size": 272001,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
 	"openai/gpt-6-luna-pro": {
 		"cost": {
 			"cache_read": 0.01,
@@ -23415,6 +23448,29 @@
 					"output": 15,
 					"tier": {
 						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
+	"openai/gpt-6-sol-fast": {
+		"cost": {
+			"cache_read": 0.4,
+			"cache_write": 5,
+			"input": 4,
+			"output": 20,
+			"tiers": [
+				{
+					"cache_read": 0.8,
+					"cache_write": 10,
+					"input": 8,
+					"output": 30,
+					"tier": {
+						"size": 272001,
 						"type": "context"
 					}
 				}
@@ -31955,9 +32011,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.017304,
-			"input": 0.54384,
-			"output": 1.63152
+			"cache_read": 0.033,
+			"input": 0.4,
+			"output": 4.3
 		},
 		"exactOnly": true,
 		"limit": {
@@ -31968,7 +32024,7 @@
 		"cost": {
 			"cache_read": 0.008,
 			"input": 0.03,
-			"output": 1
+			"output": 0.8
 		},
 		"limit": {
 			"context": 1048576
@@ -32011,9 +32067,9 @@
 	},
 	"~moonshotai/kimi-latest": {
 		"cost": {
-			"cache_read": 0.15,
-			"input": 1.5,
-			"output": 7.5
+			"cache_read": 0.3,
+			"input": 1.4989,
+			"output": 10.758
 		},
 		"exactOnly": true,
 		"limit": {
