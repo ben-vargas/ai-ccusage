@@ -3400,7 +3400,7 @@
 			"output": 2.5
 		},
 		"limit": {
-			"context": 128000
+			"context": 256000
 		}
 	},
 	"amazon/moonshotai.kimi-k2.5": {
@@ -3531,7 +3531,7 @@
 			"output": 0.4
 		},
 		"limit": {
-			"context": 200000
+			"context": 203000
 		}
 	},
 	"amazon/zai.glm-4.7-flash@us": {
@@ -3540,7 +3540,7 @@
 			"output": 0.4
 		},
 		"limit": {
-			"context": 200000
+			"context": 203000
 		}
 	},
 	"ambient/large": {
@@ -9068,9 +9068,9 @@
 	},
 	"deepinfra/tencent/Hy3": {
 		"cost": {
-			"cache_read": 0.035,
-			"input": 0.14,
-			"output": 0.58
+			"cache_read": 0.033,
+			"input": 0.13,
+			"output": 0.53
 		},
 		"limit": {
 			"context": 262144
@@ -29783,16 +29783,6 @@
 			"context": 2000000
 		}
 	},
-	"xai/grok-4-7": {
-		"cost": {
-			"cache_read": 0.5,
-			"input": 2,
-			"output": 6
-		},
-		"limit": {
-			"context": 500000
-		}
-	},
 	"xai/grok-4-fast-non-reasoning": {
 		"cost": {
 			"cache_read": 0.05,
@@ -29988,6 +29978,27 @@
 		},
 		"limit": {
 			"context": 524288
+		}
+	},
+	"xai/grok-4.7": {
+		"cost": {
+			"cache_read": 0.5,
+			"input": 2,
+			"output": 6,
+			"tiers": [
+				{
+					"cache_read": 0.8,
+					"input": 3.2,
+					"output": 9.6,
+					"tier": {
+						"size": 200000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 500000
 		}
 	},
 	"xai/grok-build-0.1": {
