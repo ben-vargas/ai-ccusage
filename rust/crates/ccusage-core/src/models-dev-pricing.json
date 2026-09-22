@@ -31521,13 +31521,13 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.088,
-			"input": 0.624,
-			"output": 2.88
+			"cache_read": 0.020636,
+			"input": 0.61908,
+			"output": 1.85724
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048576
+			"context": 1024000
 		}
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
