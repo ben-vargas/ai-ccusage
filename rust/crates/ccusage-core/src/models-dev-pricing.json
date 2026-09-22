@@ -20348,6 +20348,26 @@
 			"context": 262144
 		}
 	},
+	"nex-agi/nex-n2.5-mini": {
+		"cost": {
+			"cache_read": 0.0025,
+			"input": 0.025,
+			"output": 0.1
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
+	"nex-agi/nex-n2.5-pro": {
+		"cost": {
+			"cache_read": 0.015,
+			"input": 0.075,
+			"output": 0.25
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"nomic-embed-text": {
 		"cost": {
 			"input": 0.05,
@@ -31495,9 +31515,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.018621,
-			"input": 0.558624,
-			"output": 1.675872
+			"cache_read": 0.021287,
+			"input": 0.638616,
+			"output": 1.915848
 		},
 		"exactOnly": true,
 		"limit": {
@@ -31691,7 +31711,7 @@
 	},
 	"~z-ai/glm-flash-latest": {
 		"cost": {
-			"cache_read": 0.02,
+			"cache_read": 0.015,
 			"input": 0.075,
 			"output": 0.25
 		},
@@ -31702,9 +31722,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.14534,
-			"input": 0.7826,
-			"output": 2.4596
+			"cache_read": 0.107525,
+			"input": 0.6545,
+			"output": 2.057
 		},
 		"exactOnly": true,
 		"limit": {
