@@ -30204,6 +30204,7 @@
 	"xiaomi/mimo-v2.6-flash": {
 		"cost": {
 			"cache_read": 0.0028,
+			"cache_write": 0,
 			"input": 0.14,
 			"output": 0.28
 		},
@@ -30214,6 +30215,7 @@
 	"xiaomi/mimo-v2.6-pro": {
 		"cost": {
 			"cache_read": 0.0036,
+			"cache_write": 0,
 			"input": 0.435,
 			"output": 0.87
 		},
@@ -30224,6 +30226,7 @@
 	"xiaomi/mimo-v2.6-pro-ultraspeed": {
 		"cost": {
 			"cache_read": 0.036,
+			"cache_write": 0,
 			"input": 4.35,
 			"output": 8.7
 		},
@@ -31539,7 +31542,7 @@
 		"cost": {
 			"cache_read": 0.008,
 			"input": 0.03,
-			"output": 0.8
+			"output": 1
 		},
 		"limit": {
 			"context": 1048576
