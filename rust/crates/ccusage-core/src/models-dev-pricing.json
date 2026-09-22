@@ -16447,6 +16447,17 @@
 			"context": 262144
 		}
 	},
+	"inkling-small": {
+		"cost": {
+			"cache_read": 0.1,
+			"input": 0.45,
+			"output": 1.2
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 524288
+		}
+	},
 	"interfaze/interfaze-beta": {
 		"cost": {
 			"input": 1.5,
@@ -20247,6 +20258,15 @@
 			"cache_read": 0.12,
 			"input": 0.6,
 			"output": 2.4
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
+	"nemotron-3.5-lightning": {
+		"cost": {
+			"input": 0.08,
+			"output": 0.2
 		},
 		"limit": {
 			"context": 262144
@@ -31521,13 +31541,13 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.020636,
-			"input": 0.61908,
-			"output": 1.85724
+			"cache_read": 0.018438,
+			"input": 0.57948,
+			"output": 1.73844
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1024000
+			"context": 1048576
 		}
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
@@ -31728,9 +31748,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.107525,
-			"input": 0.6545,
-			"output": 2.057
+			"cache_read": 0.12142,
+			"input": 0.6538,
+			"output": 2.0548
 		},
 		"exactOnly": true,
 		"limit": {
