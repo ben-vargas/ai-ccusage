@@ -17005,16 +17005,6 @@
 			"context": 256000
 		}
 	},
-	"kwaipilot/kat-coder-pro-v2": {
-		"cost": {
-			"cache_read": 0.06,
-			"input": 0.3,
-			"output": 1.2
-		},
-		"limit": {
-			"context": 262144
-		}
-	},
 	"kwaipilot/kat-coder-pro-v2.5": {
 		"cost": {
 			"cache_read": 0.15,
@@ -31529,13 +31519,13 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.021287,
-			"input": 0.638616,
-			"output": 1.915848
+			"cache_read": 0.088,
+			"input": 0.624,
+			"output": 2.88
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1024000
+			"context": 1048576
 		}
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
