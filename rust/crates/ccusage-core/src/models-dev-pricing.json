@@ -28871,6 +28871,16 @@
 			"context": 128000
 		}
 	},
+	"upstage/solar-mini4": {
+		"cost": {
+			"cache_read": 0.01,
+			"input": 0.1,
+			"output": 0.4
+		},
+		"limit": {
+			"context": 524288
+		}
+	},
 	"upstage/solar-pro-3": {
 		"cost": {
 			"cache_read": 0.015,
