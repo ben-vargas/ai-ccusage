@@ -25891,6 +25891,16 @@
 			"context": 1000000
 		}
 	},
+	"qwen/qwen3.8-max-prime": {
+		"cost": {
+			"cache_read": 0.5,
+			"input": 4,
+			"output": 12
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"qwen/qwen3.8-max:thinking": {
 		"cost": {
 			"cache_read": 0.25,
@@ -32347,9 +32357,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.012558,
-			"input": 0.39468,
-			"output": 1.18404
+			"cache_read": 0.012516,
+			"input": 0.39336,
+			"output": 1.18008
 		},
 		"exactOnly": true,
 		"limit": {
