@@ -4512,23 +4512,23 @@
 			"context": 1000000
 		}
 	},
+	"anthropic/claude-opus-5-5": {
+		"cost": {
+			"cache_read": 0.2,
+			"cache_write": 5,
+			"input": 4,
+			"output": 20
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"anthropic/claude-opus-5-fast": {
 		"cost": {
 			"cache_read": 1,
 			"cache_write": 12.5,
 			"input": 10,
 			"output": 50
-		},
-		"limit": {
-			"context": 1000000
-		}
-	},
-	"anthropic/claude-opus-5.5": {
-		"cost": {
-			"cache_read": 0.2,
-			"cache_write": 5,
-			"input": 4,
-			"output": 20
 		},
 		"limit": {
 			"context": 1000000
@@ -7751,6 +7751,26 @@
 			"cache_read": 0.0145,
 			"input": 1.74,
 			"output": 3.48
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
+	"cline-pass/mimo-v2.6-flash": {
+		"cost": {
+			"cache_read": 0.0028,
+			"input": 0.14,
+			"output": 0.28
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
+	"cline-pass/mimo-v2.6-pro": {
+		"cost": {
+			"cache_read": 0.0036,
+			"input": 0.435,
+			"output": 0.87
 		},
 		"limit": {
 			"context": 1048576
@@ -11261,6 +11281,18 @@
 			"context": 8192
 		}
 	},
+	"fastino/gliguard-PII-multi": {
+		"cost": {
+			"cache_read": 0.15,
+			"cache_write": 0.15,
+			"input": 0.15,
+			"output": 0.15
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 8192
+		}
+	},
 	"fastino/gliner2-base-v1": {
 		"cost": {
 			"cache_read": 0.15,
@@ -11314,6 +11346,17 @@
 		},
 		"limit": {
 			"context": 8192
+		}
+	},
+	"fastino/gliner2.5-multi-v1": {
+		"cost": {
+			"cache_read": 0.15,
+			"cache_write": 0.15,
+			"input": 0.15,
+			"output": 0.15
+		},
+		"limit": {
+			"context": 4096
 		}
 	},
 	"featherless-ai/Qwerky-72B": {
@@ -13491,6 +13534,17 @@
 			"context": 1000000
 		}
 	},
+	"global.moonshotai.kimi-k3": {
+		"cost": {
+			"cache_read": 0.3,
+			"cache_write": 3.75,
+			"input": 3,
+			"output": 15
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"global.openai.gpt-5.6-luna": {
 		"cost": {
 			"cache_read": 0.02,
@@ -13572,6 +13626,52 @@
 					"cache_write": 25,
 					"input": 20,
 					"output": 75,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
+	"global.openai.gpt-6-luna": {
+		"cost": {
+			"cache_read": 0.01,
+			"cache_write": 0.125,
+			"input": 0.1,
+			"output": 0.5,
+			"tiers": [
+				{
+					"cache_read": 0.02,
+					"cache_write": 0.25,
+					"input": 0.2,
+					"output": 0.75,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
+	"global.openai.gpt-6-sol": {
+		"cost": {
+			"cache_read": 0.2,
+			"cache_write": 2.5,
+			"input": 2,
+			"output": 10,
+			"tiers": [
+				{
+					"cache_read": 0.4,
+					"cache_write": 5,
+					"input": 4,
+					"output": 15,
 					"tier": {
 						"size": 272000,
 						"type": "context"
@@ -15444,6 +15544,28 @@
 			"context": 1050000
 		}
 	},
+	"gpt-6-luna@eu": {
+		"cost": {
+			"cache_read": 0.012,
+			"input": 0.12,
+			"output": 0.6,
+			"tiers": [
+				{
+					"cache_read": 0.024,
+					"input": 0.24,
+					"output": 0.9,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 1050000
+		}
+	},
 	"gpt-6-sol": {
 		"cost": {
 			"cache_read": 0.2,
@@ -15463,6 +15585,28 @@
 				}
 			]
 		},
+		"limit": {
+			"context": 1050000
+		}
+	},
+	"gpt-6-sol@eu": {
+		"cost": {
+			"cache_read": 0.24,
+			"input": 2.4,
+			"output": 12,
+			"tiers": [
+				{
+					"cache_read": 0.48,
+					"input": 4.8,
+					"output": 18,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"exactOnly": true,
 		"limit": {
 			"context": 1050000
 		}
@@ -27828,12 +27972,12 @@
 	},
 	"step-5-preview": {
 		"cost": {
-			"cache_read": 0.05,
-			"input": 1,
-			"output": 2.7
+			"cache_read": 0.048,
+			"input": 0.959,
+			"output": 2.741
 		},
 		"limit": {
-			"context": 1024000
+			"context": 1000000
 		}
 	},
 	"stepfun-ai/Step-3.7-Flash": {
@@ -29065,6 +29209,17 @@
 			"context": 128000
 		}
 	},
+	"us.moonshotai.kimi-k3": {
+		"cost": {
+			"cache_read": 0.33,
+			"cache_write": 4.125,
+			"input": 3.3,
+			"output": 16.5
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"us.openai.gpt-5.6-luna": {
 		"cost": {
 			"cache_read": 0.022,
@@ -29146,6 +29301,52 @@
 					"cache_write": 27.5,
 					"input": 22,
 					"output": 82.5,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
+	"us.openai.gpt-6-luna": {
+		"cost": {
+			"cache_read": 0.011,
+			"cache_write": 0.1375,
+			"input": 0.11,
+			"output": 0.55,
+			"tiers": [
+				{
+					"cache_read": 0.022,
+					"cache_write": 0.275,
+					"input": 0.22,
+					"output": 0.825,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
+	"us.openai.gpt-6-sol": {
+		"cost": {
+			"cache_read": 0.22,
+			"cache_write": 2.75,
+			"input": 2.2,
+			"output": 11,
+			"tiers": [
+				{
+					"cache_read": 0.44,
+					"cache_write": 5.5,
+					"input": 4.4,
+					"output": 16.5,
 					"tier": {
 						"size": 272000,
 						"type": "context"
@@ -32125,8 +32326,8 @@
 	"~moonshotai/kimi-latest": {
 		"cost": {
 			"cache_read": 0.3,
-			"input": 1.05,
-			"output": 13
+			"input": 1.4989,
+			"output": 10.758
 		},
 		"exactOnly": true,
 		"limit": {
