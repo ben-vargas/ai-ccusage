@@ -13720,9 +13720,9 @@
 	},
 	"gonka24/deepseek-v4-flash": {
 		"cost": {
-			"cache_read": 0.0097,
-			"input": 0.051,
-			"output": 0.104
+			"cache_read": 0.012,
+			"input": 0.065,
+			"output": 0.116
 		},
 		"limit": {
 			"context": 390000
@@ -13730,9 +13730,9 @@
 	},
 	"gonka24/glm-5.3-flash": {
 		"cost": {
-			"cache_read": 0.015,
-			"input": 0.07,
-			"output": 0.19
+			"cache_read": 0.035,
+			"input": 0.15,
+			"output": 0.3
 		},
 		"limit": {
 			"context": 200000
@@ -16827,8 +16827,8 @@
 	},
 	"infomaniak/mistralai/Ministral-3-14B-Instruct-2512": {
 		"cost": {
-			"input": 0.34389,
-			"output": 0.45852
+			"input": 0.34233,
+			"output": 0.45644
 		},
 		"limit": {
 			"context": 100000
@@ -16897,8 +16897,8 @@
 	},
 	"ionos/meta-llama/Llama-3.3-70B-Instruct": {
 		"cost": {
-			"input": 0.745095,
-			"output": 0.745095
+			"input": 0.741715,
+			"output": 0.741715
 		},
 		"limit": {
 			"context": 128000
@@ -16906,8 +16906,8 @@
 	},
 	"ionos/openai/gpt-oss-120b": {
 		"cost": {
-			"input": 0.171945,
-			"output": 0.745095
+			"input": 0.171165,
+			"output": 0.741715
 		},
 		"limit": {
 			"context": 131072
@@ -27137,9 +27137,9 @@
 	},
 	"scaleway/deepseek-v4-flash-0731": {
 		"cost": {
-			"cache_read": 0.091704,
-			"input": 0.45852,
-			"output": 0.91704
+			"cache_read": 0.091288,
+			"input": 0.45644,
+			"output": 0.91288
 		},
 		"limit": {
 			"context": 256000
@@ -27156,8 +27156,8 @@
 	},
 	"scaleway/gpt-oss-120b": {
 		"cost": {
-			"input": 0.171945,
-			"output": 0.68778
+			"input": 0.171165,
+			"output": 0.68466
 		},
 		"limit": {
 			"context": 128000
@@ -27165,8 +27165,8 @@
 	},
 	"scaleway/llama-3.3-70b-instruct": {
 		"cost": {
-			"input": 1.03167,
-			"output": 1.03167
+			"input": 1.02699,
+			"output": 1.02699
 		},
 		"limit": {
 			"context": 128000
