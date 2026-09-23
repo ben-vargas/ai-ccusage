@@ -2416,6 +2416,26 @@
 			"context": 128000
 		}
 	},
+	"aion-labs-aion-3-5": {
+		"cost": {
+			"cache_read": 0.9375,
+			"input": 3.75,
+			"output": 7.5
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
+	"aion-labs-aion-3-5-mini": {
+		"cost": {
+			"cache_read": 0.225,
+			"input": 0.875,
+			"output": 1.75
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"aion-labs/aion-2.0": {
 		"cost": {
 			"cache_read": 0.2,
@@ -19791,16 +19811,6 @@
 			"cache_read": 0.2,
 			"input": 0.4,
 			"output": 1.4
-		},
-		"limit": {
-			"context": 262144
-		}
-	},
-	"mistralai/devstral-2512": {
-		"cost": {
-			"cache_read": 0.04,
-			"input": 0.4,
-			"output": 2
 		},
 		"limit": {
 			"context": 262144
