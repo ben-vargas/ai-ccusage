@@ -15686,7 +15686,7 @@
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 128000
+			"context": 400000
 		}
 	},
 	"gpt-oss-120b": {
@@ -22445,7 +22445,7 @@
 			"output": 16.5
 		},
 		"limit": {
-			"context": 272000
+			"context": 1000000
 		}
 	},
 	"openai.gpt-5.5": {
@@ -32347,9 +32347,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.012726,
-			"input": 0.39996,
-			"output": 1.19988
+			"cache_read": 0.012558,
+			"input": 0.39468,
+			"output": 1.18404
 		},
 		"exactOnly": true,
 		"limit": {
