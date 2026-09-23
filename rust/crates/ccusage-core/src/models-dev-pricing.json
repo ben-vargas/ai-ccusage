@@ -752,7 +752,7 @@
 			]
 		},
 		"limit": {
-			"context": 1048576
+			"context": 1000000
 		}
 	},
 	"MiniMax/MiniMax-M2.7": {
@@ -22455,7 +22455,7 @@
 			"output": 33
 		},
 		"limit": {
-			"context": 272000
+			"context": 1000000
 		}
 	},
 	"openai.gpt-5.6-luna": {
@@ -32346,9 +32346,9 @@
 	},
 	"~deepseek/deepseek-flash-latest": {
 		"cost": {
-			"cache_read": 0.01,
-			"input": 0.1,
-			"output": 0.5
+			"cache_read": 0.06,
+			"input": 0.099,
+			"output": 0.6
 		},
 		"exactOnly": true,
 		"limit": {
@@ -32357,9 +32357,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.012516,
-			"input": 0.39336,
-			"output": 1.18008
+			"cache_read": 0.25,
+			"input": 0.3865,
+			"output": 2.9
 		},
 		"exactOnly": true,
 		"limit": {
