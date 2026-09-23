@@ -32258,9 +32258,9 @@
 	},
 	"~deepseek/deepseek-flash-latest": {
 		"cost": {
-			"cache_read": 0.01,
-			"input": 0.1,
-			"output": 0.5
+			"cache_read": 0.05,
+			"input": 0.094,
+			"output": 0.6
 		},
 		"exactOnly": true,
 		"limit": {
