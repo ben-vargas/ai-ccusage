@@ -8675,7 +8675,7 @@
 	},
 	"databricks/databricks-deepseek-v4-flash-0731": {
 		"cost": {
-			"cache_read": 0.028,
+			"cache_read": 0.014,
 			"cache_write": 0.14,
 			"input": 0.14,
 			"output": 0.28
@@ -8686,10 +8686,10 @@
 	},
 	"databricks/databricks-deepseek-v4-pro-0813": {
 		"cost": {
-			"cache_read": 0.13202,
+			"cache_read": 0.132,
 			"cache_write": 1.31999,
-			"input": 1.31999,
-			"output": 3.95997
+			"input": 1.32,
+			"output": 3.959999
 		},
 		"limit": {
 			"context": 1000000
@@ -8741,10 +8741,10 @@
 	},
 	"databricks/databricks-inkling": {
 		"cost": {
-			"cache_read": 0.17003,
+			"cache_read": 0.1,
 			"cache_write": 1.00002,
-			"input": 1.00002,
-			"output": 4.04999
+			"input": 1,
+			"output": 4.05
 		},
 		"exactOnly": true,
 		"limit": {
@@ -32258,8 +32258,8 @@
 	},
 	"~deepseek/deepseek-flash-latest": {
 		"cost": {
-			"cache_read": 0.05,
-			"input": 0.094,
+			"cache_read": 0.06,
+			"input": 0.079,
 			"output": 0.6
 		},
 		"exactOnly": true,
