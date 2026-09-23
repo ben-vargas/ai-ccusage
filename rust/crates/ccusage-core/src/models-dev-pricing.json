@@ -27987,6 +27987,16 @@
 			"context": 1000000
 		}
 	},
+	"stealth/space-bunny-alpha": {
+		"cost": {
+			"input": 0.05,
+			"output": 0.15
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"step-1-32k": {
 		"cost": {
 			"cache_read": 0.41,
@@ -31625,6 +31635,16 @@
 			"context": 1048576
 		}
 	},
+	"z-ai/glm-5.3-prime": {
+		"cost": {
+			"cache_read": 0.56,
+			"input": 2.8,
+			"output": 8.8
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"z-ai/glm-5.3:thinking": {
 		"cost": {
 			"cache_read": 0.2,
@@ -32357,9 +32377,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.25,
-			"input": 0.3865,
-			"output": 2.9
+			"cache_read": 0.012264,
+			"input": 0.38544,
+			"output": 1.15632
 		},
 		"exactOnly": true,
 		"limit": {
