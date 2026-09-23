@@ -8070,6 +8070,17 @@
 			"context": 288000
 		}
 	},
+	"cohere/command-a-plus": {
+		"cost": {
+			"cache_read": 0.15,
+			"input": 0.3,
+			"output": 1.5
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 192000
+		}
+	},
 	"cohere/command-r-08-2024": {
 		"cost": {
 			"input": 0.15,
@@ -32113,9 +32124,9 @@
 	},
 	"~moonshotai/kimi-latest": {
 		"cost": {
-			"cache_read": 0.15,
-			"input": 1.5,
-			"output": 7.5
+			"cache_read": 0.3,
+			"input": 1.35,
+			"output": 14.33
 		},
 		"exactOnly": true,
 		"limit": {
@@ -32264,9 +32275,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.125,
-			"input": 0.5625,
-			"output": 2.5
+			"cache_read": 0.10426,
+			"input": 0.5614,
+			"output": 1.7644
 		},
 		"exactOnly": true,
 		"limit": {
