@@ -2106,6 +2106,16 @@
 			"context": 1000000
 		}
 	},
+	"accounts/fireworks/models/ember-1": {
+		"cost": {
+			"cache_read": 0.3,
+			"input": 3,
+			"output": 15
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"accounts/fireworks/models/glm-5p2": {
 		"cost": {
 			"cache_read": 0.14,
