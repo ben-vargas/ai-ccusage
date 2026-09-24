@@ -20068,8 +20068,9 @@
 	},
 	"mistralai/mistral-nemo": {
 		"cost": {
-			"input": 0.019,
-			"output": 0.03
+			"cache_read": 0.015,
+			"input": 0.15,
+			"output": 0.15
 		},
 		"exactOnly": true,
 		"limit": {
@@ -20127,12 +20128,12 @@
 	},
 	"mistralai/mistral-small-3.2-24b-instruct": {
 		"cost": {
-			"cache_read": 0.1,
-			"input": 0.2,
-			"output": 0.4
+			"cache_read": 0.01,
+			"input": 0.1,
+			"output": 0.3
 		},
 		"limit": {
-			"context": 128000
+			"context": 256000
 		}
 	},
 	"mistralai/mistral-small-4-119b-2603:thinking": {
