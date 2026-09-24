@@ -23139,6 +23139,16 @@
 			"context": 128000
 		}
 	},
+	"openai/gpt-5.1-thinking": {
+		"cost": {
+			"cache_read": 0.125,
+			"input": 1.25,
+			"output": 10
+		},
+		"limit": {
+			"context": 400000
+		}
+	},
 	"openai/gpt-5.1-thinking-fast": {
 		"cost": {
 			"cache_read": 0.25,
