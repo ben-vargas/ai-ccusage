@@ -19945,6 +19945,16 @@
 			"context": 262144
 		}
 	},
+	"mistralai/devstral-2512": {
+		"cost": {
+			"cache_read": 0.04,
+			"input": 0.4,
+			"output": 2
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"mistralai/ministral-14b-2512": {
 		"cost": {
 			"cache_read": 0.02,
@@ -20004,6 +20014,16 @@
 		},
 		"limit": {
 			"context": 131072
+		}
+	},
+	"mistralai/mistral-large-2512": {
+		"cost": {
+			"cache_read": 0.05,
+			"input": 0.5,
+			"output": 1.5
+		},
+		"limit": {
+			"context": 262144
 		}
 	},
 	"mistralai/mistral-medium-3": {
