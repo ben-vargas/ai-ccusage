@@ -11779,7 +11779,7 @@
 			]
 		},
 		"limit": {
-			"context": 131072
+			"context": 128000
 		}
 	},
 	"gemini-2.5-flash": {
@@ -14112,7 +14112,7 @@
 			"output": 0.38
 		},
 		"limit": {
-			"context": 202752
+			"context": 131072
 		}
 	},
 	"google.gemma-3-4b-it": {
@@ -18676,7 +18676,7 @@
 			"output": 1.2
 		},
 		"limit": {
-			"context": 204800
+			"context": 196608
 		}
 	},
 	"minimax.minimax-m2.5": {
@@ -19274,7 +19274,7 @@
 			"output": 2
 		},
 		"limit": {
-			"context": 256000
+			"context": 262144
 		}
 	},
 	"mistral.magistral-small-2509": {
@@ -19319,7 +19319,7 @@
 			"output": 1.5
 		},
 		"limit": {
-			"context": 256000
+			"context": 262144
 		}
 	},
 	"mistral.pixtral-large-2502-v1:0": {
@@ -20122,7 +20122,7 @@
 			"output": 2.5
 		},
 		"limit": {
-			"context": 262143
+			"context": 262144
 		}
 	},
 	"moonshot/kimi-k2.5": {
@@ -20184,7 +20184,7 @@
 			"output": 3
 		},
 		"limit": {
-			"context": 262143
+			"context": 262144
 		}
 	},
 	"moonshotai/Kimi-K2-Instruct-0905": {
@@ -21480,7 +21480,7 @@
 			"output": 0.6
 		},
 		"limit": {
-			"context": 128000
+			"context": 131072
 		}
 	},
 	"nvidia.nemotron-nano-3-30b": {
@@ -22556,7 +22556,7 @@
 			"output": 0.6
 		},
 		"limit": {
-			"context": 128000
+			"context": 131072
 		}
 	},
 	"openai.gpt-oss-120b-1:0": {
@@ -22565,7 +22565,7 @@
 			"output": 0.6
 		},
 		"limit": {
-			"context": 128000
+			"context": 131072
 		}
 	},
 	"openai.gpt-oss-20b": {
@@ -22574,7 +22574,7 @@
 			"output": 0.3
 		},
 		"limit": {
-			"context": 128000
+			"context": 131072
 		}
 	},
 	"openai.gpt-oss-20b-1:0": {
@@ -22583,7 +22583,7 @@
 			"output": 0.3
 		},
 		"limit": {
-			"context": 128000
+			"context": 131072
 		}
 	},
 	"openai.gpt-oss-safeguard-120b": {
@@ -32049,7 +32049,7 @@
 			"output": 3.2
 		},
 		"limit": {
-			"context": 202752
+			"context": 200000
 		}
 	},
 	"zai-org/glm-5.2-maas": {
@@ -32068,7 +32068,7 @@
 			"output": 2.2
 		},
 		"limit": {
-			"context": 204800
+			"context": 202752
 		}
 	},
 	"zai.glm-4.7-flash": {
@@ -32077,7 +32077,7 @@
 			"output": 0.4
 		},
 		"limit": {
-			"context": 200000
+			"context": 202752
 		}
 	},
 	"zai.glm-5": {
