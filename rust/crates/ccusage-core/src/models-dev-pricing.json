@@ -17525,6 +17525,15 @@
 			"context": 1048576
 		}
 	},
+	"kitani/clover-1-150b": {
+		"cost": {
+			"input": 0.15,
+			"output": 0.8
+		},
+		"limit": {
+			"context": 200000
+		}
+	},
 	"kuaishou/kat-coder-pro-v2": {
 		"cost": {
 			"cache_read": 0.06,
@@ -20617,16 +20626,6 @@
 		"exactOnly": true,
 		"limit": {
 			"context": 1048576
-		}
-	},
-	"nano/lumen-stealth": {
-		"cost": {
-			"input": 0.05,
-			"output": 0
-		},
-		"exactOnly": true,
-		"limit": {
-			"context": 200000
 		}
 	},
 	"nanogpt/coding-router": {
