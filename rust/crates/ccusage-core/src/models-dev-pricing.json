@@ -32515,9 +32515,9 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.016,
-			"input": 0.03,
-			"output": 0.32
+			"cache_read": 0.012,
+			"input": 0.0225,
+			"output": 0.42
 		},
 		"limit": {
 			"context": 1048576
