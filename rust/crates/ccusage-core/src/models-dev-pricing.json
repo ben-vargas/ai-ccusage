@@ -1821,6 +1821,15 @@
 			"context": 262144
 		}
 	},
+	"TEE/qwen3.8-27b-uncensored": {
+		"cost": {
+			"input": 0.3,
+			"output": 1.5
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"THUDM/GLM-4-32B-0414": {
 		"cost": {
 			"cache_read": 0.1,
@@ -32515,9 +32524,9 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.012,
-			"input": 0.0225,
-			"output": 0.42
+			"cache_read": 0.016,
+			"input": 0.022,
+			"output": 0.32
 		},
 		"limit": {
 			"context": 1048576
