@@ -32476,7 +32476,7 @@
 		"cost": {
 			"cache_read": 0.01,
 			"input": 0.04,
-			"output": 1
+			"output": 0.49
 		},
 		"exactOnly": true,
 		"limit": {
@@ -32485,9 +32485,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.01239,
-			"input": 0.3894,
-			"output": 1.1682
+			"cache_read": 0.01113,
+			"input": 0.3498,
+			"output": 1.0494
 		},
 		"exactOnly": true,
 		"limit": {
