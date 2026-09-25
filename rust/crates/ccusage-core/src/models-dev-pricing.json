@@ -24270,6 +24270,15 @@
 			"context": 32768
 		}
 	},
+	"perceptron/perceptron-mk1.5": {
+		"cost": {
+			"input": 0.15,
+			"output": 1.5
+		},
+		"limit": {
+			"context": 36864
+		}
+	},
 	"perplexity/sonar": {
 		"cost": {
 			"cache_read": 0.0625,
@@ -32484,9 +32493,9 @@
 	},
 	"~deepseek/deepseek-flash-latest": {
 		"cost": {
-			"cache_read": 0.0015,
-			"input": 0.075,
-			"output": 0.3
+			"cache_read": 0.01,
+			"input": 0.1,
+			"output": 0.5
 		},
 		"exactOnly": true,
 		"limit": {
