@@ -8171,6 +8171,15 @@
 			"context": 512
 		}
 	},
+	"cohere/c4ai-aya-expanse-32b": {
+		"cost": {
+			"input": 0.5,
+			"output": 1.5
+		},
+		"limit": {
+			"context": 128000
+		}
+	},
 	"cohere/command-a": {
 		"cost": {
 			"input": 2.5,
@@ -9366,6 +9375,16 @@
 		},
 		"limit": {
 			"context": 262144
+		}
+	},
+	"deepinfra/tencent/Hy4-preview": {
+		"cost": {
+			"cache_read": 0.042,
+			"input": 0.834,
+			"output": 2.501
+		},
+		"limit": {
+			"context": 1048576
 		}
 	},
 	"deepinfra/thinkingmachines/Inkling": {
