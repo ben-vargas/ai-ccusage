@@ -2297,17 +2297,6 @@
 			"context": 1000000
 		}
 	},
-	"accounts/fireworks/routers/deepseek-pro-latest": {
-		"cost": {
-			"cache_read": 0.044,
-			"input": 1.32,
-			"output": 3.96
-		},
-		"exactOnly": true,
-		"limit": {
-			"context": 1000000
-		}
-	},
 	"accounts/fireworks/routers/glm-5p2-fast": {
 		"cost": {
 			"cache_read": 0.21,
