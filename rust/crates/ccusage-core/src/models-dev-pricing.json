@@ -7371,10 +7371,10 @@
 	},
 	"claude-opus-5-5@eu": {
 		"cost": {
-			"cache_read": 0.55,
-			"cache_write": 6.875,
-			"input": 5.5,
-			"output": 27.5
+			"cache_read": 0.22,
+			"cache_write": 5.5,
+			"input": 4.4,
+			"output": 22
 		},
 		"exactOnly": true,
 		"limit": {
@@ -32524,9 +32524,9 @@
 	},
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
-			"cache_read": 0.016,
-			"input": 0.022,
-			"output": 0.32
+			"cache_read": 0.014,
+			"input": 0.0215,
+			"output": 0.3
 		},
 		"limit": {
 			"context": 1048576
@@ -32709,9 +32709,9 @@
 	},
 	"~z-ai/glm-flash-latest": {
 		"cost": {
-			"cache_read": 0.01,
-			"input": 0.045,
-			"output": 0.14
+			"cache_read": 0.015,
+			"input": 0.04,
+			"output": 0.5
 		},
 		"exactOnly": true,
 		"limit": {
