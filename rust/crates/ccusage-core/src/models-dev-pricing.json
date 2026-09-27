@@ -11468,26 +11468,6 @@
 			"context": 1040384
 		}
 	},
-	"fireworks_ai/accounts/fireworks/models/deepseek-v4-flash-0731": {
-		"cost": {
-			"cache_read": 0.007,
-			"input": 0.22,
-			"output": 0.66
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
-	"fireworks_ai/accounts/fireworks/models/deepseek-v4-pro-0813": {
-		"cost": {
-			"cache_read": 0.044,
-			"input": 1.32,
-			"output": 3.96
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
 	"fireworks_ai/accounts/fireworks/models/inkling": {
 		"cost": {
 			"cache_read": 0.17,
@@ -11497,16 +11477,6 @@
 		"exactOnly": true,
 		"limit": {
 			"context": 1048576
-		}
-	},
-	"fireworks_ai/accounts/fireworks/models/muse-glimmer-30b": {
-		"cost": {
-			"cache_read": 0.04,
-			"input": 0.35,
-			"output": 1.5
-		},
-		"limit": {
-			"context": 131072
 		}
 	},
 	"fireworks_ai/gpt-oss-120b": {
@@ -14103,24 +14073,6 @@
 		"cost": {
 			"input": 0.04,
 			"output": 0.08
-		},
-		"limit": {
-			"context": 131072
-		}
-	},
-	"google/deep-research-max-preview-04-2026": {
-		"cost": {
-			"input": 2,
-			"output": 12
-		},
-		"limit": {
-			"context": 131072
-		}
-	},
-	"google/deep-research-preview-04-2026": {
-		"cost": {
-			"input": 2,
-			"output": 12
 		},
 		"limit": {
 			"context": 131072
