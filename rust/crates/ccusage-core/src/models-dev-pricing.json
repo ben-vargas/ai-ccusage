@@ -32431,9 +32431,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.007896,
-			"input": 0.24816,
-			"output": 0.74448
+			"cache_read": 0.007812,
+			"input": 0.24552,
+			"output": 0.73656
 		},
 		"exactOnly": true,
 		"limit": {
@@ -32638,9 +32638,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.07046,
-			"input": 0.3794,
-			"output": 1.1924
+			"cache_read": 0.0391,
+			"input": 0.238,
+			"output": 0.748
 		},
 		"exactOnly": true,
 		"limit": {
