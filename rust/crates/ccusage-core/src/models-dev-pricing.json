@@ -32487,9 +32487,9 @@
 	},
 	"~moonshotai/kimi-latest": {
 		"cost": {
-			"cache_read": 0.058,
-			"input": 0.5,
-			"output": 2.8
+			"cache_read": 0.3,
+			"input": 1,
+			"output": 9
 		},
 		"exactOnly": true,
 		"limit": {
@@ -32640,11 +32640,11 @@
 		"cost": {
 			"cache_read": 0.044965,
 			"input": 0.2737,
-			"output": 0.8602
+			"output": 2.574
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048576
+			"context": 262144
 		}
 	}
 }
