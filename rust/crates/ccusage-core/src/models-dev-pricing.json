@@ -17700,6 +17700,16 @@
 			"context": 1048756
 		}
 	},
+	"longcat-2.5-preview": {
+		"cost": {
+			"cache_read": 0.015,
+			"input": 0.75,
+			"output": 2.95
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"lucidnova-rf1-100b": {
 		"cost": {
 			"input": 2,
@@ -32590,8 +32600,8 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.044965,
-			"input": 0.2737,
+			"cache_read": 0.05951,
+			"input": 0.3032,
 			"output": 2.574
 		},
 		"exactOnly": true,
