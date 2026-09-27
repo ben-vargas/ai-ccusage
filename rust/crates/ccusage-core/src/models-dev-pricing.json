@@ -31076,7 +31076,7 @@
 	},
 	"xiaomi/mimo-v2.6-flash-uncensored": {
 		"cost": {
-			"cache_read": 0.00903,
+			"cache_read": 0.1995,
 			"input": 0.5,
 			"output": 1.5
 		},
@@ -31086,7 +31086,7 @@
 	},
 	"xiaomi/mimo-v2.6-flash-uncensored:thinking": {
 		"cost": {
-			"cache_read": 0.00903,
+			"cache_read": 0.1995,
 			"input": 0.5,
 			"output": 1.5
 		},
@@ -32487,9 +32487,9 @@
 	},
 	"~moonshotai/kimi-latest": {
 		"cost": {
-			"cache_read": 0.3,
-			"input": 1,
-			"output": 9
+			"cache_read": 0.058,
+			"input": 0.5,
+			"output": 2.8
 		},
 		"exactOnly": true,
 		"limit": {
