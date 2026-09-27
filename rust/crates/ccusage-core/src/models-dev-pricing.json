@@ -31661,7 +31661,7 @@
 	},
 	"z-ai/glm-5.3-flash-uncensored": {
 		"cost": {
-			"cache_read": 0.1,
+			"cache_read": 0.07,
 			"input": 0.2,
 			"output": 0.8
 		},
@@ -32638,9 +32638,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.0702,
-			"input": 0.378,
-			"output": 1.188
+			"cache_read": 0.044965,
+			"input": 0.2737,
+			"output": 0.8602
 		},
 		"exactOnly": true,
 		"limit": {
