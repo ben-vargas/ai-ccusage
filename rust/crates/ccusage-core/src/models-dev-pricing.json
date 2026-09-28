@@ -10185,9 +10185,9 @@
 	},
 	"deepseek/deepseek-chat-v3.1": {
 		"cost": {
-			"cache_read": 0.135,
-			"input": 0.27,
-			"output": 1
+			"cache_read": 0.13,
+			"input": 0.25,
+			"output": 0.95
 		},
 		"limit": {
 			"context": 163840
@@ -21043,6 +21043,26 @@
 			"context": 262144
 		}
 	},
+	"nex-agi/nex-n2.5-mini": {
+		"cost": {
+			"cache_read": 0.0025,
+			"input": 0.025,
+			"output": 0.1
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
+	"nex-agi/nex-n2.5-pro": {
+		"cost": {
+			"cache_read": 0.015,
+			"input": 0.075,
+			"output": 0.25
+		},
+		"limit": {
+			"context": 262144
+		}
+	},
 	"nomic-embed-text": {
 		"cost": {
 			"input": 0.05,
@@ -31156,6 +31176,16 @@
 		"exactOnly": true,
 		"limit": {
 			"context": 500000
+		}
+	},
+	"xiaomi-mimo-v2-6-flash": {
+		"cost": {
+			"cache_read": 0.00375,
+			"input": 0.175,
+			"output": 0.35
+		},
+		"limit": {
+			"context": 1000000
 		}
 	},
 	"xiaomi-mimo-v2.5": {
