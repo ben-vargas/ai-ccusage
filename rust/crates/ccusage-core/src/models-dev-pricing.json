@@ -1338,17 +1338,6 @@
 			"context": 32768
 		}
 	},
-	"Qwen/Qwen3.6-27B": {
-		"cost": {
-			"cache_read": 0.6,
-			"cache_write": 0.6,
-			"input": 0.6,
-			"output": 0.6
-		},
-		"limit": {
-			"context": 32768
-		}
-	},
 	"Qwen/Qwen3.6-27B-TEE": {
 		"cost": {
 			"cache_read": 0.029999999999999992,
@@ -1973,7 +1962,7 @@
 	},
 	"XiaomiMiMo/MiMo-V2.6-Flash": {
 		"cost": {
-			"cache_read": 0.0028,
+			"cache_read": 0.0027,
 			"input": 0.14,
 			"output": 0.28
 		},
@@ -1984,7 +1973,7 @@
 	"XiaomiMiMo/MiMo-V2.6-Pro": {
 		"cost": {
 			"cache_read": 0.0036,
-			"input": 0.435,
+			"input": 0.43,
 			"output": 0.87
 		},
 		"limit": {
@@ -6129,6 +6118,78 @@
 		},
 		"limit": {
 			"context": 131072
+		}
+	},
+	"bee-brood": {
+		"cost": {
+			"cache_read": 0.06,
+			"cache_write": 0.72,
+			"input": 0.6,
+			"output": 2.4
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 262144
+		}
+	},
+	"bee-buzz": {
+		"cost": {
+			"cache_read": 0.25,
+			"cache_write": 3,
+			"input": 2.5,
+			"output": 10
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 262144
+		}
+	},
+	"bee-cell": {
+		"cost": {
+			"cache_read": 0.03,
+			"cache_write": 0.36,
+			"input": 0.3,
+			"output": 1.2
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 131072
+		}
+	},
+	"bee-comb": {
+		"cost": {
+			"cache_read": 0.125,
+			"cache_write": 1.5,
+			"input": 1.25,
+			"output": 5
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 262144
+		}
+	},
+	"bee-hive": {
+		"cost": {
+			"cache_read": 0.5,
+			"cache_write": 6,
+			"input": 5,
+			"output": 20
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 262144
+		}
+	},
+	"bee-swarm": {
+		"cost": {
+			"cache_read": 2.5,
+			"cache_write": 30,
+			"input": 25,
+			"output": 150
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 1000000
 		}
 	},
 	"bge-m3": {
@@ -25548,6 +25609,17 @@
 			"context": 983616
 		}
 	},
+	"qwen/qwen3.6-27b": {
+		"cost": {
+			"cache_read": 0.16,
+			"cache_write": 0,
+			"input": 0.32,
+			"output": 3.2
+		},
+		"limit": {
+			"context": 32768
+		}
+	},
 	"qwen/qwen3.6-27b:thinking": {
 		"cost": {
 			"cache_read": 0.1015,
@@ -25727,13 +25799,13 @@
 	},
 	"qwen/qwen3.8-27b": {
 		"cost": {
-			"cache_read": 0.1,
-			"cache_write": 0.625,
-			"input": 0.5,
-			"output": 3
+			"cache_read": 0.16,
+			"cache_write": 0,
+			"input": 0.32,
+			"output": 3.2
 		},
 		"limit": {
-			"context": 1000000
+			"context": 32768
 		}
 	},
 	"qwen/qwen3.8-27b-cybersecurity": {
@@ -32106,16 +32178,6 @@
 			"context": 202752
 		}
 	},
-	"zai/GLM-5.2": {
-		"cost": {
-			"cache_read": 0.26,
-			"input": 1.4,
-			"output": 4.4
-		},
-		"limit": {
-			"context": 1000000
-		}
-	},
 	"zai/glm-4-32b-0414-128k": {
 		"cost": {
 			"input": 0.1,
@@ -32273,6 +32335,17 @@
 			"context": 200000
 		}
 	},
+	"zai/glm-5.2": {
+		"cost": {
+			"cache_read": 0.26,
+			"cache_write": 0,
+			"input": 1.4,
+			"output": 4.4
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"zai/glm-5.2-fast": {
 		"cost": {
 			"cache_read": 0.21,
@@ -32286,11 +32359,12 @@
 	"zai/glm-5.3": {
 		"cost": {
 			"cache_read": 0.26,
+			"cache_write": 0,
 			"input": 1.4,
 			"output": 4.4
 		},
 		"limit": {
-			"context": 1048576
+			"context": 1000000
 		}
 	},
 	"zai/glm-5.3-fast": {
@@ -32306,16 +32380,18 @@
 	"zai/glm-5.3-flash": {
 		"cost": {
 			"cache_read": 0.03,
+			"cache_write": 0,
 			"input": 0.15,
 			"output": 0.5
 		},
 		"limit": {
-			"context": 1048576
+			"context": 1000000
 		}
 	},
 	"zai/glm-5.3-flashx": {
 		"cost": {
 			"cache_read": 0.075,
+			"cache_write": 0,
 			"input": 0.37,
 			"output": 1.25
 		},
@@ -32326,11 +32402,12 @@
 	"zai/glm-5v-turbo": {
 		"cost": {
 			"cache_read": 0.24,
+			"cache_write": 0,
 			"input": 1.2,
 			"output": 4
 		},
 		"limit": {
-			"context": 202752
+			"context": 200000
 		}
 	},
 	"~anthropic/claude-fable-latest": {
@@ -32601,13 +32678,13 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.06604,
-			"input": 0.3556,
-			"output": 2.574
+			"cache_read": 0.0967,
+			"input": 0.4204,
+			"output": 2.7392
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 262144
+			"context": 1048576
 		}
 	}
 }
