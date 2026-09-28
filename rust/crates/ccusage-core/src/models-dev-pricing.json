@@ -7365,6 +7365,18 @@
 			"context": 1000000
 		}
 	},
+	"claude-opus-5-5-fast": {
+		"cost": {
+			"cache_read": 0.48,
+			"cache_write": 12,
+			"input": 9.6,
+			"output": 48
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"claude-opus-5-5@default": {
 		"cost": {
 			"cache_read": 0.2,
@@ -16891,9 +16903,9 @@
 	},
 	"inclusionai/ling-3.0-flash-fin": {
 		"cost": {
-			"cache_read": 0.012,
-			"input": 0.06,
-			"output": 0.18
+			"cache_read": 0.015,
+			"input": 0.075,
+			"output": 0.22
 		},
 		"limit": {
 			"context": 262144
@@ -32774,9 +32786,9 @@
 	},
 	"~moonshotai/kimi-latest": {
 		"cost": {
-			"cache_read": 0.176987,
+			"cache_read": 0.29,
 			"input": 0.97575,
-			"output": 8.5442
+			"output": 11.2
 		},
 		"exactOnly": true,
 		"limit": {
