@@ -22108,17 +22108,6 @@
 			"context": 200000
 		}
 	},
-	"omen-alpha": {
-		"cost": {
-			"cache_read": 0.04,
-			"input": 0.2,
-			"output": 0.66
-		},
-		"exactOnly": true,
-		"limit": {
-			"context": 500000
-		}
-	},
 	"open-mistral-7b": {
 		"cost": {
 			"input": 0.25,
@@ -32735,7 +32724,7 @@
 	"~moonshotai/kimi-latest": {
 		"cost": {
 			"cache_read": 0.3,
-			"input": 1,
+			"input": 0.97,
 			"output": 9
 		},
 		"exactOnly": true,
