@@ -32689,7 +32689,7 @@
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
 			"cache_read": 0.08832,
-			"input": 0.128,
+			"input": 0.22592,
 			"output": 1.9584
 		},
 		"exactOnly": true,
