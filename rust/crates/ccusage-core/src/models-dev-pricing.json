@@ -32677,13 +32677,13 @@
 	},
 	"~deepseek/deepseek-flash-latest": {
 		"cost": {
-			"cache_read": 0.024,
-			"input": 0.0245,
-			"output": 0.6
+			"cache_read": 0.001,
+			"input": 0.035,
+			"output": 0.29
 		},
 		"exactOnly": true,
 		"limit": {
-			"context": 1048576
+			"context": 1040000
 		}
 	},
 	"~deepseek/deepseek-pro-latest": {
