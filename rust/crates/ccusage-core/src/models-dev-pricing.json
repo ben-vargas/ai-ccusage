@@ -6769,6 +6769,15 @@
 			"context": 128000
 		}
 	},
+	"cerebras/qwen-3.8-27b": {
+		"cost": {
+			"input": 0.99,
+			"output": 1.49
+		},
+		"limit": {
+			"context": 131072
+		}
+	},
 	"cerebras/qwen3-235b-a22b-instruct-2507": {
 		"cost": {
 			"input": 0.6,
@@ -11669,15 +11678,6 @@
 			"context": 1048576
 		}
 	},
-	"flexai/DeepSeek-V4.1-Flash": {
-		"cost": {
-			"input": 0.14,
-			"output": 0.42
-		},
-		"limit": {
-			"context": 1048576
-		}
-	},
 	"flexai/Muse-Glimmer-30B": {
 		"cost": {
 			"cache_read": 0.045,
@@ -13868,6 +13868,16 @@
 		}
 	},
 	"global.xai.grok-4.6": {
+		"cost": {
+			"cache_read": 0.5,
+			"input": 2,
+			"output": 6
+		},
+		"limit": {
+			"context": 500000
+		}
+	},
+	"global.xai.grok-4.7": {
 		"cost": {
 			"cache_read": 0.5,
 			"input": 2,
@@ -16466,6 +16476,15 @@
 			"context": 131072
 		}
 	},
+	"groq/qwen/qwen3.8-27b": {
+		"cost": {
+			"input": 0.8,
+			"output": 4
+		},
+		"limit": {
+			"context": 131042
+		}
+	},
 	"gte-large-en-v1.5": {
 		"cost": {
 			"input": 0.09,
@@ -17062,8 +17081,8 @@
 	},
 	"infomaniak/mistralai/Ministral-3-14B-Instruct-2512": {
 		"cost": {
-			"input": 0.34134,
-			"output": 0.45512
+			"input": 0.34065,
+			"output": 0.4542
 		},
 		"limit": {
 			"context": 100000
@@ -17121,8 +17140,8 @@
 	},
 	"ionos/meta-llama/Llama-3.3-70B-Instruct": {
 		"cost": {
-			"input": 0.73957,
-			"output": 0.73957
+			"input": 0.738075,
+			"output": 0.738075
 		},
 		"limit": {
 			"context": 128000
@@ -17130,8 +17149,8 @@
 	},
 	"ionos/openai/gpt-oss-120b": {
 		"cost": {
-			"input": 0.17067,
-			"output": 0.73957
+			"input": 0.170325,
+			"output": 0.738075
 		},
 		"limit": {
 			"context": 131072
@@ -27469,9 +27488,9 @@
 	},
 	"scaleway/deepseek-v4-flash-0731": {
 		"cost": {
-			"cache_read": 0.091024,
-			"input": 0.45512,
-			"output": 0.91024
+			"cache_read": 0.09084,
+			"input": 0.4542,
+			"output": 0.9084
 		},
 		"limit": {
 			"context": 256000
@@ -27488,8 +27507,8 @@
 	},
 	"scaleway/gpt-oss-120b": {
 		"cost": {
-			"input": 0.17067,
-			"output": 0.68268
+			"input": 0.170325,
+			"output": 0.6813
 		},
 		"limit": {
 			"context": 128000
@@ -27497,8 +27516,8 @@
 	},
 	"scaleway/llama-3.3-70b-instruct": {
 		"cost": {
-			"input": 1.02402,
-			"output": 1.02402
+			"input": 1.02195,
+			"output": 1.02195
 		},
 		"limit": {
 			"context": 128000
@@ -29798,6 +29817,16 @@
 		}
 	},
 	"us.xai.grok-4.6": {
+		"cost": {
+			"cache_read": 0.55,
+			"input": 2.2,
+			"output": 6.6
+		},
+		"limit": {
+			"context": 500000
+		}
+	},
+	"us.xai.grok-4.7": {
 		"cost": {
 			"cache_read": 0.55,
 			"input": 2.2,
@@ -32813,7 +32842,7 @@
 		"cost": {
 			"cache_read": 0.4,
 			"input": 0.4,
-			"output": 10
+			"output": 9
 		},
 		"exactOnly": true,
 		"limit": {
@@ -32962,9 +32991,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.148,
-			"input": 0.1849,
-			"output": 4.4
+			"cache_read": 0.19,
+			"input": 0.19,
+			"output": 4
 		},
 		"exactOnly": true,
 		"limit": {
