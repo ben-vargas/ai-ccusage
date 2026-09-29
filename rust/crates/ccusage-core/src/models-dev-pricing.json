@@ -11438,6 +11438,17 @@
 			"context": 32768
 		}
 	},
+	"fastino/GLiNER-2.5-Decide": {
+		"cost": {
+			"cache_read": 0.15,
+			"cache_write": 0.15,
+			"input": 0.15,
+			"output": 0.15
+		},
+		"limit": {
+			"context": 8192
+		}
+	},
 	"fastino/gliguard-LLMGuardrails-300M": {
 		"cost": {
 			"cache_read": 0.15,
@@ -11514,6 +11525,17 @@
 		},
 		"limit": {
 			"context": 8192
+		}
+	},
+	"fastino/gliner2.5-base-v1": {
+		"cost": {
+			"cache_read": 0.03,
+			"cache_write": 0.03,
+			"input": 0.03,
+			"output": 0
+		},
+		"limit": {
+			"context": 4096
 		}
 	},
 	"fastino/gliner2.5-multi-v1": {
@@ -32768,7 +32790,7 @@
 		"cost": {
 			"cache_read": 0.01,
 			"input": 0.012,
-			"output": 0.5
+			"output": 0.4
 		},
 		"limit": {
 			"context": 1048576
@@ -32952,8 +32974,8 @@
 	"~z-ai/glm-flash-latest": {
 		"cost": {
 			"cache_read": 0.01,
-			"input": 0.03,
-			"output": 0.5
+			"input": 0.02,
+			"output": 0.3
 		},
 		"exactOnly": true,
 		"limit": {
@@ -32963,8 +32985,8 @@
 	"~z-ai/glm-latest": {
 		"cost": {
 			"cache_read": 0.15,
-			"input": 0.15,
-			"output": 4
+			"input": 0.2,
+			"output": 3.4
 		},
 		"exactOnly": true,
 		"limit": {
