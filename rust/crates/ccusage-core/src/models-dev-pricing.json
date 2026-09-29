@@ -32799,7 +32799,7 @@
 		"cost": {
 			"cache_read": 0.01,
 			"input": 0.012,
-			"output": 0.5
+			"output": 0.7
 		},
 		"limit": {
 			"context": 1048576
@@ -32993,9 +32993,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.15,
-			"input": 0.2,
-			"output": 3.4
+			"cache_read": 0.19,
+			"input": 0.19,
+			"output": 4
 		},
 		"exactOnly": true,
 		"limit": {
