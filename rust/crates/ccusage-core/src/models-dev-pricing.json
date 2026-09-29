@@ -32962,8 +32962,8 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.15,
-			"input": 0.15,
+			"cache_read": 0.195,
+			"input": 0.195,
 			"output": 4
 		},
 		"exactOnly": true,
