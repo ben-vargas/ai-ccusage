@@ -24,7 +24,7 @@
 			"output": 1.32
 		},
 		"limit": {
-			"context": 1310720
+			"context": 1048576
 		}
 	},
 	"@cf/deepseek-ai/deepseek-v4-pro-0813": {
@@ -237,7 +237,7 @@
 			"output": 4.4
 		},
 		"limit": {
-			"context": 1310720
+			"context": 1048576
 		}
 	},
 	"@cf/zai-org/glm-5.3-flash": {
@@ -247,7 +247,7 @@
 			"output": 0.5
 		},
 		"limit": {
-			"context": 1310720
+			"context": 1048576
 		}
 	},
 	"ByteDance-Seed/Seed-OSS-36B-Instruct": {
@@ -1962,7 +1962,7 @@
 	},
 	"XiaomiMiMo/MiMo-V2.6-Flash": {
 		"cost": {
-			"cache_read": 0.0027,
+			"cache_read": 0.0028,
 			"input": 0.14,
 			"output": 0.28
 		},
@@ -3911,6 +3911,17 @@
 					}
 				}
 			]
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
+	"anthropic-claude-sonnet-5.5": {
+		"cost": {
+			"cache_read": 0.2,
+			"cache_write": 2.5,
+			"input": 2,
+			"output": 10
 		},
 		"limit": {
 			"context": 1000000
@@ -8103,6 +8114,7 @@
 	},
 	"codestral-latest": {
 		"cost": {
+			"cache_read": 0.03,
 			"input": 0.3,
 			"output": 0.9
 		},
@@ -18073,16 +18085,6 @@
 			"context": 128000
 		}
 	},
-	"magistral-small": {
-		"cost": {
-			"input": 0.5,
-			"output": 1.5
-		},
-		"exactOnly": true,
-		"limit": {
-			"context": 128000
-		}
-	},
 	"mai-code-1-flash-picker": {
 		"cost": {
 			"cache_read": 0.075,
@@ -19276,6 +19278,7 @@
 	},
 	"mistral-large-2512": {
 		"cost": {
+			"cache_read": 0.05,
 			"input": 0.5,
 			"output": 1.5
 		},
@@ -19305,6 +19308,7 @@
 	},
 	"mistral-large-latest": {
 		"cost": {
+			"cache_read": 0.05,
 			"input": 0.5,
 			"output": 1.5
 		},
@@ -19345,6 +19349,7 @@
 	},
 	"mistral-medium-2604": {
 		"cost": {
+			"cache_read": 0.15,
 			"input": 1.5,
 			"output": 7.5
 		},
@@ -19384,6 +19389,7 @@
 	},
 	"mistral-medium-latest": {
 		"cost": {
+			"cache_read": 0.15,
 			"input": 1.5,
 			"output": 7.5
 		},
@@ -19454,6 +19460,7 @@
 	},
 	"mistral-small-2603": {
 		"cost": {
+			"cache_read": 0.015,
 			"input": 0.15,
 			"output": 0.6
 		},
@@ -19511,6 +19518,7 @@
 	},
 	"mistral-small-latest": {
 		"cost": {
+			"cache_read": 0.015,
 			"input": 0.15,
 			"output": 0.6
 		},
@@ -19602,6 +19610,7 @@
 	},
 	"mistral/codestral": {
 		"cost": {
+			"cache_read": 0.03,
 			"input": 0.3,
 			"output": 0.9
 		},
