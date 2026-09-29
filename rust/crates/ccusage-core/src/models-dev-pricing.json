@@ -32799,7 +32799,7 @@
 		"cost": {
 			"cache_read": 0.01,
 			"input": 0.012,
-			"output": 0.7
+			"output": 1
 		},
 		"limit": {
 			"context": 1048576
