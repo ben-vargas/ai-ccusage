@@ -4457,46 +4457,6 @@
 			"context": 1000000
 		}
 	},
-	"anthropic/claude-opus-4:thinking": {
-		"cost": {
-			"cache_read": 1.5,
-			"input": 15,
-			"output": 75
-		},
-		"limit": {
-			"context": 200000
-		}
-	},
-	"anthropic/claude-opus-4:thinking:1024": {
-		"cost": {
-			"cache_read": 1.5,
-			"input": 15,
-			"output": 75
-		},
-		"limit": {
-			"context": 200000
-		}
-	},
-	"anthropic/claude-opus-4:thinking:32768": {
-		"cost": {
-			"cache_read": 1.5,
-			"input": 15,
-			"output": 75
-		},
-		"limit": {
-			"context": 200000
-		}
-	},
-	"anthropic/claude-opus-4:thinking:8192": {
-		"cost": {
-			"cache_read": 1.5,
-			"input": 15,
-			"output": 75
-		},
-		"limit": {
-			"context": 200000
-		}
-	},
 	"anthropic/claude-opus-5": {
 		"cost": {
 			"cache_read": 0.5,
@@ -11701,7 +11661,6 @@
 	},
 	"flexai/DeepSeek-V4.1-Flash": {
 		"cost": {
-			"cache_read": 0.021,
 			"input": 0.14,
 			"output": 0.42
 		},
@@ -17993,7 +17952,7 @@
 			"output": 3
 		},
 		"limit": {
-			"context": 1048756
+			"context": 1000000
 		}
 	},
 	"longcat-2.5-preview": {
