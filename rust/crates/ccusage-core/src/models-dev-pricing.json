@@ -11628,6 +11628,16 @@
 			"context": 1040384
 		}
 	},
+	"fireworks_ai/accounts/fireworks/models/gpt-oss-120b": {
+		"cost": {
+			"cache_read": 0.015,
+			"input": 0.15,
+			"output": 0.6
+		},
+		"limit": {
+			"context": 131072
+		}
+	},
 	"fireworks_ai/accounts/fireworks/models/inkling": {
 		"cost": {
 			"cache_read": 0.17,
@@ -32745,9 +32755,9 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.07488,
-			"input": 0.096,
-			"output": 1.9584
+			"cache_read": 0.15,
+			"input": 0.15,
+			"output": 3.5
 		},
 		"exactOnly": true,
 		"limit": {
