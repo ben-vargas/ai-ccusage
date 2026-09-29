@@ -1963,7 +1963,7 @@
 	"XiaomiMiMo/MiMo-V2.6-Flash": {
 		"cost": {
 			"cache_read": 0.0028,
-			"input": 0.14,
+			"input": 0.08,
 			"output": 0.28
 		},
 		"limit": {
@@ -5361,33 +5361,6 @@
 			"context": 1000000
 		}
 	},
-	"azure/gpt-3.5-turbo": {
-		"cost": {
-			"input": 0.5,
-			"output": 1.5
-		},
-		"limit": {
-			"context": 16385
-		}
-	},
-	"azure/gpt-4": {
-		"cost": {
-			"input": 30,
-			"output": 60
-		},
-		"limit": {
-			"context": 8192
-		}
-	},
-	"azure/gpt-4-turbo": {
-		"cost": {
-			"input": 10,
-			"output": 30
-		},
-		"limit": {
-			"context": 128000
-		}
-	},
 	"azure/gpt-4.1": {
 		"cost": {
 			"cache_read": 0.5,
@@ -5516,15 +5489,6 @@
 		},
 		"limit": {
 			"context": 272000
-		}
-	},
-	"azure/gpt-5.2-pro": {
-		"cost": {
-			"input": 21,
-			"output": 168
-		},
-		"limit": {
-			"context": 400000
 		}
 	},
 	"azure/gpt-5.3-codex": {
@@ -5670,46 +5634,6 @@
 		},
 		"limit": {
 			"context": 131072
-		}
-	},
-	"azure/o1": {
-		"cost": {
-			"cache_read": 7.5,
-			"input": 15,
-			"output": 60
-		},
-		"limit": {
-			"context": 200000
-		}
-	},
-	"azure/o3": {
-		"cost": {
-			"cache_read": 0.5,
-			"input": 2,
-			"output": 8
-		},
-		"limit": {
-			"context": 200000
-		}
-	},
-	"azure/o3-mini": {
-		"cost": {
-			"cache_read": 0.55,
-			"input": 1.1,
-			"output": 4.4
-		},
-		"limit": {
-			"context": 200000
-		}
-	},
-	"azure/o4-mini": {
-		"cost": {
-			"cache_read": 0.275,
-			"input": 1.1,
-			"output": 4.4
-		},
-		"limit": {
-			"context": 200000
 		}
 	},
 	"baichuan/baichuan-m2-32b": {
@@ -7723,6 +7647,18 @@
 			"context": 1000000
 		}
 	},
+	"claude-sonnet-5-5@eu": {
+		"cost": {
+			"cache_read": 0.22,
+			"cache_write": 2.75,
+			"input": 2.2,
+			"output": 11
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 1000000
+		}
+	},
 	"claude-sonnet-5@default": {
 		"cost": {
 			"cache_read": 0.2,
@@ -9608,6 +9544,15 @@
 			"context": 1048576
 		}
 	},
+	"deepseek-ai/DeepSeek-V4.1-Flash-Fast": {
+		"cost": {
+			"input": 0.6,
+			"output": 2.4
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"deepseek-ai/deepseek-ocr/models/DeepSeek-OCR": {
 		"cost": {
 			"input": 0.2,
@@ -10188,6 +10133,17 @@
 		},
 		"limit": {
 			"context": 163840
+		}
+	},
+	"deepseek/deepseek-flash": {
+		"cost": {
+			"cache_read": 0.003,
+			"input": 0.15,
+			"output": 0.6
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 1000000
 		}
 	},
 	"deepseek/deepseek-latest": {
@@ -15805,6 +15761,51 @@
 			"context": 1050000
 		}
 	},
+	"gpt-6.1-sol": {
+		"cost": {
+			"cache_read": 0.1,
+			"cache_write": 2.5,
+			"input": 2,
+			"output": 10,
+			"tiers": [
+				{
+					"cache_read": 0.2,
+					"cache_write": 5,
+					"input": 4,
+					"output": 15,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
+	"gpt-6.1-sol@eu": {
+		"cost": {
+			"cache_read": 0.12,
+			"input": 2.4,
+			"output": 12,
+			"tiers": [
+				{
+					"cache_read": 0.24,
+					"input": 4.8,
+					"output": 18,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"exactOnly": true,
+		"limit": {
+			"context": 1050000
+		}
+	},
 	"gpt-chat-latest": {
 		"cost": {
 			"cache_read": 0.5,
@@ -17858,6 +17859,7 @@
 	},
 	"llama-4-maverick": {
 		"cost": {
+			"cache_read": 0.05,
 			"input": 0.25,
 			"output": 0.87
 		},
@@ -19178,6 +19180,7 @@
 	},
 	"mistral-3-14B": {
 		"cost": {
+			"cache_read": 0.04,
 			"input": 0.2,
 			"output": 0.2
 		},
@@ -20946,12 +20949,12 @@
 	},
 	"nemotron-3-nano-omni": {
 		"cost": {
-			"cache_read": 0.06,
-			"input": 0.06,
-			"output": 0.24
+			"cache_read": 0.1,
+			"input": 0.5,
+			"output": 0.9
 		},
 		"limit": {
-			"context": 300000
+			"context": 65536
 		}
 	},
 	"nemotron-3-nano-omni@eu": {
@@ -20995,12 +20998,12 @@
 	},
 	"nemotron-3-ultra-550b": {
 		"cost": {
-			"cache_read": 0.1,
-			"input": 0.5,
-			"output": 2.2
+			"cache_read": 0.18,
+			"input": 0.9,
+			"output": 1.7
 		},
 		"limit": {
-			"context": 1048576
+			"context": 131072
 		}
 	},
 	"nemotron-3-ultra-nvfp4": {
@@ -21025,6 +21028,7 @@
 	},
 	"nemotron-nano-12b-v2-vl": {
 		"cost": {
+			"cache_read": 0.04,
 			"input": 0.2,
 			"output": 0.6
 		},
@@ -22639,6 +22643,29 @@
 			"context": 1050000
 		}
 	},
+	"openai-gpt-61-sol": {
+		"cost": {
+			"cache_read": 0.125,
+			"cache_write": 3.125,
+			"input": 2.5,
+			"output": 12.5,
+			"tiers": [
+				{
+					"cache_read": 0.25,
+					"cache_write": 6.25,
+					"input": 5,
+					"output": 18.75,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
 	"openai-o1": {
 		"cost": {
 			"cache_read": 7.5,
@@ -24048,6 +24075,75 @@
 			"context": 1050000
 		}
 	},
+	"openai/gpt-6.1-sol": {
+		"cost": {
+			"cache_read": 0.1,
+			"cache_write": 2.5,
+			"input": 2,
+			"output": 10,
+			"tiers": [
+				{
+					"cache_read": 0.2,
+					"cache_write": 5,
+					"input": 4,
+					"output": 15,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
+	"openai/gpt-6.1-sol-fast": {
+		"cost": {
+			"cache_read": 0.2,
+			"cache_write": 5,
+			"input": 4,
+			"output": 20,
+			"tiers": [
+				{
+					"cache_read": 0.4,
+					"cache_write": 10,
+					"input": 8,
+					"output": 30,
+					"tier": {
+						"size": 272001,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
+	"openai/gpt-6.1-sol-pro": {
+		"cost": {
+			"cache_read": 0.1,
+			"cache_write": 2.5,
+			"input": 2,
+			"output": 10,
+			"tiers": [
+				{
+					"cache_read": 0.2,
+					"cache_write": 5,
+					"input": 4,
+					"output": 15,
+					"tier": {
+						"size": 272000,
+						"type": "context"
+					}
+				}
+			]
+		},
+		"limit": {
+			"context": 1050000
+		}
+	},
 	"openai/gpt-astra-latest": {
 		"cost": {
 			"cache_read": 1,
@@ -24202,7 +24298,7 @@
 	},
 	"openai/gpt-sol-latest": {
 		"cost": {
-			"cache_read": 0.2,
+			"cache_read": 0.1,
 			"cache_write": 2.5,
 			"input": 2,
 			"output": 10
@@ -31296,6 +31392,36 @@
 			"context": 1048576
 		}
 	},
+	"xiaomi-mimo/mimo-v2.6-flash": {
+		"cost": {
+			"cache_read": 0.0028,
+			"input": 0.14,
+			"output": 0.28
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
+	"xiaomi-mimo/mimo-v2.6-pro": {
+		"cost": {
+			"cache_read": 0.0036,
+			"input": 0.435,
+			"output": 0.87
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
+	"xiaomi-mimo/mimo-v2.6-pro-ultraspeed": {
+		"cost": {
+			"cache_read": 0.036,
+			"input": 4.35,
+			"output": 8.7
+		},
+		"limit": {
+			"context": 1048576
+		}
+	},
 	"xiaomi/mimo-v2-flash": {
 		"cost": {
 			"cache_read": 0.01,
@@ -32910,13 +33036,13 @@
 	},
 	"~openai/gpt-sol-latest": {
 		"cost": {
-			"cache_read": 0.2,
+			"cache_read": 0.1,
 			"cache_write": 2.5,
 			"input": 2,
 			"output": 10,
 			"tiers": [
 				{
-					"cache_read": 0.4,
+					"cache_read": 0.2,
 					"cache_write": 5,
 					"input": 4,
 					"output": 15,
@@ -32991,9 +33117,9 @@
 	},
 	"~z-ai/glm-latest": {
 		"cost": {
-			"cache_read": 0.102,
-			"input": 0.19,
-			"output": 2.04
+			"cache_read": 0.12,
+			"input": 0.12,
+			"output": 4
 		},
 		"exactOnly": true,
 		"limit": {
