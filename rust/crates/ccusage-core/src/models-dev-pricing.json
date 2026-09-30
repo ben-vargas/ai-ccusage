@@ -1963,7 +1963,7 @@
 	"XiaomiMiMo/MiMo-V2.6-Flash": {
 		"cost": {
 			"cache_read": 0.0028,
-			"input": 0.08,
+			"input": 0.14,
 			"output": 0.28
 		},
 		"limit": {
