@@ -3916,17 +3916,6 @@
 			"context": 1000000
 		}
 	},
-	"anthropic-claude-sonnet-5.5": {
-		"cost": {
-			"cache_read": 0.2,
-			"cache_write": 2.5,
-			"input": 2,
-			"output": 10
-		},
-		"limit": {
-			"context": 1000000
-		}
-	},
 	"anthropic.claude-fable-5": {
 		"cost": {
 			"cache_read": 1,
@@ -4060,6 +4049,17 @@
 		}
 	},
 	"anthropic.claude-sonnet-5": {
+		"cost": {
+			"cache_read": 0.2,
+			"cache_write": 2.5,
+			"input": 2,
+			"output": 10
+		},
+		"limit": {
+			"context": 1000000
+		}
+	},
+	"anthropic.claude-sonnet-5-5": {
 		"cost": {
 			"cache_read": 0.2,
 			"cache_write": 2.5,
@@ -24986,12 +24986,12 @@
 	},
 	"qwen-3.8-27b": {
 		"cost": {
-			"cache_read": 0.25,
-			"input": 0.45,
-			"output": 3.2
+			"cache_read": 0.99,
+			"input": 0.99,
+			"output": 1.49
 		},
 		"limit": {
-			"context": 262128
+			"context": 131072
 		}
 	},
 	"qwen-3.8-27b-flex": {
@@ -32910,8 +32910,8 @@
 	},
 	"~deepseek/deepseek-pro-latest": {
 		"cost": {
-			"cache_read": 0.15,
-			"input": 0.15,
+			"cache_read": 0.3,
+			"input": 0.3,
 			"output": 3.5
 		},
 		"exactOnly": true,
@@ -32922,8 +32922,8 @@
 	"~deepseek/deepseek-v4-flash-latest": {
 		"cost": {
 			"cache_read": 0.01,
-			"input": 0.012,
-			"output": 1.25
+			"input": 0.01,
+			"output": 0.64
 		},
 		"limit": {
 			"context": 1048576
