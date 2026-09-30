@@ -7940,7 +7940,7 @@
 			"output": 1.32
 		},
 		"limit": {
-			"context": 1310720
+			"context": 1048576
 		}
 	},
 	"cloudflare/@cf/deepseek-ai/deepseek-v4-pro-0813": {
@@ -33119,7 +33119,7 @@
 		"cost": {
 			"cache_read": 0.12,
 			"input": 0.12,
-			"output": 4
+			"output": 1.5
 		},
 		"exactOnly": true,
 		"limit": {
